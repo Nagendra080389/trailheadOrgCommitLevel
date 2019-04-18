@@ -8,6 +8,7 @@ public class IntegrationWrapperClass_CF {
     //Public variables.
     public Integer intTimeout {get; set;}
     public String strResponseStatusCode {get; set;}
+    public String intResponseStatusCode {get; set;}
     public String strRequestMethod {get; set;}
     public String strRequestBody {get; set;}
     public String strRequestEndpoint {get; set;}
