@@ -9,17 +9,6 @@ public without sharing class IntegrationTest_CF {
     /**
      * This method tests the continuation methods.
      */
-    static testMethod void continuationMethods() {
-        Test.startTest();
-        IntegrationInnerTest_CF objContinuationController = new IntegrationInnerTest_CF();
-        Continuation objContinuation = objContinuationController.continuation();
-        HttpResponse objResponse = new HttpResponse();
-        objResponse.setBody('Custom Framework');   
-        Test.setContinuationResponse(objContinuationController.objIntegration.strRequestKey, objResponse);
-        Object result = Test.invokeContinuationMethod(objContinuationController, objContinuation);
-        Test.stopTest();
-        System.assertEquals('Custom Framework', objContinuationController.objIntegration.strResponseBody, 'Invalid response.');
-    }
     
     /**
      * This method tests the synchronous callouts.
