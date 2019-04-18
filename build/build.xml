@@ -101,12 +101,9 @@
 		/>
 		<record name="deploylog.txt" action="stop"/>
 
-		<loadfile
-				srcFile="deploylog.txt"
-				property="dev.asyncRequestId">
+		<loadfile srcFile="deploylog.txt" property="dev.asyncRequestId">
 			<filterchain>
 				<!-- We are only interested in the last line of the deploy log -->
-				<tailfilter lines="1"/>
 				<!-- And only something that looks like a Salesforce ID. -->
 				<tokenfilter>
 					<!-- Split by white space and exclude the delimiter characters -->
