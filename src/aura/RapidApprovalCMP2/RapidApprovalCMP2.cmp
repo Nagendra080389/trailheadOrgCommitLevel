@@ -1,0 +1,26 @@
+<aura:component implements="force:hasRecordId,force:LightningQuickAction,flexipage:availableForAllPageTypes" controller="FastApprovalControllerServer">
+    <!--Event Register-->   
+    <aura:registerEvent name="appEvent1" type="c:WrapperRecordEvent"/>
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--Attributes-->   
+    <aura:attribute name="compShow" type="boolean" default="true"  />
+    <aura:attribute name="showMessage" type="boolean" default="false"/>
+    <aura:attribute name="title" type="String"/>
+    <aura:attribute name="severity" type="String"/>
+    <aura:attribute name="uiMessage" type="String"/>
+    <!--Component Body-->
+    <div aura:id="body">
+        <aura:if isTrue="{!v.showMessage}">
+            <ui:message title="{!v.title}" severity="{!v.severity}" closable="true">
+                {!v.uiMessage}
+            </ui:message>
+        </aura:if>
+        <div class="slds-col slds-size_1-of-1 ">
+            <label class="slds-form-element__label" for="select-01">Select Object</label>
+            <div class="">
+                <ui:inputSelect aura:id="objName" class="slds-select objName" change="{!c.showHide}" />               
+            </div>
+        </div>
+    </div>
+</aura:component>

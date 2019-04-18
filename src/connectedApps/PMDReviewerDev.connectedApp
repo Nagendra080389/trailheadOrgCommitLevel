@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>nagesingh@deloitte.com</contactEmail>
+    <label>PMDReview</label>
+    <oauthConfig>
+        <callbackUrl>https://pmdreviewer.herokuapp.com/authenticate</callbackUrl>
+        <consumerKey>3MVG9d8..z.hDcPLDlm9QqJ3hRRkbesRhgIapRxy_yGlA3L7SXXkdyKkMPlkDMTkI72s88K2wdS3efdHJV2Ou</consumerKey>
+        <scopes>Full</scopes>
+    </oauthConfig>
+</ConnectedApp>

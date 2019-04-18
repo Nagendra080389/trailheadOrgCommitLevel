@@ -1,0 +1,47 @@
+/**
+  * Css file for CaseCreationApplicationComponent_ACE.cmp.
+  * <p /><p />
+  * @author Nagendra Singh
+  */
+.THIS .beautifySuccessMessage { /* Css for Success message */
+    color: green;
+    height: 200px;
+    width: 410px;
+    font-weight: bold;
+    font-size: 38px;
+    line-height: 200px;
+    text-align: center;
+}
+
+.THIS .beautifyErrorMessage { /* Css for Error message */
+    color: red;
+    height: 200px;
+    width: 440px;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+}
+
+.THIS .beautifyErrorNumber { /* Css for Error number */
+    color: black;
+    font-weight: normal;
+    font-size: 22px
+}
+
+.THIS .errorDiv { /* Css for Error div */
+    min-height: 200px;
+    padding-top: 30px
+}
+
+.THIS .buttonPadding { /* Css for buttons */
+    padding: 20px
+}
+
+.THIS .formElementPadding { /* Css for create case form padding */
+    padding: 5px
+}
+
+.THIS .sldsWrapStyling { /* min-height for CaseCreationApplicationComponent_ACE.cmp */
+    background-color: white;
+    min-height: 200px
+}

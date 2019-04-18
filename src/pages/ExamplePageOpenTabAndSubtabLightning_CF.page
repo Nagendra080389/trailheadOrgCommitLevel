@@ -1,0 +1,20 @@
+<!--
+/**
+ * Visualfor Page for Test in Salesforce Lightning.
+ * <p /><p />
+ * @author Alberto Gomez
+ */
+-->
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" showChat="false" controller="ExamplesController_CF" docType="html-5.0" action="{!customFrameworkExamplesAction}">
+    <c:FrameworkBaseComponent_CF boolValidations="true" boolCalendars="true" boolDataTables="true" boolCharts="true" boolInputFiles="true" boolMultiSelects="true"
+            boolCustomStyle="false" boolWizards="true" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <br />
+                <br />
+                <h1>LIGHTNING PAGE EXAMPLE IN LIGHTNING EXPERIENCE.</h1>
+            </div>
+        </div>
+    </div>
+</apex:page>

@@ -1,0 +1,674 @@
+<!--
+/**
+ * Visualforce Component to include validations to pages.
+ * <p /><p />
+ * @author Raymundo Rodríguez
+ */
+-->
+<apex:component access="global">
+    <script>
+
+        //On document ready.
+        $(document).ready(function() {
+
+            //Activating validations for On Change event.
+            $('[validate-on-change="true"]').change(function() {
+               validateFields($(this));
+            });
+        });
+
+        /**
+         * This method clears all validated fields.
+         *
+         * @param objContainerSelector  Container Selector.
+         */
+        function clearValidations(objContainerSelector) {
+            var objComponent;
+            if(objContainerSelector instanceof jQuery) {
+                objComponent = objContainerSelector.parent();
+            } else {
+                objComponent = $(objContainerSelector).parent();
+            }
+            if(objComponent.length == 0) {
+                objComponent = null;
+            }
+            $('[validation-has-error="true"]', objComponent).each(function() {
+                removeFieldErrorStyle($(this));
+            });
+        }
+
+        /**
+         * This method validates fields according to the parameters specified.
+         *
+         * @param objContainerSelector  Container Selector.
+         * @param strFocusOnValidationDirection Focus on Validation Direction.
+         * @return Boolean.
+         */
+        function validateFields(objContainerSelector, strFocusOnValidationDirection) {
+            var boolResult = true;
+            try {
+                var objComponent;
+                if(objContainerSelector instanceof jQuery) {
+                    objComponent = objContainerSelector.parent();
+                } else {
+                    objComponent = $(objContainerSelector).parent();
+
+                }
+                if(objComponent.length == 0) {
+                    objComponent = null;
+                }
+
+                //Validating select, input text and text area fields - validating only active fields.
+                $('input[type="text"][validation-activated="true"], input[type="hidden"][validation-activated="true"], input[type="password"][validation-activated="true"], textarea[validation-activated="true"], select[validation-activated="true"], select[html-validation-activated="true"]',
+                        objComponent).each(function() {
+                    var strValue = $(this).val();
+                    if(strValue instanceof Array) {
+                        strValue = strValue.toString();
+                    }
+
+                    //Required.
+                    var strRequired = $(this).attr('validate-required');
+                    var strRequiredErrorMessage = $(this).attr('validate-required-error-message');
+                    var strRequiredAlertType = $(this).attr('validate-required-alert-type');
+
+                    //Regex.
+                    var strRegex = $(this).attr('validate-regex');
+                    var objRegex;
+                    if(stringIsNotBlank(strRegex)) {
+                        objRegex = new RegExp(strRegex, "i");
+                    }
+                    var strRegexErrorMessage = $(this).attr('validate-regex-error-message');
+                    var strRegexAlertType = $(this).attr('validate-regex-alert-type');
+
+                    //Specific value.
+                    var strSpecificValue = $(this).attr('validate-specific-value');
+                    var strSpecificValueErrorMessage = $(this).attr('validate-specific-value-error-message');
+                    var strSpecificValueAlertType = $(this).attr('validate-specific-value-alert-type');
+
+                    //Minimum length.
+                    var strMinimumLength = $(this).attr('validate-minimum-length');
+                    var intMinimumLenght;
+                    if(stringIsNotBlank(strMinimumLength) && !isNaN(strMinimumLength)) {
+                        intMinimumLenght = parseInt(strMinimumLength);
+                    }
+                    var strMinimumLengthErrorMessage = $(this).attr('validate-minimum-length-error-message');
+                    var strMinimumLengthAlertType = $(this).attr('validate-minimum-length-alert-type');
+
+                    //Maximum length.
+                    var strMaximumLength = $(this).attr('validate-maximum-length');
+                    var intMaximumLenght;
+                    if(stringIsNotBlank(strMaximumLength) && !isNaN(strMaximumLength)) {
+                        intMaximumLenght = parseInt(strMaximumLength);
+                    }
+                    var strMaximumLengthErrorMessage = $(this).attr('validate-maximum-length-error-message');
+                    var strMaximumLengthAlertType = $(this).attr('validate-maximum-length-alert-type');
+
+                    //Minimum value.
+                    var strMinimumValue = $(this).attr('validate-minimum-value');
+                    var intMinimumValue;
+                    if(stringIsNotBlank(strMinimumValue) && !isNaN(strMinimumValue)) {
+                        intMinimumValue = parseInt(strMinimumValue);
+                    }
+                    var strMinimumValueErrorMessage = $(this).attr('validate-minimum-value-error-message');
+                    var strMinimumValueAlertType = $(this).attr('validate-minimum-value-alert-type');
+
+                    //Maximum value.
+                    var strMaximumValue = $(this).attr('validate-maximum-value');
+                    var intMaximumValue;
+                    if(stringIsNotBlank(strMaximumValue) && !isNaN(strMaximumValue)) {
+                        intMaximumValue = parseInt(strMaximumValue);
+                    }
+                    var strMaximumValueErrorMessage = $(this).attr('validate-maximum-value-error-message');
+                    var strMaximumValueAlertType = $(this).attr('validate-maximum-value-alert-type');
+
+                    //Date/Time validation.
+                    var strDateTime = $(this).attr('validate-dateTime');
+                    var strDateTimeRules = $(this).attr('validate-dateTime-rules');
+                    var strDateTimeErrorMessages = $(this).attr('validation-dateTime-error-messages');
+                    var strDateTimeAlertTypes = $(this).attr('validate-dateTime-alert-types');
+
+                    //Value validation.
+                    var strValidateValue = $(this).attr('validate-value');
+                    var strValueRules = $(this).attr('validate-value-rules');
+                    var strValueErrorMessages = $(this).attr('validation-value-error-messages');
+                    var strValueAlertTypes = $(this).attr('validate-value-alert-types');
+
+                    //Error message.
+                    var strInlineMessage = $(this).attr('validation-inline-message');
+                    var strMessageContainer = $(this).attr('validation-message-container');
+
+                    //Checking if it should not be blank.
+                    if(strRequired == 'true' && stringIsBlank(strValue)) {
+                        boolResult = false;
+                        if(stringIsBlank(strRequiredErrorMessage)) {
+                            strRequiredErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultRequiredFieldErrorMessage_CF)}';
+                        }
+                        addFieldErrorStyle($(this), strRequiredErrorMessage, strInlineMessage,
+                                strMessageContainer, strRequiredAlertType);
+                    } else if(stringIsNotBlank(strSpecificValue) && strSpecificValue != strValue) {
+
+                        //Checking for specific values.
+                        boolResult = false;
+                        if(stringIsBlank(strSpecificValueErrorMessage)) {
+                            strSpecificValueErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultSpecificValueErrorMessage_CF)}';
+                        }
+                        addFieldErrorStyle($(this), strSpecificValueErrorMessage, strInlineMessage,
+                                strMessageContainer, strSpecificValueAlertType);
+                    } else if(objRegex != null && stringIsNotBlank(strValue) && !objRegex.test(strValue)) {
+
+                        //Checking for regular expressions.
+                        boolResult = false;
+                        if(stringIsBlank(strRegexErrorMessage)) {
+                            strRegexErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultRegexErrorMessage_CF)}';
+                        }
+                        addFieldErrorStyle($(this), strRegexErrorMessage, strInlineMessage,
+                                strMessageContainer, strRegexAlertType);
+                    } else if(intMinimumLenght != null && stringIsNotBlank(strValue) && strValue.length < intMinimumLenght) {
+
+                        //Checking for regular minimum length.
+                        boolResult = false;
+                        if(stringIsBlank(strMinimumLengthErrorMessage)) {
+                            strMinimumLengthErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultMinimumLengthErrorMessage_CF)} ' + intMinimumLenght;
+                        }
+                        addFieldErrorStyle($(this), strMinimumLengthErrorMessage, strInlineMessage,
+                                strMessageContainer, strMinimumLengthAlertType);
+                    } else if(intMaximumLenght != null && strValue.length > intMaximumLenght) {
+
+                        //Checking for regular maximum length.
+                        boolResult = false;
+                        if(stringIsBlank(strMaximumLengthErrorMessage)) {
+                            strMaximumLengthErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultMaximumLengthErrorMessage_CF)} ' + intMaximumLenght;
+                        }
+                        addFieldErrorStyle($(this), strMaximumLengthErrorMessage, strInlineMessage,
+                                strMessageContainer, strMaximumLengthAlertType);
+                    } else if(intMinimumValue != null && stringIsNotBlank(strValue) && strValue < intMinimumValue) {
+
+                        //Checking for regular minimum value.
+                        boolResult = false;
+                        if(stringIsBlank(strMinimumValueErrorMessage)) {
+                            strMinimumValueErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultMinimumValueErrorMessage_CF)} ' + intMinimumValue;
+                        }
+                        addFieldErrorStyle($(this), strMinimumValueErrorMessage, strInlineMessage,
+                                strMessageContainer, strMinimumValueAlertType);
+                    } else if(intMaximumValue != null && strValue > intMaximumValue) {
+
+                        //Checking for regular maximum value.
+                        boolResult = false;
+                        if(stringIsBlank(strMaximumValueErrorMessage)) {
+                            strMaximumValueErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultMaximumValueErrorMessage_CF)} ' + intMaximumValue;
+                        }
+                        addFieldErrorStyle($(this),strMaximumValueErrorMessage, strInlineMessage,
+                                strMessageContainer, strMaximumValueAlertType);
+                    } else if( (strDateTime == 'true') && stringIsNotBlank(strDateTimeRules)) {
+
+                        //Checking date/times.
+                        var arrMessages;
+                        var arrTypes;
+                        var arrRules = strDateTimeRules.split('&&&');
+
+                        if(stringIsNotBlank(strDateTimeErrorMessages)) {
+                            arrMessages = strDateTimeErrorMessages.split('&&&');
+                        }
+
+                        if(stringIsNotBlank(strDateTimeAlertTypes)) {
+                            arrTypes = strDateTimeAlertTypes.split('&&&');
+                        }
+
+                        for(var intIndex in arrRules) {
+                            if(!isNaN(intIndex)) {
+
+                                //Rules format: isAfter/isBefore/IsSame/IsSameOrBefore/IsSameOrAfter---jQuery Selector/Date String/Today---Format
+                                var arrRule = arrRules[intIndex].split('---');
+                                var strComparison = arrRule[0];
+                                var strComponent = arrRule[1];
+                                var strFormat = arrRule[2];
+                                if(!isValidDate($(this), strComparison, strComponent, strFormat)) {
+                                    var strDateTimeErrorMessage = '';
+                                    var strDateTimeAlertType = '';
+                                    boolResult = false;
+                                    if(arrMessages != null && arrMessages.length > 0) {
+                                        strDateTimeErrorMessage = arrMessages[intIndex];
+                                    }
+                                    if(arrTypes != null && arrTypes.length > 0) {
+                                        strDateTimeAlertType = arrTypes[intIndex];
+                                    }
+                                    if(stringIsBlank(strDateTimeErrorMessage)) {
+                                        strDateTimeErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultDateTimeErrorMessage_CF)}';
+                                    }
+                                    addFieldErrorStyle($(this), strDateTimeErrorMessage, strInlineMessage,
+                                            strMessageContainer, strDateTimeAlertType);
+                                    break;
+                                } else {
+
+                                    //Valid data.
+                                    if(boolResult) removeFieldErrorStyle($(this)); //US-6135
+                                }
+                            }
+                        }
+                    } else if(strValidateValue == 'true' && stringIsNotBlank(strValueRules)) {
+
+                        //Checking field's value.
+                        var arrMessages;
+                        var arrTypes;
+                        var arrRules = strValueRules.split('&&&');
+                        if(stringIsNotBlank(strValueErrorMessages)) {
+                            arrMessages = strValueErrorMessages.split('&&&');
+                        }
+                        if(stringIsNotBlank(strDateTimeAlertTypes)) {
+                            arrTypes = strDateTimeAlertTypes;
+                        }
+                        for(var intIndex in arrRules) {
+                            if(!isNaN(intIndex)) {
+
+                                //Rules format: isSame/isNotSame---jQuery Selector/Value.
+                                var arrRule = arrRules[intIndex].split('---');
+                                var strComparison = arrRule[0];
+                                var strComponent = arrRule[1];
+                                if(!isValidValue($(this), strComparison, strComponent)) {
+                                    var strValueErrorMessage = '';
+                                    var strValueAlertType = '';
+                                    boolResult = false;
+                                    if(arrMessages != null && arrMessages.length > 0) {
+                                        strValueErrorMessage = arrMessages[intIndex];
+                                    }
+                                    if(arrTypes != null && arrTypes.length > 0) {
+                                        strValueAlertType = arrTypes[intIndex];
+                                    }
+                                    if(stringIsBlank(strValueErrorMessage)) {
+                                    strValueErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultErrorMessageValueValidation_CF)}';
+                                    }
+                                    addFieldErrorStyle($(this), strValueErrorMessage, strInlineMessage,
+                                            strMessageContainer, strValueAlertType);
+                                    break;
+                                } else {
+
+                                    //Valid data.
+                                    removeFieldErrorStyle($(this));
+                                }
+                            }
+                        }
+                    } else {
+
+                        //Valid data.
+                        removeFieldErrorStyle($(this));
+                    }
+                });
+
+                //Validating radio fields - validating only active fields.
+                $('input[type="radio"][validation-activated="true"]', objComponent).each(function() {
+                    var strRadioName = $(this).attr('name');
+                    if(stringIsNotBlank(strRadioName)) {
+                        var objRadioGroup = $('input[name="' + strRadioName + '"]:checked');
+                        var strValue = objRadioGroup.val();
+
+                        //Required.
+                        var strRequired = $(this).attr('validate-required');
+                        var strRequiredErrorMessage = $(this).attr('validate-required-error-message');
+                        var strRequiredAlertType = $(this).attr('validate-required-alert-type');
+
+                        //Specific value.
+                        var strSpecificValue = $(this).attr('validate-specific-value');
+                        var strSpecificValueErrorMessage = $(this).attr('validate-specific-value-error-message');
+                        var strSpecificValueAlertType = $(this).attr('validate-specific-value-alert-type');
+
+                        //Error message.
+                        var strInlineMessage = $(this).attr('validation-inline-message');
+                        var strMessageContainer = $(this).attr('validation-message-container');
+
+                        //Checking if it should not be blank.
+                        if(strRequired == 'true' && stringIsBlank(strValue)) {
+                            boolResult = false;
+                            if(stringIsBlank(strRequiredErrorMessage)) {
+                                strRequiredErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultRequiredFieldErrorMessage_CF)}';
+                            }
+                            addFieldErrorStyle($(this), strRequiredErrorMessage, strInlineMessage,
+                                    strMessageContainer, strRequiredAlertType);
+                        } else if(stringIsNotBlank(strSpecificValue) && strSpecificValue != strValue) {
+
+                            //Checking for specific values.
+                            boolResult = false;
+                            if(stringIsBlank(strSpecificValueErrorMessage)) {
+                                strSpecificValueErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultSpecificValueErrorMessage_CF)}';
+                            }
+                            addFieldErrorStyle($(this), strSpecificValueErrorMessage, strInlineMessage,
+                                    strMessageContainer, strSpecificValueAlertType);
+                        } else {
+
+                            //Valid data.
+                            removeFieldErrorStyle($(this));
+                        }
+                    }
+                });
+
+                //Validating checkbox fields - validating only active fields.
+                $('input[type="checkbox"][validation-activated="true"]', objComponent).each(function() {
+                    var boolValue = $(this).is(':checked');
+
+                    //Required.
+                    var strRequired = $(this).attr('validate-required');
+                    var strRequiredErrorMessage = $(this).attr('validate-required-error-message');
+                    var strRequiredAlertType = $(this).attr('validate-required-alert-type');
+
+                    //Error message.
+                    var strInlineMessage = $(this).attr('validation-inline-message');
+                    var strMessageContainer = $(this).attr('validation-message-container');
+
+                    //Checking if it should not be blank.
+                    if(strRequired == 'true' && !boolValue) {
+                        boolResult = false;
+                        if(stringIsBlank(strRequiredErrorMessage)) {
+                            strRequiredErrorMessage = '{!JSENCODE($Label.ValidationsComponent_DefaultRequiredFieldErrorMessage_CF)}';
+                        }
+                        addFieldErrorStyle($(this), strRequiredErrorMessage, strInlineMessage,
+                                strMessageContainer, strRequiredAlertType);
+                    } else {
+
+                        //Valid data.
+                        removeFieldErrorStyle($(this));
+                    }
+                });
+
+                //Focusing fields with error.
+                if(stringIsBlank(strFocusOnValidationDirection)) {
+                     strFocusOnValidationDirection = strFocusOnValidationDirectionTopDown
+                }
+                if(objComponent != null && stringIsNotBlank(strFocusOnValidationDirection)) {
+                    focusOnFieldError(objComponent, strFocusOnValidationDirection);
+                }
+            } catch(objError) {
+                console.log(objError);
+                boolResult = false;
+            }
+            return boolResult;
+        }
+
+        /**
+         * This method sets styling and error message for field validation.
+         *
+         * @param objContainerSelector  Container Selector.
+         * @param strErrorMessage   Error Messaage.
+         * @param strInlineMessage  Inline message.
+         * @param strMessageContainer   Message container.
+         * @param strAlertType  Alert type.
+         */
+        function addFieldErrorStyle(objContainerSelector, strErrorMessage, strInlineMessage, strMessageContainer, strAlertType) {
+            if(objContainerSelector != null) {
+                var objComponent;
+                var strUniqueId = guidNumber();
+                var strErrorMessageDefault = '{!JSENCODE($Label.ValidationsComponent_Default_Error_Message_CF)}';
+                if(objContainerSelector instanceof jQuery) {
+                    objComponent = objContainerSelector;
+                } else {
+                    objComponent = $(strContainerSelector);
+                }
+
+                //If the field was already validated, remove styling.
+                removeFieldErrorStyle(objContainerSelector);
+
+                //Defining error message.
+                if(stringIsBlank(strErrorMessage)) {
+                    strErrorMessage = strErrorMessageDefault;
+                }
+                if(objComponent.attr('validation-inline-message') == 'true') {
+                    var strMessageContainer =
+                    '<span id="' + strUniqueId + '" class="inlineErrorMessage">' + strErrorMessage + '</span>';
+                    objComponent.after(strMessageContainer);
+                } else {
+                    var strContainer = objComponent.attr('validation-message-container');
+                    var intAlertType = intAlertTypeDanger;
+                    if(!isNaN(strAlertType)) {
+                        intAlertType = parseInt(strAlertType);
+                    }
+                    updateNumberOfMessages(strContainer, true, intAlertType, strErrorMessage, strUniqueId);
+                }
+
+                //Adding styling to field.
+                var strInvalidClass;
+                var strNodeType = objComponent.prop('nodeName').toLowerCase();
+                switch(strNodeType) {
+                    case 'input':
+                        var strInputType = objComponent.attr('type').toLowerCase();
+                        switch(strInputType) {
+                            case 'text':
+                            case 'password':
+                                strInvalidClass = strInvalidClassInputText;
+                            break;
+                        }
+                    break;
+                    case 'textarea':
+                        strInvalidClass = strInvalidClassTextArea;
+                    break;
+                    case 'select':
+                        strInvalidClass = strInvalidClassSelect;
+                    break;
+                }
+                objContainerSelector.addClass(strInvalidClass);
+
+                //Setting data of validation.
+                objComponent.attr('validation-has-error', 'true');
+                objComponent.attr('validation-unique-id', strUniqueId);
+            }
+        }
+
+        /**
+         * This method removes styling and error message for validated field.
+         *
+         * @param objContainerSelector  Container Selector.
+         */
+        function removeFieldErrorStyle(objContainerSelector) {
+            if(objContainerSelector != null) {
+                var objComponent = getJQueryObject(objContainerSelector);
+
+                //If the field was already validated, remove styling.
+                if(objContainerSelector.attr('validation-has-error') == 'true') {
+                    objContainerSelector.attr('validation-has-error', 'false');
+
+                    //Removing styling.
+                    var strInvalidClass;
+                    var strNodeType = objComponent.prop('nodeName').toLowerCase();
+                    switch(strNodeType) {
+                        case 'input':
+                            var strInputType = objComponent.attr('type').toLowerCase();
+                            switch(strInputType) {
+                                case 'text':
+                                case 'password':
+                                    strInvalidClass = strInvalidClassInputText;
+                                break;
+                            }
+                        break;
+                        case 'textarea':
+                            strInvalidClass = strInvalidClassTextArea;
+                        break;
+                        case 'select':
+                            strInvalidClass = strInvalidClassSelect;
+                        break;
+                    }
+                    objContainerSelector.removeClass(strInvalidClass);
+
+                    //Removing inline error message.
+                    var strValidationUniqueId = objContainerSelector.attr('validation-unique-id');
+                    if(stringIsNotBlank(strValidationUniqueId)) {
+                        $('#' + strValidationUniqueId).remove();
+
+                        //Checking if container should be hidden.
+                        if(objContainerSelector.attr('validation-inline-message') != 'true') {
+                            var strContainer = objContainerSelector.attr('validation-message-container');
+                            updateNumberOfMessages(strContainer, false, null, null, null);
+                        }
+                        objContainerSelector.attr('validation-unique-id', '');
+                    }
+                }
+            }
+        }
+
+        /**
+         * This method validates Date/Time fields.
+         *
+         * @param objComponentSelector  Component Selector.
+         * @param strComparison Comparison.
+         * @param strComponent  Component.
+         * @param strFormat Format.
+         * @return Boolean.
+         */
+        function isValidDate(objComponentSelector, strComparison, strComponent, strFormat) {
+            var boolResult = true;
+            var strValueOne = objComponentSelector.val();
+            var strValueTwo = strComponent;
+            var strFormatOne = objComponentSelector.attr(strDateTimeValidationCalendarFormatAttribute);
+            var strFormatTwo = strFormat;
+
+            //Converting first Date/Time field.
+            if(stringIsNotBlank(strValueOne)) {
+                strValueOne = moment(strValueOne, strFormatOne);
+                if(strValueOne.isValid()) {
+
+                    //Getting value of second date/time.
+                    if(stringIsNotBlank(strValueTwo)) {
+                        var boolIsSelector;
+                        try {
+                            strValueTwo = $(strValueTwo);
+                            boolIsSelector = true;
+                        } catch(objError) {
+                            boolIsSelector = false;
+                        }
+                        if(boolIsSelector && strValueTwo.length > 0) {
+                            if(stringIsBlank(strFormatTwo)) {
+                                strFormatTwo = strValueTwo.attr(strDateTimeValidationCalendarFormatAttribute);
+                                if(stringIsBlank(strFormatTwo)) {
+                                    strFormatTwo = strFormatOne;
+                                }
+                            }
+                            strValueTwo = moment(strValueTwo.val(), strFormatTwo);
+                        } else {
+                            if(stringIsBlank(strFormatTwo)) {
+                                strFormatTwo = strFormatOne;
+                            }
+                            switch(strComponent) {
+                                case strDateTimeValidationToday:
+                                    strValueTwo = moment(moment().format(strFormatTwo));
+                                break;
+                                default:
+                                    strValueTwo = moment(strComponent, strFormatTwo);
+                                break;
+                            }
+                        }
+                        if(strValueTwo.isValid()) {
+
+                            //Making comparison.
+                            switch(strComparison) {
+                                case strDateTimeValidationIsBefore:
+                                    boolResult = strValueOne.isBefore(strValueTwo);
+                                break;
+                                case strDateTimeValidationIsSameOrBefore:
+                                    boolResult = strValueOne.isSameOrBefore(strValueTwo);
+                                break;
+                                case strDateTimeValidationIsAfter:
+                                    boolResult = strValueOne.isAfter(strValueTwo);
+                                break;
+                                case strDateTimeValidationIsSameOrAfter:
+                                    boolResult = strValueOne.isSameOrAfter(strValueTwo);
+                                break;
+                                case strDateTimeValidationIsSame:
+                                    boolResult = strValueOne.isSame(strValueTwo);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return boolResult;
+        }
+
+        /**
+         * This method validates fields related value.
+         *
+         * @param objComponentSelector  Component Selector.
+         * @param strComparison Comparison.
+         * @param strComponent  Component.
+         * @return Boolean.
+         */
+        function isValidValue(objComponentSelector, strComparison, strComponent) {
+            var boolResult = true;
+            var strValueOne = objComponentSelector.val();
+            var strValueTwo = strComponent;
+
+            //Converting first Date/Time field.
+            if(stringIsNotBlank(strValueOne)) {
+
+                //Getting value of reference field.
+                if(stringIsNotBlank(strValueTwo)) {
+                    var boolIsSelector;
+                    boolResult = false;
+                    try {
+                        strValueTwo = $(strValueTwo).val();
+                        boolIsSelector = true;
+                    } catch(objError) {
+                        boolIsSelector = false;
+                    }
+
+                    //Making comparison.
+                    switch(strComparison) {
+                        case strValueValidationIsSame:
+                            if(strValueOne == strValueTwo) {
+                                boolResult = true;
+                            }
+                        break;
+                        case strValueValidationIsNotSame:
+                            if(strValueOne != strValueTwo) {
+                                boolResult = true;
+                            }
+                        break;
+                    }
+                }
+            }
+            return boolResult;
+        }
+
+        /**
+         * This method automatically scroll up or down to focus screen on fields that doesn't meet validation criteria.
+         *
+         * @param strComponent  Component.
+         * @param strFocusOnValidationDirection Focus on Validation Direction.
+         * @return Boolean.
+         */
+        function focusOnFieldError(objComponent, strFocusOnValidationDirection) {
+            var objFocusFields = null;
+            var intTotalFields = 0;
+            var intTopOffset = 0;
+            try {
+
+                //Validating select, input text and text area fields - validating only active fields.
+                objFocusFields = $('[validation-has-error=true][validation-focus-on-fail=true]' , objComponent);
+                if(objFocusFields != null && objFocusFields.length > 0) {
+                    intTotalFields = objFocusFields.length - 1;
+                    intTopOffset = objFocusFields.attr('validation-focus-on-fail-top-offset');
+                    if(stringIsBlank(intTopOffset) || isNaN(intTopOffset)) {
+                        intTopOffset = 0;
+                    }
+
+
+                    //Focus Direction.
+                    switch(strFocusOnValidationDirection) {
+                        case strFocusOnValidationDirectionTopDown:
+                            if(objFocusFields.attr('type') != 'hidden') {
+                                $.scrollTo(objFocusFields.first(), 800, {over: {left:0.0, top:intTopOffset}});
+                            } else {
+                                $.scrollTo(objFocusFields.first().parent(), 800, {over: {left:0.0, top:intTopOffset}});
+                            }
+                        break;
+                        case strFocusOnValidationDirectionBottomUp:
+                            if(objFocusFields.attr('type') != 'hidden') {
+                                $.scrollTo(objFocusFields.last(), 800, {over: {left:0.0, top:intTopOffset}});
+                            } else {
+                                $.scrollTo(objFocusFields.last().parent(), 800, {over: {left:0.0, top:intTopOffset}});
+                            }
+                        break;
+                    }
+                }
+            } catch(objError) {
+                console.log(objError);
+                boolResult = false;
+            }
+        }
+    </script>
+</apex:component>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customApplications>
+        <label><!-- ApplicationEvents --></label>
+        <name>ApplicationEvents</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- Communications --></label>
+        <name>Communications</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- ContactSearchLtngApp --></label>
+        <name>ContactSearchLtngApp</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- Garage --></label>
+        <name>Garage</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- Lightning Knowledge --></label>
+        <name>Lightning_Knowledge</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- Suggestion Box --></label>
+        <name>Suggestion_Box</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- Unesco --></label>
+        <name>Unesco</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- WebServiceCallout --></label>
+        <name>WebServiceCallout</name>
+    </customApplications>
+    <customLabels>
+        <label><!-- AmountSign --></label>
+        <name>AmountSign</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Apex user name --></label>
+        <name>ApexUser</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- DML Operations Class CF Operation Completed CF --></label>
+        <name>DMLOperationsClass_CF_OperationCompleted_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Error Log Class CF Exception Contact Administrator CF --></label>
+        <name>ErrorLog_Class_CF_ExceptionContactAdministrator_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Error Log Class CF Unable To Process Exception CF --></label>
+        <name>ErrorLog_Class_CF_UnableToProcessException_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Input Files Component Input File Drag Drop --></label>
+        <name>InputFilesComponent_InputFileDragDrop_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Input Files Component Input Files Size Limit --></label>
+        <name>InputFilesComponent_InputFilesSizeLimit_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Article types list --></label>
+        <name>PKB_All_Article_Types</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Language picklist label --></label>
+        <name>PKB_Language</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Recently Updated articles list --></label>
+        <name>PKB_Last_Updated</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Most Viewed articles list --></label>
+        <name>PKB_MostPopular</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Forward pagination --></label>
+        <name>PKB_Next10</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- No articles in the selected category --></label>
+        <name>PKB_No_Result</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Back pagination --></label>
+        <name>PKB_Previous10</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Search Button --></label>
+        <name>PKB_Search_Button</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- No filter in category drop-down --></label>
+        <name>PKB_Search_NoFilter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- No search result --></label>
+        <name>PKB_Search_No_Result</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Successful search result --></label>
+        <name>PKB_Search_Result</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Category filter label --></label>
+        <name>PKB_Search_Support</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Home tab --></label>
+        <name>PKB_Tab_Home</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Product tab --></label>
+        <name>PKB_Tab_Product</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Browser title --></label>
+        <name>PKB_Title</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Date Time Error Message --></label>
+        <name>ValidationsComponent_DefaultDateTimeErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Error Message Value Validation --></label>
+        <name>ValidationsComponent_DefaultErrorMessageValueValidation_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Maximum Length Error Message --></label>
+        <name>ValidationsComponent_DefaultMaximumLengthErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Maximum Value Error Message --></label>
+        <name>ValidationsComponent_DefaultMaximumValueErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Minimum Length Error Message --></label>
+        <name>ValidationsComponent_DefaultMinimumLengthErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Minimum Value Error Message --></label>
+        <name>ValidationsComponent_DefaultMinimumValueErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Regex Error Message --></label>
+        <name>ValidationsComponent_DefaultRegexErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Required Field Error Message --></label>
+        <name>ValidationsComponent_DefaultRequiredFieldErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Specific Value Error Message --></label>
+        <name>ValidationsComponent_DefaultSpecificValueErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Default Error Message --></label>
+        <name>ValidationsComponent_Default_Error_Message_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Validations Component Input File Type Error Message --></label>
+        <name>ValidationsComponent_InputFileTypeErrorMessage_CF</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Apex user name --></label>
+        <name>ViewClaimsSummary_PharmacyTableHeader_ClaimNumber_ACE</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Header for the key of the call attribute popup --></label>
+        <name>amazonconnect__ACSFCCP_CallAttributeKey</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Header for the value of the call attribute popup --></label>
+        <name>amazonconnect__ACSFCCP_CallAttributeValue</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Call Date Header --></label>
+        <name>amazonconnect__ACSFCCP_Call_Date_Header</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Call Duration Header --></label>
+        <name>amazonconnect__ACSFCCP_Call_Duration_Header</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Call Identifier Header --></label>
+        <name>amazonconnect__ACSFCCP_Call_Identifier_Header</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Call Type Header --></label>
+        <name>amazonconnect__ACSFCCP_Call_Type_Header</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Minutes in Call View --></label>
+        <name>amazonconnect__ACSFCCP_Minutes_in_Call_View</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Phone Number Header --></label>
+        <name>amazonconnect__ACSFCCP_Phone_Number_Header</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- ACSFCCP_PostCallTaskTabName --></label>
+        <name>amazonconnect__ACSFCCP_PostCallTaskTabName</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Seconds in Call View --></label>
+        <name>amazonconnect__ACSFCCP_Seconds_in_Call_View</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- alt text that is shown when hover over button --></label>
+        <name>amazonconnect__ACSFCCP_Store_Call_Information</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Task successfully saved --></label>
+        <name>amazonconnect__ACSFCCP_Task_successfully_saved</name>
+    </customLabels>
+    <customPageWebLinks>
+        <label><!-- TrailheaDX Registration --></label>
+        <name>TrailheaDX_Registration</name>
+    </customPageWebLinks>
+    <customTabs>
+        <label><!-- ContactSearchPageACE --></label>
+        <name>ContactSearchPageACE</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- CustomContactSearchLtng --></label>
+        <name>CustomContactSearchLtng</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Key Sales Data --></label>
+        <name>Key_Sales_Data</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- MyApp --></label>
+        <name>MyApp</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- MyData --></label>
+        <name>MyData</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- TypeAhead --></label>
+        <name>TypeAhead</name>
+    </customTabs>
+    <flowDefinitions>
+        <flows>
+            <fullName>ProcessBuilder-1</fullName>
+        </flows>
+        <fullName>ProcessBuilder</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <fullName>Update_Statuses-2</fullName>
+        </flows>
+        <fullName>Update_Statuses</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <fullName>New_Customer_Flow-1</fullName>
+            <screens>
+                <fields>
+                    <name>Company_Name</name>
+                </fields>
+                <fields>
+                    <name>First_Name</name>
+                </fields>
+                <fields>
+                    <name>Last_Name</name>
+                </fields>
+                <fields>
+                    <name>Opportunity_Amount1</name>
+                </fields>
+                <fields>
+                    <name>Opportunity_Stage</name>
+                </fields>
+                <name>New_Customer_Flow</name>
+            </screens>
+        </flows>
+        <fullName>New_Customer_Flow</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <fullName>Update_Status-1</fullName>
+        </flows>
+        <fullName>Update_Status</fullName>
+    </flowDefinitions>
+    <quickActions>
+        <label><!-- LogACall --></label>
+        <name>LogACall</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewAccount --></label>
+        <name>NewAccount</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewCase --></label>
+        <name>NewCase</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewContact --></label>
+        <name>NewContact</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewEvent --></label>
+        <name>NewEvent</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewGroup --></label>
+        <name>NewGroup</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewLead --></label>
+        <name>NewLead</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewNote --></label>
+        <name>NewNote</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewOpportunity --></label>
+        <name>NewOpportunity</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewTask --></label>
+        <name>NewTask</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Suggestion --></label>
+        <name>New_Suggestion</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- SendEmail --></label>
+        <name>SendEmail</name>
+    </quickActions>
+</Translations>

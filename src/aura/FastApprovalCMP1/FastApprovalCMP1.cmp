@@ -1,0 +1,37 @@
+<aura:component  implements="force:hasRecordId,force:LightningQuickAction,flexipage:availableForAllPageTypes" controller="FastApprovalControllerServer">
+    <!--Event Register-->
+    <aura:registerEvent name="appEvent" type="c:ConfigDetailsEvent"/>
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--Attribute-->
+    <aura:attribute name="ObjectName" type="string" default=""  />
+    <aura:attribute name="Field1" type="string" default=""  />
+    <aura:attribute name="Field2" type="string" default=""  />  
+    <!--Component Body-->
+    <div >
+        <div class="slds-media__body">
+            <h1 class="slds-page-header__title slds-align-middle">Select Object and Fields</h1>
+        </div>
+        <div class="slds-grid slds-wrap slds-gutters" >
+            <div class="slds-box slds-col slds-size_1-of-3 " style="padding:3px;margin:3px;width:400px;">
+                <label class="slds-form-element__label" for="select-01">Select Object</label>
+                <div class="">                    
+                    <ui:inputSelect aura:id="objName" class="slds-select objName" change="{!c.selectField}" />
+                </div>
+            </div>
+            <div class="slds-box slds-col slds-size_1-of-3 " style="padding:3px;margin:3px;width:400px;">
+                <label class="slds-form-element__label" for="select-01">Select Field 1</label>
+                <div class="">                    
+                    <ui:inputSelect aura:id="field1" class="slds-select field1" change="{!c.saveField1}" />                   
+                </div>
+            </div>
+            <div class="slds-box slds-col slds-size_1-of-3 " style="padding:3px;margin:3px;width:400px;">
+                <label class="slds-form-element__label" for="select-01">Select Field 2</label>
+                <div class="">                    
+                    <ui:inputSelect aura:id="field2" class="slds-select field2" change="{!c.saveField2}"/>
+                </div>
+            </div>                   
+        </div>
+        <button class="slds-button slds-button_neutral"  style="padding:3px;margin:3px;width:100px;" onclick = "{!c.SaveData}">Save</button>
+    </div>
+</aura:component>

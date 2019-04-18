@@ -1,0 +1,169 @@
+<!--
+/**
+ * Visualforce Component - Data Table.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/datatables.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/datatables-natural-sort.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/datatables.min.css')}" />
+    <script>
+            
+        //On document ready.
+        $(document).ready(function() {
+            
+            //Data tables initialization.
+            //Create table features.
+            createDataTable();
+        });
+
+        /*
+         * Enables Data Table Component according to parameters.
+         *
+         * @param objComponentSelector jQuery object.
+         * @param intDataTableType  Selector.
+         * @param objJSONProperties     Custom JSON object  to set specific properties.
+         */
+        function createDataTable(objComponentSelector, intDataTableType, objJSONProperties) {
+            var objComponent;
+            var intTableType;
+            if(stringIsNotBlank(objComponentSelector) || stringIsNotBlank(intDataTableType)) {
+                if(stringIsNotBlank(objComponentSelector) && objComponentSelector instanceof jQuery) {
+                    objComponent = objComponentSelector;
+                } else if(stringIsNotBlank(objComponentSelector)) {
+                    objComponent = $(objComponentSelector);
+                }
+                if($.fn.DataTable.isDataTable(objComponent)) {
+                    objComponent.DataTable().destroy();
+                }
+                switch(intDataTableType) {
+                    case intDataTableTypeFull:
+                        if(objComponent != null) {
+                            $(objComponent).attr("width", "100%").dataTable();
+                        } else {
+                            $('.dataTable-full').attr("width", "100%").dataTable();
+                        }
+                    break;
+                    case intDataTableTypePlain:
+                        if(objComponent != null) {
+                            $(objComponent).attr("width", "100%").dataTable({
+                            "info": false,
+                            "ordering": false,
+                            "paging": false,
+                            "searching": false
+                            });
+                        } else {
+                            $('.dataTable-plain').attr("width", "100%").dataTable({
+                                "info": false,
+                                "ordering": false,
+                                "paging": false,
+                                "searching": false
+                            });
+                        }
+                    break;
+                    case intDataTableTypeCustom:
+                        if(objComponent != null && objJSONProperties != null) {
+                            $(objComponent).dataTable(objJSONProperties);
+                        } else {
+                            $('.dataTable-full').attr("width", "100%").dataTable();
+                        }
+                    break;
+                    default:
+                        if(objComponent != null) {
+                            $(objComponent).attr("width", "100%").dataTable();
+                        } else {
+                            $('.dataTable-full').attr("width", "100%").dataTable();
+                            $('.dataTable-plain').attr("width", "100%").dataTable({
+                                "info": false,
+                                "ordering": false,
+                                "paging": false,
+                                "searching": false
+                            });
+                        }
+                    break;
+                }
+            } else {
+                $('.dataTable-full').attr("width", "100%").dataTable();
+                $('.dataTable-plain').attr("width", "100%").dataTable({
+                    "info": false,
+                    "ordering": false,
+                    "paging": false,
+                    "searching": false
+                });
+            }
+        }
+        
+        /*
+         * Filters table by date range.
+         *
+         * @param objDataTable DataTable instance.
+         * @param datFro     Date From.
+         * @param datTo Date To.
+         * @param intColumn     Column number.
+         * @param strColumnFormat   Column Date Format.
+         */
+        function dateRangeFilter(objDataTable, datFrom, datTo, intColumn, strColumnFormat) {
+            var strFilter = '';
+            var arrFilter = new Array();
+            if(objDataTable != null && stringIsNotBlank(strColumnFormat) && intColumn != null) {
+                if(datFrom != null || datTo != null) {
+                    if(datFrom != null) {
+                        arrFilter.push(moment(datFrom).format(strColumnFormat));
+                    }
+                    if(datTo != null) {
+                        arrFilter.push(moment(datTo).format(strColumnFormat));
+                    }
+                    objDataTable.api().column(intColumn).data().filter(function(value, index) {
+                        var boolResult = false;
+                            try {
+                                if(stringIsNotBlank(value)) {
+                                    var datColumn = moment(value, strColumnFormat);
+                                    
+                                    //Making comparison
+                                    if((datFrom == null && datTo == null) || 
+                                            (datFrom <= datColumn && datTo == null) || 
+                                            (datTo >= datColumn && datFrom == null) || 
+                                            (datFrom <= datColumn && datTo >= datColumn)) {
+                                        arrFilter.push(value);
+                                        boolResult = true;
+                                    }
+                                }
+                            } catch(objError) {
+                                console.log(objError);
+                                boolResult = true;
+                            }
+                        return boolResult;
+                    });
+                    if(arrFilter.length > 0) {
+                        strFilter = arrFilter.join('|');
+                    }
+                    objDataTable.fnFilter(strFilter, intColumn, true);
+                } else {
+                    objDataTable.fnFilter(strFilter, intColumn);
+                }
+            }
+        };
+        
+        /*
+         * Resets all filters on table.
+         *
+         * @param oSettings Table settings.
+         * @param bDraw Should redraw table boolean.
+         */
+        $.fn.dataTableExt.oApi.fnResetAllFilters = function (oSettings, bDraw) {
+            for(iCol = 0; iCol < oSettings.aoPreSearchCols.length; iCol++) {
+                oSettings.aoPreSearchCols[iCol].sSearch = '';
+            }
+            oSettings.oPreviousSearch.sSearch = '';
+            if(typeof bDraw === 'undefined') {
+                bDraw = true;
+            }
+            if(bDraw) {
+                this.fnDraw();
+            }
+        }
+        
+    </script>
+</apex:component>

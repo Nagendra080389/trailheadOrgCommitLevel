@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+	<aura:attribute name="objectName" type="String" access="public" 
+                    description="Name of Object to be searched"/>
+</aura:component>

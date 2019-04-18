@@ -1,0 +1,14 @@
+<!--
+/**
+ * Visualforce Component - Styling overried.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component >
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/awesome-bootstrap-checkbox.css')}" />    
+    <style>    
+        
+      
+    </style>
+</apex:component>

@@ -1,0 +1,26 @@
+<!--
+ * Lightning component to connect to Google.
+ * <p/><p/>
+ * @author Rahul Nanda
+ -->
+<aura:component controller="HcscOAuthAccessController_ACE" implements="flexipage:availableForAllPageTypes" access="global">
+    
+    <!-- Attribute decalartion -->
+    <aura:attribute name="successMessage" type="String"/>
+    <aura:attribute name="errorMessage" type="String"/>
+    <aura:attribute name="code" type="String"/>
+    
+    <!--utility bar item -->
+    <lightning:utilityBarAPI aura:id="utilitybar" />
+    
+     <!--handler declaration -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+   
+    <aura:if isTrue = "{!v.successMessage != null}" >
+      {!v.successMessage}
+    </aura:if>
+    <aura:if isTrue = "{!v.errorMessage != null}" >
+       Error Occured : {!v.errorMessage}
+    </aura:if>
+   
+</aura:component>

@@ -1,0 +1,28 @@
+<!--
+ - Created by Nagendra on 30-09-2017.
+ -->
+
+<aura:component description="GlobalAlert" implements="flexipage:availableForAllPageTypes">
+    <ltng:require styles="/resource/SLDS103/assets/styles/salesforce-lightning-design-system.css"/>
+    <div class="slds">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                    </div>
+                    <div class="slds-media__body">
+                        <h2>
+                            <span class="slds-text-heading_small">Card Header</span>
+                        </h2>
+                    </div>
+                </header>
+                <div class="slds-no-flex">
+                    <button class="slds-button slds-button_neutral">New</button>
+                </div>
+            </div>
+            <div class="slds-card__body"></div>
+            <footer class="slds-card__footer"></footer>
+        </article>
+    </div>
+
+</aura:component>

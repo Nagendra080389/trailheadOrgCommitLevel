@@ -1,0 +1,42 @@
+<apex:page >
+	<A HREF="#" onClick="testSetTabStyle();return false">
+		Click here to change the enclosing tab’s background color to red</A> <BR/>
+	<A HREF="#" onClick="testResetTabStyle(); return false;">
+		Click here to reset the enclosing tab’s style</A>
+
+	<apex:includeScript value="/support/console/44.0/integration.js"/>
+	<script type="text/javascript">
+
+		let openSuccess = function openSuccess(result) {
+
+			//Report whether opening the new tab was successful
+			if (result.success === true) {
+				//alert('Primary tab successfully opened');
+			} else {
+				//alert('Primary tab cannot be opened');
+			}
+		};
+
+
+		function checkResult(result) {
+			if (result.success) {
+				alert('Tab style set successfully!');
+			} else {
+				alert('Tab style cannot be set!');
+				sforce.console.openPrimaryTab(undefined, '/apex/AccountList', true, 'Member Search', openSuccess, 'salesforceTab');
+			}
+		}
+
+		function testSetTabStyle() {
+			sforce.console.getEnclosingPrimaryTabId(function (enclosedPrimaryId) {
+				sforce.console.setTabStyle('background:red;', enclosedPrimaryId.id, checkResult);
+			});
+
+		}
+		function testResetTabStyle() {
+			sforce.console.getEnclosingPrimaryTabId(function (enclosedPrimaryId) {
+				sforce.console.setTabStyle(null, enclosedPrimaryId.id, checkResult);
+			});
+		}
+	</script>
+</apex:page>

@@ -1,0 +1,1354 @@
+<!--
+/**
+ * Master Visualforce Component.
+ * <p /><p />
+ * @author Alex Cajica
+ */
+-->
+<apex:component access="global" controller="FrameworkBaseController_CF">
+    <script>
+        console.log("Execution of this page started at: ", new Date());
+    </script>
+    <apex:attribute name="boolBaseStyle" type="Boolean" description="{!$Label.FrameworkBaseComponentBaseStyle_CF}" default="false" />
+    <apex:attribute name="boolValidations" type="Boolean" description="{!$Label.FrameworkBaseComponent_ValidationsName_CF}" default="false" />
+    <apex:attribute name="boolCalendars" type="Boolean" description="{!$Label.FrameworkBaseComponent_CalendarsName_CF}" default="false" />
+    <apex:attribute name="boolDataTables" type="Boolean" description="{!$Label.FrameworkBaseComponent_DataTablesName_CF}" default="false" />
+    <apex:attribute name="boolCharts" type="Boolean" description="{!$Label.FrameworkBaseComponent_ChartsName_CF}" default="false" />
+    <apex:attribute name="boolInputFiles" type="Boolean" description="{!$Label.FrameworkBaseComponent_InputFilesName_CF}" default="false" />
+    <apex:attribute name="boolMultiSelects" type="Boolean" description="{!$Label.FrameworkBaseComponent_MultiSelectsName_CF}" default="false" />
+    <apex:attribute name="boolWizards" type="Boolean" description="{!$Label.FrameworkBaseComponent_WizardsName_CF}" default="false" />
+    <apex:attribute name="boolSlideshows" type="Boolean" description="{!$Label.FrameworkBaseComponent_SlideshowsName_CF}" default="false" />
+    <apex:attribute name="boolCustomStyle" type="Boolean" description="{!$Label.FrameworkBaseComponent_StyleName_CF}" default="false" />
+    <apex:attribute name="boolLightningAssets" type="Boolean" description="{!$Label.FrameworkBaseComponent_LightningAssetsPageName_CF}" default="false" />
+    <apex:attribute name="strStylePageName" type="String" description="{!$Label.FrameworkBaseComponent_StylePageName_CF}" default="" />
+    <apex:includeScript value="/support/console/40.0/integration.js" />
+    <apex:includeScript value="/soap/ajax/40.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/40.0/apex.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/jquery-3.2.1.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/jquery.csv.min-0.83.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/jquery-ui.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/bootstrap.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/colorPalette.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/jquery.mask.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/jquery.scrollTo.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/font-awesome.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/jquery-ui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/jquery-ui.structure.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/jquery-ui.theme.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/CustomFrameworkBase.css')}" />
+    <c:StyleBaseComponent_CF rendered="{!boolBaseStyle}" />
+    <c:ValidationsComponent_CF rendered="{!boolValidations}" />
+    <c:CalendarsComponent_CF rendered="{!boolCalendars}" />
+    <c:DataTablesComponent_CF rendered="{!boolDataTables}" />
+    <c:ChartsComponent_CF rendered="{!boolCharts}" />
+    <c:InputFilesComponent_CF rendered="{!boolInputFiles}" />
+    <c:MultiSelectsComponent_CF rendered="{!boolMultiSelects}" />
+    <c:WizardsComponent_CF rendered="{!boolWizards}" />
+    <c:SlideshowsComponent_CF rendered="{!boolSlideshows}" />
+    <script>
+
+        //Global variables.
+        var attachments = {};
+        var filesBase64 = {};
+        var strInvalidClassInputText = 'invalidInputTextField';
+        var strInvalidClassTextArea = 'invalidTextAreaField';
+        var strInvalidClassSelect = 'invalidSelectField';
+        var strDonutChartCSSPreffix = 'linear-gradient(';
+        var strDonutChartCSSSuffix1 = 'deg, transparent 50%, ';
+        var strDonutChartCSSSuffix2 = ' 50%),linear-gradient(90deg, #EEEEEE 50%, transparent 50%)';
+        var strDateTimeValidationToday = 'Today';
+        var strDateTimeValidationIsBefore = 'isBefore';
+        var strDateTimeValidationIsSameOrBefore = 'isSameOrBefore';
+        var strDateTimeValidationIsAfter = 'isAfter';
+        var strDateTimeValidationIsSameOrAfter = 'isSameOrAfter';
+        var strDateTimeValidationIsSame = 'isSame';
+        var strDateTimeValidationCalendarFormatAttribute = 'calendar-format';
+        var strDateTimeSetDefaultToday = 'Today';
+        var strDateTimeSetDefaultYesterday = 'Yesterday';
+        var strDateTimeSetDefaultTomorrow = 'Tomorrow';
+        var strValueValidationIsSame = 'isSame';
+        var strValueValidationIsNotSame = 'isNotSame';
+        var strLanguage = 'en';
+        var strUploadTypeBase64 = 'base64';
+        var strUploadTypeAjaxToolkit = 'attach';
+        var strLabelOpen = "OPEN";
+        var strLabelApproved = "APPROVED";
+        var strLabelCompleted = "COMPLETED";
+        var strLabelYes = "YES";
+        var strLabelTrue = "TRUE";
+        var strLabelEnrolled = "ENROLLED";
+        var strLabelPosted = "POSTED";
+        var strLabelActive = "ACTIVE";
+        var strLabelPaid = "PAID";
+        var strLabelSubmitted = "SUBMITTED";
+        var strLabelPending = "PENDING";
+        var strLabelOnHold = "ON HOLD";
+        var strLabelPendingResolution = "PENDING-RESOLUTION";
+        var strLabelPendingAssignment = "PENDING-ASSIGNMENT";
+        var strLabelDenied = "DENIED";
+        var strLabelEscalated = "ESCALATED";
+        var strLabelRejected = "REJECTED";
+        var strLabelResolvedRejected = "RESOLVED_REJECTED";
+        var strLabelS8UnderInvestigation = "S8–UNDER INVESTIGATION";
+        var strLabelExpired = "EXPIRED";
+        var strLabelAdjudicationLetterDenied = "ADJUDICATION LETTER - DENIED";
+        var strLabelCancelled = "CANCELLED";
+        var strLabelNo = "NO";
+        var strLabelFalse = "FALSE";
+        var strLabelRoutedToAnotherDepartment = "ROUTED TO ANOTHER DEPARTMENT";
+        var strLabelOnExchange = "ON-EXCHANGE";
+        var strLabelNew = "NEW";
+        var strPendingInfo = "PENDING-INFO";
+        var strLabelTier1 = "TIER 1";
+        var strLabelTier2 = "TIER 2";
+        var strLabelDraft = "DRAFT";
+        var strLabelClosed = "CLOSED";
+        var strLabelInactive = "INACTIVE";
+        var strLabelReceived = "RECEIVED";
+        var strPosted = "POSTED";
+        var strInProgress = "IN PROGRESS";
+        var strNotStarted = "NOT STARTED";
+        var strExhausted = "EXHAUSTED";
+        var strNoLongerInUse = "NO LONGER IN USE";
+        var strAdjudicated= "ADJUDICATED";
+        var strEffectBlind = 'blind';
+        var strMaskingPatternFormatAttribute = "masking-pattern";
+        var strMaskingPatternPrefixElementAttribute = "masking-pattern-element-";
+        var strMaskingPatternSuffix0Element = "0";
+        var strMaskingPatternSuffixAElement = "A";
+        var strMaskingPatternSuffixCElement = "C";
+        var strMaskingPatternSuffixPElement = "P";
+        var strMaskingPatternCRule = "[A-Za-z]";
+        var strMaskingPatternPRule = "[\\W\\w]";
+        var strMaskingPatternPrefixMaximumLengthAttribute = "maximum-length-";
+        var strMaskingPatternPassKeysAttribute = "masking-pattern-pass-keys";
+        var strMaskingPassKeys = "8, 9, 36, 37, 38, 39, 40";
+        var strMaskingPatternAlphanumericClass = "alphanumeric"
+        var strMaskingPatternNumericClass = "numeric";
+        var strMaskingPatternAlphabeticClass= "alphabetic";
+        var strFocusOnValidationDirectionTopDown = "top-down";
+        var strFocusOnValidationDirectionBottomUp = "bottom-up";
+        var strAlertPositionTop = 'Top';
+        var strAlertPositionBottom = 'Bottom';
+        var strAlertPositionLeft = 'Left';
+        var strAlertPositionRight = 'Right';
+        var strAlertPositionCustom = 'Custom';
+        var intAlertTypeSuccess = 1;
+        var intAlertTypeInfo = 2;
+        var intAlertTypeWarning = 3;
+        var intAlertTypeDanger = 4;
+        var intDataTableTypeFull = 1;
+        var intDataTableTypePlain = 2;
+        var intDataTableTypeCustom = 3;
+        var intFileNameIndexPosition = 1;
+        var intSpinnerCounter = 0;
+        var intMaskingPatternInputLength = 255;
+        var intClassLengthPosition = 1;
+        var boolEvalFunctionInputFileResult;
+
+        //AJAX Toolkit session Id.
+        sforce.connection.sessionId = '{!GETSESSIONID()}';
+
+        //On document ready.
+        $(document).ready(function() {
+        
+            //Collapsible Panels - Chevron update.
+            $('.collapsible-group').on('hidden.bs.collapse shown.bs.collapse', function(objEvent) {
+                var objParent = $(objEvent.target).closest(".collapsible-group");
+                var strChevronDown = $(objParent).attr("data-chevron-down");
+                var strChevronUp = $(objParent).attr("data-chevron-up");
+                $(objParent).find("i.indicator").toggleClass(strChevronDown + ' ' + strChevronUp);
+            });
+
+            //Masking fields.
+            createMaskField('.maskField');
+
+            //Toggle buttons.
+            createToggleButtons();
+
+            //Stop propagation for buttons on header.
+            $('.panelHeader-button').click(function(event) {
+                event.stopPropagation();
+            });
+
+            //Initializing popovers.
+            $('[data-toggle="popover"]').popover();
+
+            //Disabling paste event  for field with class blockPaste.
+            $('.blockPaste').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
+
+            //Disabling cut & copy event  for field with class blockCutOrCopy.
+            $('.blockCutOrCopy').bind("cut copy",function(e) {
+                e.preventDefault();
+            });
+
+            //Update format label tags.
+            updateLabelTags();
+
+            //Add custom limits and formats to an input field.
+            addFormatField('body');
+
+            //Initialization and animation of dynamic donut chart component.
+            $('.donutChart').each(function() {
+                var intCounter = 0;
+                var objPercentageContainer = $(this);
+                var objParentCircle = $(this).parent().parent();
+                var intNumerator = $(this).attr('numerator');
+                var intDenominator = $(this).attr('denominator');
+                var intFraction = intNumerator * 360 / intDenominator;
+                var intPercentage = intNumerator * 100 / intDenominator;
+                var objInterval = setInterval(function() {
+                    intCounter++;
+                    if(intCounter < 0) {
+                        intCounter = 0;
+                    } else if(intCounter > intFraction) {
+                        intCounter = intFraction;
+                    }
+                    objPercentageContainer.text(Math.round(intNumerator));
+                    var intTotalCounter;
+                    var strColor;
+                    if(intCounter <= 180){
+                        intTotalCounter = 90 + intCounter;
+                        strColor = '#EEEEEE';
+                    } else {
+                        intTotalCounter = intCounter - 90;
+                        strColor = '#A3D900';
+                    }
+                    objParentCircle.css('background-image', strDonutChartCSSPreffix + intTotalCounter + strDonutChartCSSSuffix1 + strColor + strDonutChartCSSSuffix2);
+                    if(intCounter >= intFraction || intCounter >= 360) {
+                        clearInterval(objInterval);
+                    }
+                }, 1);
+            });
+
+            //Centering modals.
+            $('.modal').on('show.bs.modal', function(e) {
+                centerModals($(this));
+            });
+            $(window).on('resize', centerModals);
+
+            //Initialization of focus area functionality.
+            $('.focusArea').click(function() {
+                $(".focusArea").parent().removeClass('activeli');
+                $(".focusArea").removeClass('activelink');
+                $(this).parent().addClass('activeli');
+                $(this).addClass('activelink');
+
+                //Calculate Maximum Body Height.
+                var body = document.body,
+                    html = document.documentElement;
+                var height = Math.max( body.scrollHeight, body.offsetHeight,
+                    html.clientHeight, html.scrollHeight, html.offsetHeight );
+                $('html, body').animate({ scrollTop: $( $(this).attr('focusTile') ).offset().top - 100 }, 500);
+                $('.idPanel').css('z-index','1');
+                $('.navbarIcon').removeClass('navbarBlue');
+                $($(this).attr('focusTile')).css({'position':'relative','z-index':'6'});
+                $('.pageMask').fadeIn(300).css({'height':height});
+                $(this).parent().addClass('navbarBlue');
+                return false;
+            });
+
+            //Removing background focus effect on click.
+            $(".pageMask").click(function(e){
+                $('.pageMask').fadeOut(300, function(){
+                    $('.idPanel').css('z-index','1');
+                    $('.navbarIcon').removeClass('navbarBlue');
+                });
+            });
+
+            //Handler onclick for document.
+            $(window).click(function() {
+                var strPageMask = $(".pageMask").css("display");
+                if (strPageMask == "block") {
+                    $('.pageMask').hide();
+                    $('.idPanel').css('z-index','');
+                    $('.navbarIcon').removeClass('navbarBlue');
+                }
+            });
+
+            //Loading Additional Styling if required.
+            if(stringIsNotBlank('{!strStylePageName}')) {
+                $.get("/apex/{!strStylePageName}", function(data){
+                    var strTag = 'style';
+                    var strStyle = data.substring(data.indexOf('<' + strTag + '>') + 8, data.indexOf('</' + strTag + '>'));
+                    $('head').append('<' + strTag + '>' + strStyle + '</' + strTag + '>');
+                });
+            }
+
+            //Setting listener for On Click Actions.
+            showHideOnAction(false, 'click', '.showHideOnClick');
+
+            //Setting listeners related to keyboard shortcuts.
+            createKeyboardShortcuts();
+        });
+
+        /**
+         * This class creates Mask Field validations. Does not work for InputTextarea components.
+         *
+         * @param objComponentSelector  Object Selector.
+         */
+        function createMaskField(objComponentSelector) {
+            if(objComponentSelector != null) {
+                $(objComponentSelector).each(function(index) {
+                    var objCurrentElement = $(this);
+                    var strMaskPattern = objCurrentElement.attr("masking-pattern");
+                    var strMaskPatternPassKeys = objCurrentElement.attr("masking-pattern-pass-keys");
+                    var objInputField;
+                    if(objCurrentElement.is("input")) {
+                        objInputField = $(this);
+                    } else {
+                        objInputField = $(this).find('input');
+                    }
+                    if(stringIsBlank(strMaskPattern)) {
+                        strMaskPattern = objInputField.attr("masking-pattern");
+                    }
+                    if(stringIsBlank(strMaskPatternPassKeys)) {
+                        strMaskPatternPassKeys = objInputField.attr("masking-pattern-pass-keys");
+                    }
+                    if(objInputField != null && stringIsNotBlank(strMaskPattern)) {
+                        var arrPatternElements = jQuery.unique(strMaskPattern.split(""));
+                        var strTranslationRules = "";
+                        var objTranslationRulesJSON;
+                        var objPatternJSON = {};
+                        var objCustomParameters = {};
+                        for(var intIndex in arrPatternElements) {
+                            if(!isNaN(intIndex)) {
+                                var strTranslationPattern = objCurrentElement.attr("masking-pattern-element-" + arrPatternElements[intIndex])
+                                var strCommaSeparator = "";
+                                if(intIndex != arrPatternElements.length-1) {
+                                    strCommaSeparator = ",";
+                                }
+                                if(stringIsNotBlank(strTranslationPattern )) {
+                                    objPatternJSON[arrPatternElements[intIndex]] = {
+                                        pattern: new RegExp(strTranslationPattern)
+                                    }
+                                }
+                            }
+                        }
+                        objPatternJSON['~'] = {
+                            pattern: new RegExp('[-A-Za-z]')
+                        }
+                        if(stringIsNotBlank(strMaskPatternPassKeys)) {
+                            objCustomParameters.byPassKeys = JSON.parse("[" + strMaskPatternPassKeys + "]");
+                        }
+                        if(!jQuery.isEmptyObject(objPatternJSON)) {
+                            objCustomParameters.translation = objPatternJSON;
+                        }
+                        objInputField.mask(strMaskPattern, objCustomParameters);
+                    }
+                });
+            }
+        }
+
+        /**
+         * Method to create Toggle Buttons.
+         *
+         * @param objComponentSelector  Object selector.
+         */
+        function createToggleButtons(objComponentSelector) {
+            var objComponent;
+            if(objComponentSelector == null) {
+                objComponent = $('button.toggleButton, input[type="submit"].toggleButton, input[type="button"].toggleButton');
+            } else if(objComponentSelector instanceof jQuery) {
+                objComponent = objComponentSelector;
+            } else {
+                objComponent = $(objComponentSelector);
+            }
+            objComponent.click(function() {
+                if(!($(this).attr('keep-always-one-selected') == 'true' && $(this).hasClass('btn-primary'))) {
+                    $(this).toggleClass('btn-primary btn-default');
+                    $(this).blur();
+                    $(this).siblings('button.toggleButton, input[type="submit"].toggleButton, input[type="button"].toggleButton').
+                            removeClass('btn-primary').addClass('btn-default');
+                }
+            });
+        }
+
+        /**
+         * This method is to convert multiselect.
+         *
+         * @param objComponentSelector  Object selector.
+         */
+        function convertMultiselect(objComponentSelector) {
+            var objComponent = getJQueryObject(objComponentSelector);
+            objComponent.next('table').remove();
+            objComponent.css('display', '');
+        }
+
+        /**
+         * This method is for center modals.
+         *
+         * @param objElement    Object element.
+         */
+        function centerModals(objElement) {
+            var objModals;
+            if (objElement.length) {
+                objModals = objElement;
+            } else {
+                objModals = $('.modal:visible');
+            }
+            objModals.each( function(i) {
+                var objClone = $(this).clone().css('display', 'block').appendTo('body');
+                var top = Math.round((objClone.height() - objClone.find('.modal-content').height()) / 2);
+                top = top > 0 ? top : 0;
+                objClone.remove();
+                $(this).find('.modal-content').css("margin-top", top);
+            });
+        }
+
+        /**
+         * This method is for converts field into autocomplete search field.
+         *
+         * @param intStartLength    Start length.
+         * @param objComponentSelector  Component Selector.
+         * @param searchFunction    Search Function.
+         * @param selectFunction    Select function.
+         * @param resultFunction    Result function.
+         */
+        function attachAutoComplete(intStartLength, objComponentSelector, searchFunction, selectFunction, resultFunction) {
+            var objComponent = getJQueryObject(objComponentSelector);
+            if(isNaN(intStartLength)) {
+                intStartLength = 0;
+            }
+            $(objComponent).autocomplete({
+                minLength: intStartLength,
+                source: function(request, response) {
+                            searchFunction(request.term, response);
+                        },
+                select: selectFunction,
+            }).autocomplete("instance")._renderItem = resultFunction;
+        }
+
+        /**
+         * This method is for converts Apex Messages into Custom Alerts.
+         *
+         * @param objComponentSelector  Component selector.
+         */
+        function updateStandardPageMessagesComponent(objComponentSelector) {
+            var objComponent;
+            if(objComponentSelector instanceof jQuery) {
+                objComponent = objComponentSelector;
+            } else {
+                objComponent = $('[id$="' + objComponentSelector + '"]');
+            }
+
+            $('.messageText', objComponent).find('h4').remove();
+            var strAlertType = $('img', objComponent).attr('title');
+            var strMessage = $('.messageText', objComponent).text();
+
+            if(stringIsBlank(strMessage)) {
+                $('.messageTable > tbody > tr > td > span > ul', objComponent).each(function() {
+                    strMessage = $('li', this).text();
+                });
+            }
+            if(objComponent != null && stringIsNotBlank(strAlertType) && stringIsNotBlank(strMessage)) {
+                var intAlertType;
+                switch(strAlertType) {
+                    case 'CONFIRM':
+                        intAlertType = intAlertTypeSuccess;
+                    break;
+                    case 'INFO':
+                        intAlertType = intAlertTypeInfo;
+                    break;
+                    case 'WARNING':
+                        intAlertType = intAlertTypeWarning;
+                    break;
+                    case 'ERROR':
+                        intAlertType = intAlertTypeDanger;
+                    break;
+                    case 'FATAL':
+                        intAlertType = intAlertTypeDanger;
+                    break;
+                    default:
+                        intAlertType = intAlertTypeInfo;
+                    break;
+                }
+                showAlert(objComponent, intAlertType, strMessage, null, false);
+                objComponent.find('div').css('background-size', '');
+            }
+        }
+
+        /**
+         * This method is for open and close panel.
+         *
+         * @param objComponentSelector  Component selector.
+         * @param boolShouldOpen    should open?.
+         */
+        function openClosePanel(objComponentSelector, boolShouldOpen) {
+            var objComponent = getJQueryObject(objComponentSelector);
+            var objElement = objComponent.find('.panel-body').parent();
+            if(boolShouldOpen) {
+                objElement.collapse('show');
+            } else {
+                objElement.collapse('hide');
+            }
+        }
+
+        /**
+         * This method shows the spinner.
+         *
+         * @param boolShouldShow    should show?.
+         */
+        function spinner(boolShouldShow) {
+            if(boolShouldShow) {
+                $('#spinner').show();
+                intSpinnerCounter++;
+            } else {
+                $('#spinner').hide();
+                intSpinnerCounter--;
+                if(intSpinnerCounter == 0) {
+                    console.log("Page execution finishes at: ", new Date());
+                }
+            }
+        }
+
+        /**
+         * This method Shows/Hides spinner in a specific section.
+         *
+         * @param objComponentSelector  Component selector.
+         * @param boolShouldShow    Should show?.
+         */
+        function spinnerSection(objComponentSelector, boolShouldShow) {
+            var intSpeed = 300;
+            var objComponent = getJQueryObject(objComponentSelector);
+            var strHtml =  "<div class = 'spinnerCustomSection' style='display: none;'><center><div class='spinnerBackdrop' />" +
+                                    "<div class='spinnerCard'>" +
+                                    "<img src='{!URLFOR($Resource.Custom_Framework, 'images/slds_spinner_brand.gif')}' width='56px' height='56px' />" +
+                                    "</div>"+
+                           "</center></div>";
+            if(objComponent != null) {
+                if($('.spinnerCustomSection', objComponent).length <= 0) {
+                    objComponent.addClass('spinnerPosition');
+                    objComponent.append(strHtml);
+                }
+                if(boolShouldShow) {
+                    $('.spinnerCustomSection', objComponent).show(intSpeed);
+                    intSpinnerCounter++;
+                } else {
+                    $('.spinnerCustomSection', objComponent).hide(intSpeed);
+                    intSpinnerCounter--;
+                    if(intSpinnerCounter == 0) {
+                         console.log("Page execution finishes at: ", new Date());
+                    }
+                }
+            }
+        }
+
+        /**
+         * This method shows an alert.
+         *
+         * @param objComponentSelector  Component selector.
+         * @param intAlertType  Alert type.
+         * @param strMessage    Message.
+         * @param strMessageId  Message Id.
+         * @param boolShouldQueueMessages   Should queue messages?.
+         */
+        function showAlert(objComponentSelector, intAlertType, strMessage, strMessageId, boolShouldQueueMessages) {
+            var strAlertType;
+            var intSpeed = 300;
+            switch(intAlertType) {
+                case intAlertTypeSuccess:
+                    strAlertType = 'success';
+                break;
+                case intAlertTypeInfo:
+                    strAlertType = 'info';
+                break;
+                case intAlertTypeWarning:
+                    strAlertType = 'warning';
+                break;
+                case intAlertTypeDanger:
+                    strAlertType = 'danger';
+                break;
+                default:
+                    strAlertType = 'info';
+                break;
+            }
+            var objComponent;
+            if(objComponentSelector instanceof jQuery) {
+                objComponent = objComponentSelector;
+            } else {
+                objComponent = $(objComponentSelector);
+            }
+            if(stringIsBlank(strMessageId)) {
+                strMessageId = guidNumber();
+            }
+            var boolIsFirstElement = false;
+            if(stringIsBlank(objComponent.html()) || !boolShouldQueueMessages) {
+                boolIsFirstElement = true;
+                var strHtml =
+                        '<div class="alert alert-' + strAlertType + ' progress-bar-striped" role="alert">' +
+                            '<a id="' + strMessageId + '" href="#" class="alert-link" style="display: none;">' + strMessage + '</a>' +
+                        '</div>';
+                if(!boolShouldQueueMessages) {
+                    objComponent.empty();
+                }
+                objComponent.append(strHtml);
+            } else {
+                $('.alert', objComponent).append('<a id="' + strMessageId + '" href="#" class="alert-link" style="display: none;">' + strMessage + '</a>');
+            }
+            objComponent.slideDown(300, function() {
+                if(!boolIsFirstElement) {
+                    $('#' + strMessageId).slideDown(300, function() {
+                        updateStrippedHeight(objComponent);
+                    }).css('display', 'block');
+                } else {
+                    $('#' + strMessageId).show();
+                    updateStrippedHeight(objComponent);
+                }
+            });
+        }
+
+        /**
+         * This method is for Updated background size for stripped message.
+         *
+         * @param objComponent  Object of the container.
+         */
+        function updateStrippedHeight(objComponent) {
+            var intSize = $(objComponent).height();
+            $('.alert', objComponent).css('background-size', intSize + 'px ' + intSize + 'px');
+        }
+
+        /**
+         * This method hides an alert.
+         *
+         * @param objComponentSelector  Selector object of the container.
+         */
+        function hideAlert(objComponentSelector) {
+            var objComponent = getJQueryObject(objComponentSelector);
+            if(typeof objComponent !== "undefined"  && objComponent != null) {
+                objComponent.empty();
+                objComponent.slideUp(300);
+            }
+        }
+
+        /**
+         * This method returns true if the string is null or ''.
+         *
+         * @param strString String to validate if is null or blank.
+         * @return True if given string is blank.
+         */
+        function stringIsBlank(strString) {
+            if(strString != null && strString != '') {
+                strString = strString.replace(/\s/g, '');
+            }
+            if(strString == null || strString == '') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * This method returns false if the string is null or ''.
+         *
+         * @param strString Strig to validate if is null or blank.
+         * @return True if given string is NOT blank.
+         */
+        function stringIsNotBlank(strString) {
+            return !stringIsBlank(strString);
+        }
+
+        /**
+         * This method generates Unique ID string.
+         *
+         * @param objContainerSelector  Container selector.
+         * @param boolShouldIncrease    should increase?.
+         */
+        function updateNumberOfMessages(objContainerSelector, boolShouldIncrease, intAlertType, strErrorMessage, strMessageId) {
+            var objComponent = getJQueryObject(objContainerSelector);
+            if(objComponent != null) {
+                objComponent.each(function() {
+                    var strNumberOfMessages = $(this).attr('validation-number-of-messages');
+                    var intNumberOfMessages = 0;
+                    if(!isNaN(strNumberOfMessages)) {
+                        intNumberOfMessages = parseInt(strNumberOfMessages);
+                    }
+                    if(intNumberOfMessages > 0 && !boolShouldIncrease) {
+                        intNumberOfMessages--;
+                        if(intNumberOfMessages <= 0) {
+                            hideAlert($(this));
+                        }
+                    } else if(boolShouldIncrease) {
+                        intNumberOfMessages++;
+                        showAlert(objComponent, intAlertType, strErrorMessage, strMessageId, true);
+                    }
+                    $(this).attr('validation-number-of-messages', intNumberOfMessages);
+                });
+            }
+        }
+
+        /**
+         * This method generates guid number.
+         *
+         * @return Auto generated GUID Number.
+         */
+        function guidNumber() {
+            function randomFourDigitNumber() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+            }
+            var strNumber = randomFourDigitNumber() + randomFourDigitNumber() + '-' + randomFourDigitNumber() + '-' + randomFourDigitNumber() + '-' +
+                    randomFourDigitNumber() + '-' + randomFourDigitNumber() + randomFourDigitNumber() + randomFourDigitNumber();
+            if($('#' + strNumber).length != 0) {
+                strNumber = $.guidNumber();
+            }
+            return strNumber;
+        }
+
+        /**
+         * This method refresh primary tab and close subtab.
+         */
+        function refreshAndCloseTab() {
+            if(sforce.console.isInConsole()) {
+                sforce.console.getEnclosingPrimaryTabId(function(result) {
+                    sforce.console.refreshPrimaryTabById(result.id, false, closeTab());
+                });
+            }
+        }
+
+        /**
+         * This method closes current tab/page (or go back in history).
+         */
+        function closeTab() {
+            if(sforce.console.isInConsole()) {
+                sforce.console.getEnclosingTabId(function(result) {
+                    sforce.console.closeTab(result.id);
+                });
+            } else {
+                window.close();
+            }
+        }
+
+        /**
+         * This method opens subtab and focuses it if already opened if in console, otherwise opens a new Browser tab.
+         *
+         * @param strURL    URL to be open in the subtab.
+         * @param strSubtabName Subtab Name.
+         * @param boolId Indicate if variable strURL is an id(True) or an URL(False)
+         * @return Blocker to avoid rerendering.
+         */
+        function openSubTabAndFocus(strURL, strSubtabName, boolId) {
+            var boolContainsHttpPrefix;
+            if(stringIsNotBlank(strURL)) {
+                strURL = strURL.replace(/\s/g, '');
+                if(!boolId) {
+                    var strURLPrefix = strURL.substring(0, 4);
+                    if(strURLPrefix.toUpperCase() == "HTTP") {
+                        boolContainsHttpPrefix = true;
+                    }
+                }
+            }
+            if(typeof sforce !== "undefined"  && sforce != null && sforce && sforce.one) {
+                if(!boolId && !boolContainsHttpPrefix) {
+                    strURL = "n" + strURL;
+                } else {
+                    strURL = "sObject" + strURL + '/view';
+                }
+                strURL = '/one/one.app#/' + strURL;
+                var strCurrentURL = window.location.href;
+                if(strCurrentURL.indexOf("source=aloha") >= 0) {
+                    strURL = strURL.replace(new RegExp("one.app#/", 'g'), "one.app?source=aloha#/");
+                }
+                var link = document.createElement('a');
+                link.href = strURL;
+                document.body.appendChild(link);
+                link.click();
+                $(link).remove();
+            } else if(sforce.console.isInConsole()) {
+                var strPrimaryTabId;
+                if(!boolId && !boolContainsHttpPrefix) {
+                    strURL = "/apex" + strURL;
+                }
+                sforce.console.getEnclosingPrimaryTabId(function (objResult1) {
+                    strPrimaryTabId = objResult1.id;
+                    sforce.console.openSubtab(strPrimaryTabId, strURL, true, strSubtabName, null, function(objResult2) {
+                        if(!objResult2.success) {
+                            sforce.console.openSubtab(strPrimaryTabId, strURL, true, strSubtabName, null, function(objResult4) {
+                                if(!objResult4.success) {
+                                    sforce.console.getSubtabIds(strPrimaryTabId , function(objResult3) {
+                                        for(var x in objResult3.ids) {
+                                            findAndFocusOpenedSubTab(objResult3.ids[x], strURL);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }, strSubtabName.replace(/\W/g, ''));
+                });
+            } else {
+                if(!boolId && !boolContainsHttpPrefix) {
+                    strURL = "/apex" + strURL;
+                }
+                var objWindow = window.open(strURL, '_blank');
+                objWindow.focus();
+            }
+            return false;
+        }
+
+        /**
+         * This method opens Tab and focuses it if already opened if in console.
+         *
+         * @param strURL    URL to be open in the Tab.
+         * @param strSubtabName Subtab Name.
+         * @param boolId Indicate if variable strURL is an id.
+         * @param Blocker to avoid rerendering.
+         */
+        function openTab(strURL, strTabName, boolId) {
+            var boolContainsHttpPrefix = false;
+            if(stringIsNotBlank(strURL)) {
+                strURL = strURL.replace(/\s/g, '');
+                if(!boolId) {
+                    var strURLPrefix = strURL.substring(0, 4);
+                    if(strURLPrefix.toUpperCase() == "HTTP") {
+                        boolContainsHttpPrefix = true;
+                    }
+                }
+            }
+            if(typeof sforce !== "undefined"  && sforce != null && sforce && sforce.one) {
+                if(!boolId && !boolContainsHttpPrefix) {
+                    strURL = "n" + strURL;
+                } else {
+                    strURL = "sObject" + strURL + '/view';
+                }
+                strURL = 'LightningURL' + strURL;
+                var strCurrentURL = window.location.href;
+                if(strCurrentURL.indexOf("source=aloha") >= 0) {
+                    strURL = strURL.replace(new RegExp("one.app#/", 'g'), "one.app?source=aloha#/");
+                }
+                var link = document.createElement('a');
+                link.href = strURL;
+                link.target = "_top";
+                document.body.appendChild(link);
+                link.click();
+                $(link).remove();
+            } else if(sforce.console.isInConsole()) {
+                if(!boolId && !boolContainsHttpPrefix) {
+                    strURL = "/apex" + strURL;
+                }
+                if(stringIsBlank(strTabName)) {
+                    strTabName = "";
+                }
+        sforce.console.openPrimaryTab(null, strURL, true, strTabName, null, strTabName);
+            } else {
+                if(!boolId && !boolContainsHttpPrefix) {
+                    strURL = "/apex" + strURL;
+                }
+                var objWindow = window.open(strURL, '_blank');
+                objWindow.focus();
+            }
+            return false;
+        }
+
+        /**
+         * This method refreshes Console Subtab.
+         *
+         * @param strSubtabName Subtab Name.
+         * @param strURL    URL.
+         * @param boolShouldFocus   Should Focus.
+         * @return Blocker to avoid rerendering..
+         */
+        function refreshSubtab(strSubtabName, strURL, boolShouldFocus) {
+            if(sforce.console.isInConsole()) {
+                var strPrimaryTabId;
+                sforce.console.getEnclosingPrimaryTabId(function (objResult1) {
+                    strPrimaryTabId = objResult1.id;
+                    if(boolShouldFocus == null) {
+                        boolShouldFocus = false;
+                    }
+                    sforce.console.refreshSubtabByNameAndPrimaryTabId(strSubtabName.replace(/\W/g, ''), strPrimaryTabId, boolShouldFocus, function (objResult2) {
+                        if(!objResult2.success) {
+                            sforce.console.getSubtabIds(strPrimaryTabId , function(objResult3) {
+                                for(var x in objResult3.ids) {
+                                    findAndRefreshSubTab(strPrimaryTabId, objResult3.ids[x], strSubtabName, strURL, boolShouldFocus);
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+            return false;
+        }
+
+        /**
+         * This methods finds and focueses subtab which is already opened.
+         *
+         * @param strSubTabId   SubTab Id.
+         * @param strURL    URL to be open.
+         */
+        function findAndFocusOpenedSubTab(strSubTabId, strURL) {
+            sforce.console.getPageInfo(strSubTabId, function(objResult4) {
+                if(objResult4.pageInfo.indexOf(strURL) > -1) {
+                    sforce.console.focusSubtabById(strSubTabId, null);
+                }
+            });
+        }
+
+        /**
+         * This method finds and refreshes subtab.
+         *
+         * @param strPrimaryTabId   Primary Tab.
+         * @param strSubTabId   SubTab Id.
+         * @param strSubtabName SubtabName.
+         * @param strURL    URL.
+         * @param boolShouldFocus   Should focus?
+         */
+        function findAndRefreshSubTab(strPrimaryTabId, strSubTabId, strSubtabName, strURL, boolShouldFocus) {
+            sforce.console.getPageInfo(strSubTabId, function(objResult4) {
+                if(objResult4.pageInfo.indexOf(strURL) > -1) {
+                    sforce.console.refreshSubtabById(strSubTabId, boolShouldFocus, function(result) {
+                        if(!result.success) {
+                            var objJson = JSON.parse(objResult4.pageInfo);
+                            sforce.console.openSubtab(strPrimaryTabId, objJson.url, boolShouldFocus, strSubtabName, null, null, strSubtabName.replace(/\W/g, ''));
+                        }
+                    });
+                }
+            });
+        }
+
+        /**
+         * This method determines the maximun body height of a modal.
+         *
+         * @param objComponentSelector  Component Select.
+         */
+         function setMaxModalBodyHeight(objComponentSelector) {
+            var objComponent;
+            if(stringIsNotBlank(objComponentSelector) && objComponentSelector instanceof jQuery) {
+                objComponent = objComponentSelector;
+            } else if(stringIsNotBlank(objComponentSelector)){
+                objComponent = $(objComponentSelector);
+            }
+            if(objComponent != null) {
+                var intWindowHeight = $(window).height();
+                objComponent.each(function(strCount) {
+                    var intAttrHeight = $(this).attr('modal-max-body-height');
+                    if(stringIsNotBlank(intAttrHeight)) {
+                        var intBodyHeight = $('.modal-body', this).height();
+                        if(!isNaN(intAttrHeight)) {
+                            intAttrHeight = parseInt(intAttrHeight);
+                            if(intBodyHeight > intAttrHeight) {
+                                $('.modal-body', this).css({"height": intAttrHeight + "px", "overflow-y": "auto"});
+                            }
+                        }
+                    }
+                });
+            }
+         }
+
+        /**
+         * This method is a Review if a given string corresponds to a jQuery object or object itself.
+         *
+         * @param objContainerSelector  Component selector to be evaluated.
+         * @return Found jQuery Object.
+         */
+        function getJQueryObject(objContainerSelector) {
+            var objComponent;
+            if(objContainerSelector != null) {
+                if(objContainerSelector instanceof jQuery) {
+                    objComponent = objContainerSelector;
+                } else {
+                    objComponent = $(objContainerSelector);
+                }
+            }
+            return objComponent;
+        }
+
+        /**
+         * This method shows inline alert to component.
+         *
+         * @param objContainerSelector  Container selector.
+         * @param intAlertType  Alert type.
+         * @param strMessage    Message.
+         * @param strMessageId  Message Id.
+         * @param boolShouldQueueMessages Should queue Messages?
+         */
+        function showInlineAlert(objContainerSelector, intAlertType, strMessage, strMessageId, boolShouldQueueMessages) {
+            if(objContainerSelector != null) {
+                var strAlertType;
+                switch(intAlertType) {
+                    case intAlertTypeSuccess:
+                        strAlertType = 'inlineSuccessMessage';
+                    break;
+                    case intAlertTypeInfo:
+                        strAlertType = 'inlineInfoMessage';
+                    break;
+                    case intAlertTypeWarning:
+                        strAlertType = 'inlineWarningMessage';
+                    break;
+                    case intAlertTypeDanger:
+                        strAlertType = 'inlineErrorMessage ';
+                    break;
+                    default:
+                        strAlertType = 'inlineInfoMessage';
+                    break;
+                }
+                var objComponent = getJQueryObject(objContainerSelector);
+                var strUniqueId = guidNumber();
+                var strMessageContainer =
+                '<span id="' + strUniqueId + '" class = "inlineAlert ' + strAlertType + '">' + strMessage + '</span>';
+                objComponent.after(strMessageContainer);
+            }
+        }
+
+        /**
+         * This method generates styling for spans to de displayed as marks.
+         */
+        function updateLabelTags() {
+             $(".label-default").each(function(strCount) {
+                 var strLabelTagValue = $(this).text();
+                 if(stringIsNotBlank(strLabelTagValue)){
+                    var strAddClass = '';
+                    var strRemoveClass = '';
+                    switch(strLabelTagValue.toUpperCase()) {
+                        case strLabelOpen:
+                        case strLabelApproved:
+                        case strLabelCompleted:
+                        case strLabelYes:
+                        case strLabelTrue:
+                        case strLabelEnrolled:
+                        case strLabelPosted:
+                        case strLabelActive:
+                        case strLabelPaid:
+                        case strLabelSubmitted:
+                            strAddClass = 'label-success';
+                            strRemoveClass = 'label-default';
+                        break;
+                        case strLabelPending:
+                        case strLabelOnHold:
+                        case strLabelPendingResolution:
+                        case strLabelPendingAssignment:
+                        case strNoLongerInUse:
+                            strAddClass = 'label-warning';
+                            strRemoveClass = 'label-default';
+                        break;
+                        case strLabelDenied:
+                        case strLabelEscalated:
+                        case strLabelRejected:
+                        case strLabelS8UnderInvestigation:
+                        case strLabelExpired:
+                        case strLabelAdjudicationLetterDenied:
+                        case strLabelCancelled:
+                        case strLabelNo:
+                        case strLabelFalse:
+                        case strLabelResolvedRejected:
+                        case strExhausted:
+                            strAddClass = 'label-danger';
+                            strRemoveClass = 'label-default';
+                        break;
+                        case strLabelRoutedToAnotherDepartment:
+                        case strLabelOnExchange:
+                        case strLabelNew:
+                        case strPendingInfo:
+                            strAddClass = 'label-info';
+                            strRemoveClass = 'label-default';
+                        break;
+                        case strLabelTier1:
+                        case strLabelTier2:
+                        case strLabelDraft:
+                        case strLabelClosed:
+                        case strLabelInactive:
+                        case strLabelReceived:
+                        case strPosted:
+                        case strInProgress:
+                        case strNotStarted:
+                        case strAdjudicated:
+                            strAddClass = 'label-primary';
+                            strRemoveClass = 'label-default';
+                        break;
+                    }
+                    $(this).addClass(strAddClass);
+                    $(this).removeClass(strRemoveClass);
+                }
+            });
+        }
+
+        /**
+         * This method removes all the field values under an specific jQuery selector.
+         *
+         * @param objContainerSelector  Selector jQuery object of the container.
+         */
+        function clearAllFields(objContainerSelector) {
+            var objComponent = getJQueryObject(objContainerSelector);
+            if(objComponent != null) {
+                $('input[type="text"], input[type="password"], input[type="hidden"], textarea', objComponent).val('');
+                $('select:nth-child(0)', objComponent).prop('selected', true);
+                $('input[type="radio"], input[type="checkbox"]', objComponent).prop('checked', false);
+            }
+        }
+
+        /**
+         * This method shows or hides a section, based on values of elements.
+         *
+         * @param boolImmediateAction   Immediate Action?
+         * @param strAction Action.
+         * @param strjQuerySelectorOrDOMObjectDriver    jQuery Selector or DOM Object Driver.
+         * @param strjQuerySelectorOrDOMObjectSection   jQuery Selector or DOM Object Section.
+         * @param boolShouldShow    Should show?
+         */
+        function showHideOnAction(boolImmediateAction, strAction, strjQuerySelectorOrDOMObjectDriver, strjQuerySelectorOrDOMObjectSection, boolShouldShow) {
+            var objDriver = getJQueryObject(strjQuerySelectorOrDOMObjectDriver);
+            if(strjQuerySelectorOrDOMObjectDriver != null) {
+                if(boolImmediateAction) {
+                    var objTarget = getJQueryObject(strjQuerySelectorOrDOMObjectSection);
+                    if(boolShouldShow) {
+                        $(objTarget).show();
+                    } else if(!boolShouldShow) {
+                        $(objTarget).hide();
+                    }
+                } else {
+                    $(strjQuerySelectorOrDOMObjectDriver).on(strAction, function() {
+                        var strSelectorSection = $(this).attr('show-hide-action-section');
+                        var strValueToShow = $(this).attr('show-hide-action-show-value');
+                        var strValueToHide = $(this).attr('show-hide-action-hide-value');
+                        var strValue = $(this).val();
+                        if($(this).is("input[type=checkbox]")) {
+                            strValue = $(this).prop('checked') + '';
+                        }
+                        if(strValue == strValueToShow) {
+                            $(strSelectorSection).show();
+                        } else if(strValue == strValueToHide) {
+                            $(strSelectorSection).hide();
+                        }
+                    });
+
+                    //Checking if the parameters indicate that the action should be performed on load.
+                    $(strjQuerySelectorOrDOMObjectDriver).each(function() {
+                        var strExecuteOnLoad = $(this).attr('show-hide-action-execute-on-load');
+                        if(strExecuteOnLoad == 'true') {
+                            var strSelectorSection = $(this).attr('show-hide-action-section');
+                            var strValueToShow = $(this).attr('show-hide-action-show-value');
+                            var strValueToHide = $(this).attr('show-hide-action-hide-value');
+                            var strValue = $(this).val();
+                            if($(this).is("input[type=checkbox]")) {
+                                strValue = $(this).prop('checked') + '';
+                            }
+                            if(strValue == strValueToShow) {
+                                $(strSelectorSection).show();
+                            } else if(strValue == strValueToHide) {
+                                $(strSelectorSection).hide();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        /**
+         * This method is for Add to input fields format restrictions.
+         *
+         * @param objComponentSelector Component Selector.
+         */
+        function addFormatField(objComponentSelector) {
+            var objComponent = getJQueryObject(objComponentSelector);
+            if(!objComponent.is(':text')) {
+                objComponent = $('input[type="text"],  input[type="hidden"], input[type="password"]', objComponent);
+            }
+            if(objComponent != null ) {
+                objComponent.each(function() {
+                    var objCurrentObject = $(this);
+                    var strPatternAttribute = objCurrentObject.attr(strMaskingPatternFormatAttribute);
+                    if(stringIsBlank(strPatternAttribute)) {
+
+                        //Default format and length.
+                        var intLength;
+                        var intMaximumLength = 255;
+                        var strMaskingPattern = "";
+                        var strDefaultMaskingPattern = "";
+                        var boolHasLengthClass = false;
+                        var boolHasFormatClass = false;
+                        var strFormat = strMaskingPatternSuffixPElement;
+                        var strPassKeys = strMaskingPassKeys;
+                        if(objCurrentObject.is(':text')) {
+                            intLength = intMaskingPatternInputLength;
+                        }
+                        for(intCount = 0; intCount < intMaximumLength ; intCount++) {
+                            strDefaultMaskingPattern += strFormat;
+                        }
+                        //Searching custom format and length.
+                        var strClasses = objCurrentObject.attr("class");
+                        if(stringIsNotBlank(strClasses)) {
+                            var arrClasses = strClasses.split(" ");
+                            for(var intIndex in arrClasses) {
+                                if(!isNaN(intIndex) && arrClasses[intIndex].search(strMaskingPatternPrefixMaximumLengthAttribute) != -1) {
+                                    var arrTemporalLength = arrClasses[intIndex].split(strMaskingPatternPrefixMaximumLengthAttribute);
+                                    if (stringIsNotBlank(arrTemporalLength[intClassLengthPosition]) && !isNaN(parseInt(arrTemporalLength[intClassLengthPosition]))) {
+                                        intLength = arrTemporalLength[intClassLengthPosition];
+                                        boolHasLengthClass = true;
+                                    }
+
+                                }
+                            }
+                        }
+                        if(objCurrentObject.hasClass(strMaskingPatternAlphanumericClass)) {
+                            strFormat = strMaskingPatternSuffixAElement;
+                            boolHasFormatClass = true;
+                        } else if(objCurrentObject.hasClass(strMaskingPatternNumericClass)) {
+                            strFormat = strMaskingPatternSuffix0Element;
+                            boolHasFormatClass = true;
+                        } else if(objCurrentObject.hasClass(strMaskingPatternAlphabeticClass)) {
+                            strFormat = strMaskingPatternSuffixCElement;
+                            objCurrentObject.attr(strMaskingPatternPrefixElementAttribute + strMaskingPatternSuffixCElement, strMaskingPatternCRule);
+                            boolHasFormatClass = true;
+                        } else if(boolHasLengthClass) {
+                            objCurrentObject.attr(strMaskingPatternPrefixElementAttribute + strMaskingPatternSuffixPElement, strMaskingPatternPRule);
+                            objCurrentObject.attr(strMaskingPatternPassKeysAttribute, strPassKeys);
+                        }
+
+                        //Generate custom default masking pattern string.
+                        if(boolHasLengthClass || boolHasFormatClass) {
+                            strMaskingPattern = strDefaultMaskingPattern;
+                            switch (strFormat) {
+                                case strMaskingPatternSuffixAElement:
+                                    strMaskingPattern = strMaskingPattern.replace(/P/g, strMaskingPatternSuffixAElement);
+                                break;
+                                case strMaskingPatternSuffix0Element:
+                                    strMaskingPattern = strMaskingPattern.replace(/P/g, strMaskingPatternSuffix0Element);
+                                break;
+                                case strMaskingPatternSuffixCElement:
+                                    strMaskingPattern = strMaskingPattern.replace(/P/g, strMaskingPatternSuffixCElement);
+                                break;
+
+                            }
+                            strMaskingPattern = strMaskingPattern.substring(0, intLength)
+                            if(stringIsNotBlank(strMaskingPattern)) {
+                                objCurrentObject.attr(strMaskingPatternFormatAttribute, strMaskingPattern);
+                                createMaskField(objCurrentObject);
+                            }
+                        }
+                     }
+                });
+            }
+        }
+
+        /**
+         * This method is for Enable listeners related to keyboard shortcuts.
+         */
+        function createKeyboardShortcuts() {
+            if(sforce != null && sforce.console != null && sforce.console.isInConsole() != null && sforce.console.isInConsole()) {
+                <apex:repeat value="{!mapAvailableKeyboardShortcuts}" var="keyCode">
+                    sforce.console.addEventListener('{!keyCode}', function() {
+                            {!mapAvailableKeyboardShortcuts[keyCode]}
+                    });
+                </apex:repeat>
+            }
+        }
+
+        /**
+         * Set navigation tab in console.
+         *
+         * @param strNavigationTab Tab selector.
+         */      
+        function setNavigationTab(strNavigationTab) {
+            if(sforce.console.isInConsole()) {
+               sforce.console.getNavigationTabs(function (result) {
+                    if(result.success) {
+                        var tempItem = JSON.parse(result.items);
+                        if(stringIsNotBlank(strNavigationTab)) {
+                            for(var count in tempItem) {
+                                if(tempItem[count].label == strNavigationTab) {
+                                    sforce.console.setSelectedNavigationTab(null, tempItem[count].navigationTabId);
+                                    sforce.console.focusNavigationTab();
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        /**
+         * This method shows the toast message for the specified amount of time.
+         *
+         * @param intTimeout    Timeout for the message.
+         * @param strMessage    Message To Be displayed.
+         * @param intAlertType  Alert style. 
+         */
+        function showToast(intTimeout, strMessage, intAlertType, strPosition, strCustomPosition) {
+            
+            //Default timeout if parameter is incorrect.
+            if(!isNaN(intTimeout)) {
+                intTimeout = 2000;
+            }
+            
+            //Assign CSS class.
+            var strToastClass= 'snackbar';
+            if(!isNaN(intAlertType)) {
+                switch(intAlertType) {
+                    case intAlertTypeSuccess:
+                        strToastClass += '-success';
+                    break;
+                    case intAlertTypeInfo:
+                        strToastClass += '-info';
+                    break;
+                    case intAlertTypeWarning:
+                        strToastClass += '-warning';
+                    break;
+                    case intAlertTypeDanger:
+                        strToastClass += '-danger';
+                    break;
+                    default:
+                        strToastClass += '-default';
+                    break;
+                }
+            }
+            
+            //Assign Position
+            var strPositionClass= 'snackbar-show';
+            if(stringIsNotBlank(strPosition)) {
+                switch(strPosition) {
+                    case strAlertPositionTop:
+                        strPositionClass += 'Top';
+                    break;
+                    case strAlertPositionBottom:
+                        strPositionClass += 'Bottom';
+                    break;
+                    case strAlertPositionLeft:
+                        strPositionClass += 'Left';
+                    break;
+                    case strAlertPositionRight:
+                        strPositionClass += 'Right';
+                    break;
+                    case strAlertPositionCustom:
+                        strPositionClass += 'Custom';
+                    break;
+                    default:
+                        strPositionClass += 'Center';
+                    break;
+                }
+            }
+            
+            //Create Toast.
+            var objToastDiv = document.createElement('div');
+            objToastDiv.setAttribute("id", "snackbar");
+            objToastDiv.setAttribute("class", strToastClass + ' ' + strPositionClass);
+            if(strPositionClass === 'snackbar-showCustom') {
+                objToastDiv.setAttribute("style", strCustomPosition);
+            }
+            objToastDiv.innerHTML =  strMessage;
+            
+            //Add element to document body.
+            document.body.appendChild(objToastDiv);
+            $("#snackbar").addClass("show");
+            
+            // After intTimeout seconds, remove the show class from DIV
+            var objInterval = setInterval(function() {
+                $("#snackbar").removeClass("show");
+                $("#snackbar").remove();
+                clearInterval(objInterval)
+            }, intTimeout);
+        }
+    </script>
+    <div class="pageMask" style="display: none;" />
+    <div id="spinner" style="display: none;">
+        <center>
+            <div class="fullBackdrop" />
+            <div class="spinner">
+                <apex:image value="{!URLFOR($Resource.FrameworkBase_CF, 'images/slds_spinner_brand.gif')}" width="56px" height="56px" />
+            </div>
+        </center>
+    </div>
+    <c:StyleOverrideComponent_CF rendered="{!boolCustomStyle}" />
+    <c:LightningAssetsComponent_CF rendered="{!boolLightningAssets}" />
+</apex:component>

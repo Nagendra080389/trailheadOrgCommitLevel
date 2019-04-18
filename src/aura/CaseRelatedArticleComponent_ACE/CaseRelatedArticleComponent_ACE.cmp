@@ -1,0 +1,60 @@
+<!--
+ /**
+  * This component is used to show the Related Articles section.
+  * <p /><p />
+  * @author Nagendra Singh
+  */
+ -->
+<aura:component description="CaseRelatedArticleComponent_ACE"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId"
+                controller="CaseCreationLightingController_ACE">
+
+    <!-- Attributes -->
+    <aura:attribute name="lstArticles" type="List" default="[]" />
+	<aura:attribute name="boolError" type="Boolean" />
+	<aura:attribute name="strErrorNumber" type="String" />
+	<!--This is deployed via delta deployment-->
+
+
+
+    <!-- Handlers -->
+	<aura:handler event="c:CaseCreationEvent_ACE" action="{!c.showRelatedArticles}" />
+
+	<!-- Dependencies -->
+    <aura:dependency resource="markup://force:navigateToSObject" type="EVENT" />
+
+	<!-- Header section -->
+    <div class="slds-page-header">
+        <div class="slds-media">
+            <div class="slds-media__body">
+                <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Related Articles">Related Articles</h1>
+            </div>
+        </div>
+    </div>
+
+	<!-- Body Section, only shown if no error is returned from server, else show the articles returned from server. -->
+    <aura:if isTrue="{!v.boolError}">
+        <div class="beautifyErrorDiv">
+            <h1 class="beautifyErrorMessage">An error has occurred <br />
+                <span class="errorNumber">{!v.strErrorNumber}</span>
+            </h1>
+        </div>
+        <aura:set attribute="else">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-1">
+                    <div>
+                        <aura:renderIf isTrue="{!v.lstArticles.length > 0}">
+                            <aura:iteration items="{!v.lstArticles}" var="strArticle" indexVar="index">
+                                <div>
+                                    <span class="slds-size_1-of-2">
+                                        <a href="" onclick="{!c.gotoURL}" id="{!strArticle.strId}">{!index+1} : {!strArticle.strDisplayName}</a>
+                                    </span>
+                                </div>
+                            </aura:iteration>
+                        </aura:renderIf>
+                    </div>
+                </div>
+            </div>
+        </aura:set>
+    </aura:if>
+</aura:component>

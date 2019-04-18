@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This object helps to store the Integration Endpoints per environment.</description>
+    <fields>
+        <fullName>AuthenticationToken_CF__c</fullName>
+        <description>Field to provide Authentication Tokens.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Field to provide Authentication Tokens.</inlineHelpText>
+        <label>Authentication Token</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Endpoint_CF__c</fullName>
+        <description>This field stores the Endpoint (URL or Named Credentials label).</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>This field stores the Endpoint (URL or Named Credentials label).</inlineHelpText>
+        <label>Endpoint</label>
+        <length>131072</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Environment_CF__c</fullName>
+        <description>Environment for this specific endpoint.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Environment for this specific endpoint.</inlineHelpText>
+        <label>Environment</label>
+        <referenceTo>Environment_CF__mdt</referenceTo>
+        <relationshipLabel>Integration Endpoints</relationshipLabel>
+        <relationshipName>Integration_Endpoints</relationshipName>
+        <required>true</required>
+        <type>MetadataRelationship</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IsActive_CF__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Defines if the Enpoint is active.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Defines if the Enpoint is active.</inlineHelpText>
+        <label>Is Active?</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>Integration Endpoint</label>
+    <pluralLabel>Integration Endpoints</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,8 @@
+<!--
+ - Created by nagesingh on 8/8/2018.
+ -->
+
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+    <lightning:workspaceAPI aura:id="workspace" />
+    <lightning:button label="Set Focused Tab Highlighted" onclick="{! c.setFocusedTabHighlighted }" />
+</aura:component>

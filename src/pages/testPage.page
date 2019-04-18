@@ -1,0 +1,16 @@
+<apex:page standardController="Account" extensions="testExtension">
+<apex:pageBlock >
+<apex:pageBlockSection >
+  <apex:outputLabel value="My Name is Nagendra"/>
+  <apex:outputLabel value="Hello"/>
+  <apex:form >
+  <apex:pageBlock >
+  <apex:pageblocksection >
+  <apex:inputField value="{!acc.Name}"/>
+  </apex:pageblocksection>
+  </apex:pageBlock>
+  <apex:commandButton action="{!Save}" value="Save"/>
+  </apex:form>
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:page>

@@ -1,0 +1,438 @@
+<aura:component implements="force:hasRecordId,force:LightningQuickAction,flexipage:availableForAllPageTypes" controller="FastApprovalControllerServer">
+    <!--declare attributes--> 
+    <aura:attribute name="selectedRecord" type="User" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="listOfSearchRecords" type="User[]" description="Use,for store the list of search records which returns from apex class"/>
+    <aura:attribute name="SearchKeyWord" type="string"/>
+    <aura:attribute name="Message" type="String" default="Search Result..."/>
+    <aura:attribute name="objInfoRecords" type="FastApprovalControllerServer.LightWeightObject[]"  />
+    <aura:attribute name="objInfo" type="FastApprovalControllerServer.LightWeightObject"  />
+    <aura:attribute name="show" type="boolean" default="false"  />
+    <aura:attribute name="objname" type="String"/>
+    <aura:attribute name="recordOwner" type="String"/>
+    <aura:attribute name="recordName" type="String"/>
+    <aura:attribute name="Comment" type="String"/>
+    <aura:attribute name="title" type="String"/>
+    <aura:attribute name="severity" type="String"/>
+    <aura:attribute name="uiMessage" type="String"/>
+    <aura:attribute name="mydata" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="userId" type="Id"/> 
+    <aura:attribute name="recId" type="Id"/> 
+    <aura:attribute name="OpenAorR" type="boolean" default="false"/>
+    <aura:attribute name="OpenReassign" type="boolean" default="false"/>
+    <aura:attribute name="showMessage" type="boolean" default="false"/>    
+    <aura:attribute name="showAccordian" type="boolean" default="false"/>
+    <aura:attribute name="OpenMassReassign" type="boolean" default="false"/>
+    <aura:attribute name="massOpenAorR" type="boolean" default="false"/>   
+    <!--declare events handlers-->  
+    <aura:handler name="oSelectedUserEvent" event="c:selectedUserEvent" action="{!c.handleComponentEvent}"/>
+    <aura:handler event="c:WrapperRecordEvent" action="{!c.doInit}"/>
+    <!--component Body-->
+    <aura:if isTrue="{!v.showMessage}">
+        <ui:message title="{!v.title}" severity="{!v.severity}" closable="true">
+            {!v.uiMessage}
+        </ui:message>
+    </aura:if>
+    <!-- Modal Boxes for single record reassignment or approve/Reject -->
+    <aura:if isTrue="{!v.OpenAorR}">        
+        <!--###### MODAL BOX Approve/Reject Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.objname} : {!v.recordName}</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <table>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Name :
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">
+                                    {!v.recordName}
+                                </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class="slds-col slds-size_1-of-5 ">
+                                    Owner : 
+                                </div>
+                                
+                                <div class="slds-col slds-size_4-of-5 ">
+                                    {!v.recordOwner}
+                                </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Comment : 
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">
+                                    <ui:inputtextarea aura:id="comments"  class="slds-input" rows="3" value="{!v.Comment}" placeholder="Enter Comment" />
+                                </div>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">                       
+                    <lightning:button variant="brand" 
+                                      label="Approve"
+                                      title="Approve"
+                                      onclick="{! c.Approve }"/>
+                    <lightning:button variant="brand" 
+                                      label="Reject"
+                                      title="Reject"
+                                      onclick="{! c.Reject }"/>
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+        
+    </aura:if>
+    <aura:if isTrue="{!v.OpenReassign}">
+        
+        <!--###### MODAL BOX reasssignment Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.objname} : {!v.recordName}</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <table >
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Name :
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">
+                                    {!v.recordName}
+                                </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class="slds-col slds-size_1-of-5 ">
+                                    Owner : 
+                                </div>
+                                
+                                <div class="slds-col slds-size_4-of-5 ">
+                                    {!v.recordOwner}
+                                </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div aura:id="searchRes" class="slds-form-element slds-lookup slds-is-close" data-select="single"> 
+                                <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                    <div class="slds-col slds-size_1-of-5 ">
+                                        Approver : 
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_4-of-5 ">
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-input-has-icon slds-input-has-icon--right">
+                                                
+                                                <!-- This markup is for when an record is selected -->
+                                                <div aura:id="lookup-pill" class="slds-pill-container slds-hide">
+                                                    <span class="slds-pill">
+                                                        <span class="slds-pill__label">
+                                                            {!v.selectedRecord.Name}  
+                                                        </span>
+                                                        <button class="slds-button slds-button--icon slds-pill__remove" onclick="{!c.clear}">
+                                                            X
+                                                            <span class="slds-assistive-text">Remove</span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <div aura:id="lookupField" class="slds-show">
+                                                    <ui:inputText  updateOn="keyup" keyup="{!c.keyPressController}" class="slds-lookup__search-input slds-input " value="{!v.SearchKeyWord}" placeholder="search..."/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                        <!--This part is for Display typehead lookup result List-->  
+                                        <div class="slds-lookup__menu slds" id="lookup-348">
+                                            <div class="slds-lookup__item--label slds-text-body--small">{!v.Message}</div>
+                                            <center>  </center>
+                                            <ul class="slds-lookup__list" role="listbox">
+                                                <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
+                                                    <c:customLookupResult oUser="{!singleRec}" />
+                                                </aura:iteration>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Comment : 
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">                                    
+                                    <ui:inputtextarea aura:id="comments"  class="slds-input" rows="3" value="{!v.Comment}" placeholder="Enter Comment" />
+                                </div>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">                    
+                    <lightning:button variant="brand" 
+                                      label="Reassign"
+                                      title="Reassign"
+                                      onclick="{! c.Reassign }"/>
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+        
+    </aura:if>
+    <!-- Modal Boxes for single record reassignment or approve/Reject End -->
+    
+    <!-- Accordian to Display records -->
+    <aura:if isTrue="{!v.showAccordian}">
+    <lightning:accordion class="slds-accordion">
+        <aura:iteration items="{!v.objInfoRecords}" var="con">
+            
+            <lightning:accordionSection name="{!con.title}" label="{!con.title}" >
+                <aura:set attribute="actions">
+                    <lightning:buttonMenu class=" slds-dropdown_right" aura:id="menu" onselect="{!c.MenuClicked}" alternativeText="Show menu" iconSize="x-small">
+                        <lightning:menuItem value="{!join(',', con.recordId, 'Reassign',con.recordName,con.recordOwner)}" label="Reassign" />
+                        <lightning:menuItem value="{!join(',', con.recordId, 'Approve/Reject',con.recordName,con.recordOwner)}" label="Approve/Reject" />
+                    </lightning:buttonMenu>
+                </aura:set>
+                <aura:set attribute="body">                 
+                    <table style="font-size:15px;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Submitted by</th>
+                                <th>Record URL</th>
+                                <th>{!con.field1Label}</th>
+                                <th>{!con.field2Label}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"  id="checkbox-2" value="{!con.selected}"></input></td>
+                                <td>{!con.recordName}</td>
+                                <td>{!con.submitterName}</td>
+                                <td><a href='{!con.recordUrl}'  >{!con.recordUrl}</a></td>
+                                <td>{!con.field1}</td>
+                                <td>{!con.field2}</td>
+                            </tr>
+                        </tbody>
+                    </table>          
+                    
+                </aura:set>
+                
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
+        <button aura:id="massReass" 
+                class="slds-button slds-button_brand"                
+                onclick="{! c.openMassReassignModal }">Reassign All</button>
+        <button aura:id="massapprove" 
+                class="slds-button slds-button_brand"                
+                onclick="{! c.openMassApproveRejectModal }">Approve/Reject All</button>
+    
+    
+    </aura:if>
+    <!-- Modal Boxes for mass record reassignment or approve/Reject -->
+    <aura:if isTrue="{!v.OpenMassReassign}">
+        
+        <!--###### MODAL BOX for mass reassignment Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Mass Reassign</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <table >
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Object :
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">
+                                    {!v.objname}
+                                </div>
+                            </div>
+                        </tr>                        
+                        <tr>
+                            <div aura:id="searchRes" class="slds-form-element slds-lookup slds-is-close" data-select="single"> 
+                                <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                    <div class="slds-col slds-size_1-of-5 ">
+                                        Approver : 
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_4-of-5 ">
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-input-has-icon slds-input-has-icon--right">
+                                                
+                                                <!-- This markup is for when an record is selected -->
+                                                <div aura:id="lookup-pill" class="slds-pill-container slds-hide">
+                                                    <span class="slds-pill">
+                                                        <span class="slds-pill__label">
+                                                            {!v.selectedRecord.Name}  
+                                                        </span>
+                                                        <button class="slds-button slds-button--icon slds-pill__remove" onclick="{!c.clear}">
+                                                            X
+                                                            <span class="slds-assistive-text">Remove</span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <div aura:id="lookupField" class="slds-show">
+                                                    <ui:inputText  updateOn="keyup" keyup="{!c.keyPressController}" class="slds-lookup__search-input slds-input " value="{!v.SearchKeyWord}" placeholder="search..."/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                        <!--This part is for Display typehead lookup result List-->  
+                                        <div class="slds-lookup__menu slds" id="lookup-348">
+                                            <div class="slds-lookup__item--label slds-text-body--small">{!v.Message}</div>
+                                            <center>  </center>
+                                            <ul class="slds-lookup__list" role="listbox">
+                                                <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
+                                                    <c:customLookupResult oUser="{!singleRec}" />
+                                                </aura:iteration>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Comment : 
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">                                    
+                                    <ui:inputtextarea aura:id="comments"  class="slds-input" rows="3" value="{!v.Comment}" placeholder="Enter Comment" />
+                                </div>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">                    
+                    <lightning:button variant="brand" 
+                                      label="Reassign"
+                                      title="Reassign"
+                                      onclick="{! c.massReassign }"/>
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+        
+    </aura:if>
+    
+    <aura:if isTrue="{!v.massOpenAorR}">
+        
+        <!--###### MODAL BOX for mass approve/Reject Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Mass Approve/Reject</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <table>
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Object :
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">
+                                    {!v.objname}
+                                </div>
+                            </div>
+                        </tr>
+                        
+                        <tr>
+                            <div class="slds-grid slds-wrap slds-gutters" style="padding:10px;">
+                                <div class=" slds-col slds-size_1-of-5 ">
+                                    Comment : 
+                                </div>
+                                
+                                <div class=" slds-col slds-size_4-of-5 ">
+                                    <ui:inputtextarea aura:id="comments"  class="slds-input" rows="3" value="{!v.Comment}" placeholder="Enter Comment" />
+                                </div>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">                       
+                    <lightning:button variant="brand" 
+                                      label="Approve"
+                                      title="Approve"
+                                      onclick="{! c.massApprove }"/>
+                    <lightning:button variant="brand" 
+                                      label="Reject"
+                                      title="Reject"
+                                      onclick="{! c.massReject }"/>
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{! c.closeModel }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+        
+    </aura:if>
+    <!-- Modal Boxes for mass record reassignment or approve/Reject Ends -->
+</aura:component>

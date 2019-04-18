@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://accounts.google.com/o/oauth2/auth?access_type=offline</authorizeUrl>
+    <consumerKey>348325336667-4fbcu0lt5lhsmn63khskhkenlferiq5h.apps.googleusercontent.com</consumerKey>
+    <consumerSecret>SM7YJ2QVw1476rCaXJrr9TYp9W7QbP02cEEY92ILatc=</consumerSecret>
+    <friendlyName>GoogleAPIAuth</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>Google</providerType>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+</AuthProvider>

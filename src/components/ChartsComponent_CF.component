@@ -1,0 +1,33 @@
+<!--
+/**
+ * Visualforce Component - Charts.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/echarts.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/echarts-customFrameworkTheme.js')}" />
+    <script>
+
+        /*
+         * Creates a chart.
+         *
+         * @param objComponentSelector  jQuery object / Selector / custom JSON object  to set specific properties.
+         * @param objOptions    Chart options.
+         */
+        function createChart(objComponentSelector, objOptions) {
+            var objChart;
+            if(objComponentSelector != null) {
+                var objComponent = getJQueryObject(objComponentSelector);
+                if(objComponent.length > 0) {
+                    objChart = echarts.init(objComponent[0], customFrameworkTheme);
+                    if(objChart != null && objOptions != null) {
+                        objChart.setOption(objOptions);
+                    }
+                }
+            }
+            return objChart;
+        }
+    </script>
+</apex:component>

@@ -1,0 +1,99 @@
+<!--
+/**
+ * Page to launch InterQual App
+ */
+ -->
+<apex:page standardController="Case" extensions="CanvasAppController">
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.min.js"/>
+    <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"/>
+
+    <apex:iframe scrolling="true" id="hcscform">
+    </apex:iframe>
+
+    <button onclick="openHCSC()" name="OpenCarePlan">OpenCarePlan</button>
+
+    <apex:form >
+        <apex:messages />
+    </apex:form>
+
+
+    <script type="text/javascript">
+
+        function openHCSC(){
+           return fnLoadIcccAssessments();
+        }
+
+        fnLoadIcccAssessments = function(){
+            var TARGET_IFRAME = '#hcscform';
+            var password = "{!ap_password}";
+
+            var nonce1 = ("000000000000" + (Math.floor(new Date() / 1000))).slice(-12) + ("000000000000000" + Math.floor(Math.random() * 1000000000000000)).slice(-15) + ("000000000000000" + Math.floor(Math.random() * 1000000000000000)).slice(-15);
+
+            var passwordDigest = CryptoJS.SHA256(password);
+            var authenticationToken = CryptoJS.SHA256(nonce1 + passwordDigest).toString(CryptoJS.enc.Base64);
+
+            var standard_query_string, url;
+            standard_query_string = fnBuildStandardQueryString(passwordDigest);
+            url = "" + "{!base_url}" + "/iccc_assessments/?" + standard_query_string;
+            console.log('url-->'+url);
+            return $(TARGET_IFRAME).attr('src', url);
+        }
+
+        fnBuildStandardQueryString = function (passwordDigest) {
+            var aptenantId = "{!ap_tenant_id}";
+            var apusername = "{!ap_userName}";
+            //var effectiveUserID = "4";
+            var effectiveUserID = '{!strEffectiveUserId}';
+            console.log('effectiveUserID-->'+effectiveUserID);
+            return "ap_tenant_id=" + aptenantId + "&ap_username=" + apusername + "&ap_password_digest=" + passwordDigest + "&ap_effective_user_id=" + effectiveUserID;
+        };
+
+        function fnMessageHandler(event){
+            var message = JSON.parse(event.data);
+            switch (message.type) {
+                case 'assessment save timeout':
+                case 'assessment save section':
+                case 'assessment save leave page':
+                    return "";
+                case 'assessment save':
+                    return "";
+                case 'assessment complete':
+                    return "";
+                case 'home':
+                    return "";
+                case 'error':
+                    return "";
+                case 'care plan save':
+                    console.log(event);                 
+                    
+                    //Remote action call
+                    Visualforce.remoting.Manager.invokeAction(
+                        //Invoking controller action fnMessageCarePlanSaveHandler
+                        '{!$RemoteAction.CanvasAppController.fnMessageCarePlanSaveHandler}',
+                        event.data,'{!objCase.Id}',
+                        function(strResult, objEvent){
+                            //event.status determines if there is error or not 
+                            if(objEvent.status){
+                                console.log("inside objEvent.status if condition-->"+objEvent.status);
+                                window.open('/'+'{!objCase.id}');
+                            }               
+                        },
+                        {buffer: false, escape: false, timeout: 30000}
+                    );
+                    return "";
+                    //return fnMessageCarePlanSaveHandler(event.data);
+                default:
+                    console.log("Unhandled event received: " + message.type);
+            }
+        }
+
+        $( document ).ready(function() {
+        if(window.attachEvent){
+                return window.attachEvent("onmessage", fnMessageHandler);
+            }else if(window.addEventListener){
+                return window.addEventListener("message", fnMessageHandler, false);
+            }
+        });
+
+    </script>
+</apex:page>

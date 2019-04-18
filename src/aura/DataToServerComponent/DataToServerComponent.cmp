@@ -1,0 +1,37 @@
+<!--
+ - Created by nagesingh on 7/31/2018.
+ -->
+
+<aura:component description="DataToServerComponent" controller="DataToServerController" implements="force:appHostable">
+   <!-- <ltng:require
+            styles="{!$Resource.SLDS103 +
+                    '/assets/styles/salesforce-lightning-design-system.min.css'}"/>-->
+    <aura:attribute name="student" type="Student__c" default="{'sobjectType': 'Student__c',
+                         'Name': '',
+                         'Marks__c': ''
+                       }"
+                    access="global"/>
+
+	<!--This is a test for aura commit-->
+
+    <div class="container-fluid">
+        <h3>Please Enter The Candidate Information</h3>
+        <div class="form-group">
+            <lightning:input aura:id="nameId" label="Name" required="true" value="{!v.student.Name}" messageWhenValueMissing="Enter Name" messageWhenBadInput="Name Should Not Start with R"/>
+            <!--<ui:inputText class="form-control" value="{!v.student.Name}"/>-->
+        </div>
+        <div class="form-group">
+            <!--<label>Marks</label>
+            <ui:inputNumber class="form-control" value="{!v.student.Marks__c}"/>-->
+            <lightning:input aura:id="marksId" required="true" label="Marks" value="{!v.student.Marks__c}"/>
+        </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <!--<lightning:button aura:id="button1" onclick="{!c.create}">Create</lightning:button>-->
+        <lightning:button aura:id="button1" onclick="{!c.performCustomAction}">Create1</lightning:button>
+        <lightning:button aura:id="button2" onclick="{!c.performCustomAction}">Create2</lightning:button>
+        <lightning:button aura:id="button3" onclick="{!c.performCustomAction}">Create3</lightning:button>
+    </div>
+
+
+</aura:component>

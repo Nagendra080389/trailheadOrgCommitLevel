@@ -1,0 +1,15 @@
+<apex:page controller="myController">
+  <apex:pageBlock >
+  <apex:pageBlockSection >
+  <apex:form >
+  <apex:inputText value="{!variable}"/>
+  <apex:commandButton action="searchRecords" value="search this" reRender="this"/>
+  <apex:pageBlockTable value="{!accList}" var="a" id="this">
+  <apex:column value="{!a.Id}"/>
+  <apex:column value="{!a.Name}"/>
+  </apex:pageBlockTable>
+  </apex:form>
+  </apex:pageBlockSection>
+  </apex:pageBlock>
+  
+</apex:page>

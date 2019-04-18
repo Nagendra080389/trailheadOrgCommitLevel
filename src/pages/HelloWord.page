@@ -1,0 +1,10 @@
+<!--
+/**
+ * Description of the page
+ * <p /><p />
+ * @author nagesingh
+ */
+ -->
+<apex:page id="HelloWord">
+	<b>Hello World!</b>
+</apex:page>

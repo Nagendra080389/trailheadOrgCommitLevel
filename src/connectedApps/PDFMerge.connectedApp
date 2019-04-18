@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>nagesingh@deloitte.com</contactEmail>
+    <contactPhone>9731781552</contactPhone>
+    <label>PDFMerge</label>
+    <oauthConfig>
+        <callbackUrl>https://e04b6e5b.ngrok.io?isCallBack=1</callbackUrl>
+        <consumerKey>3MVG9d8..z.hDcPLDlm9QqJ3hRU5D_hIE_kPN7ijZpXjrT6QJTmSPUD2M0ubadFqF19_HhYPeDQyi1ypTdY5w</consumerKey>
+        <scopes>Eclair</scopes>
+    </oauthConfig>
+</ConnectedApp>

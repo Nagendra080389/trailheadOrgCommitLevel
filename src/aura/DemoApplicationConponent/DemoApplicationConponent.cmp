@@ -1,0 +1,12 @@
+<!--
+ - Created by nagesingh on 7/30/2018.
+ committed via delta change
+ -->
+
+<aura:component description="DemoApplicationConponent" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,flexipage:availableForAllPageTypes" access="global" controller="DemoApplicationComponent">
+    <aura:attribute name="oppty" type="Object" default="{}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div class="slds-button-group" role="group">
+        {!v.oppty.Name}
+    </div>
+</aura:component>

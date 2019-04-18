@@ -1,0 +1,40 @@
+<!--This is committed via Delta Deployment-->
+<apex:page standardController="Account" recordSetVar="accounts">
+    <apex:includeScript value="/support/console/44.0/integration.js"/>
+    <script>
+
+
+        function checkResult(result) {
+            if (result.success) {
+                alert('Tab style set successfully!');
+            } else {
+                alert('Tab style cannot be set!');
+            }
+        }
+
+        function testSetTabStyle() {
+            sforce.console.getEnclosingPrimaryTabId(function (enclosedPrimaryId) {
+                sforce.console.setTabStyle('background:red;', enclosedPrimaryId.id, checkResult);
+            });
+
+        }
+        function testResetTabStyle() {
+            sforce.console.getEnclosingPrimaryTabId(function (enclosedPrimaryId) {
+                sforce.console.setTabStyle(null, enclosedPrimaryId.id, checkResult);
+            });
+        }
+    </script>
+        <apex:repeat var="a" value="{!accounts}">
+            <li>
+                <apex:outputLink value="/{!a.id}" >
+                    {!a.name}
+                </apex:outputLink>
+            </li>
+        </apex:repeat>
+
+    <A HREF="#" onClick="testSetTabStyle();return false">
+        Click here to change the enclosing tab’s background color to red</A> <BR/>
+    <A HREF="#" onClick="testResetTabStyle(); return false;">
+        Click here to reset the enclosing tab’s style</A>
+
+</apex:page>

@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+
+    <aura:attribute access="global" name="Nagendra" type="String" default="Nagendra Default"
+                    required="true"/>
+	
+</aura:component>

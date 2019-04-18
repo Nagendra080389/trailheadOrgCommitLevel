@@ -1,0 +1,12 @@
+<!--
+/**
+ * Visualforce Component - Lightning Design System Include.
+ * <p /><p />
+ * @author Alejandro Cajica 
+ */ 
+-->
+<apex:component access="global">
+    <apex:slds />
+    <apex:includeLightning />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBaseLightning_CF, 'assets/styles/LightningCustomStyles.css')}" />
+</apex:component>

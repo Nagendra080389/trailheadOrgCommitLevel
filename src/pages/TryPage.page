@@ -1,0 +1,53 @@
+<!--
+/**
+ * Description of the TryPage.
+ * <p /><p />
+ * @author Nagendra Kumar Singh
+ */-->
+<apex:page id="tryPageId" standardController="Case" extensions="TryPageController" showHeader="false">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+        var sfFieldIds = [];
+
+        function fireOnClick() {
+            clickMe();
+        }
+
+        function fireOnComplete() {
+            $('.dynamicClass').each(function () {
+                var jQuery = $(this).removeClass('hidden');
+                $('.dumpHere').append(jQuery);
+            });
+
+            /*for (var idx = 0; idx < sfFieldIds.length; idx++){
+                console.log(sfFieldIds[idx]);
+            }*/
+        }
+    </script>
+    <button name="ClickMe" onclick="fireOnClick(); return false;">Click Me</button>
+
+    <apex:form id="dynamicSection">
+
+        <apex:actionFunction name="clickMe" reRender="dynamicRerender" action="{!showSection}" onComplete="fireOnComplete()">
+        </apex:actionFunction>
+
+
+            <apex:outputPanel id="dynamicRerender">
+                <apex:pageBlock >
+                <apex:pageBlockSection >
+                <apex:repeat value="{!strings}" var="eachAPI">
+                    <div class="dynamicClass hidden">
+                        <apex:pageBlockSectionItem dataStyleClass="{!eachAPI}">
+                        <apex:inputField value="{!Case[eachAPI]}" label="{!eachAPI}"/>
+                        </apex:pageBlockSectionItem>
+                    </div>
+                </apex:repeat>
+                </apex:pageBlockSection>
+                    </apex:pageBlock>
+            </apex:outputPanel>
+
+
+        <div class="dumpHere"/>
+    </apex:form>
+
+</apex:page>

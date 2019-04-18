@@ -1,0 +1,10 @@
+<!--
+ /**
+  * This component is used as a data bridge between the CaseCreationApplicationComponent_ACE.cmp and CaseRelatedArticleComponent_ACE.cmp.
+  * <p /><p />
+  * @author Nagendra Singh
+  */
+ -->
+<aura:event type="APPLICATION" description="CaseCreationEvent_ACE">
+    <aura:attribute name="CaseComments" type="List" default="[]" />
+</aura:event>

@@ -1,0 +1,8 @@
+<!--
+/**
+ * Visualforce Page which allows the Integration class to save Integration Detail records.
+ * <p /><p />
+ * @author Raymundo Rodriguez
+ */
+-->
+<apex:page controller="IntegrationHelperController_CF" action="{!insertIntegrationDetailRecord}" />

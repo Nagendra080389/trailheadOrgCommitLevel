@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Integration Detail</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Integration Details</value>
+    </caseValues>
+    <fields>
+        <help><!-- The endpoint that has been invoked. --></help>
+        <label><!-- Endpoint --></label>
+        <name>Endpoint_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- External Id. --></help>
+        <label><!-- External Id --></label>
+        <name>ExternalId_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Field which helps to relate request with response data. --></help>
+        <label><!-- Linker Id --></label>
+        <name>LinkerId_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Request Body. --></help>
+        <label><!-- Request Body --></label>
+        <name>RequestBody_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Response Body. --></help>
+        <label><!-- Response Body --></label>
+        <name>ResponseBody_CF__c</name>
+    </fields>
+    <fields>
+        <label><!-- Response Code --></label>
+        <name>ResponseCode_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- The HTTP Status Code which gets issued by a server in response to a client&apos;s request made to the server. --></help>
+        <label><!-- Status Code --></label>
+        <name>StatusCode_CF__c</name>
+    </fields>
+    <layouts>
+        <layout>Integration Detail Layout</layout>
+        <sections>
+            <label><!-- Bodies --></label>
+            <section>Bodies</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Vowel</startsWith>
+</CustomObjectTranslation>

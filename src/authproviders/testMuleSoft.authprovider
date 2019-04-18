@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>http://oauth-provider-server.us-e2.cloudhub.io/esb/oauth/authorize</authorizeUrl>
+    <consumerKey>dcd12d74562b4ab684c44169c8169bdc</consumerKey>
+    <consumerSecret>dLK3/TLlo0cQLN7shi84SndwKSK4puWGaJRrIPCWIcVwQRj3Ygtq1w==</consumerSecret>
+    <friendlyName>testMuleSoft</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>OpenIdConnect</providerType>
+    <sendAccessTokenInHeader>true</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <tokenUrl>http://oauth-provider-server.us-e2.cloudhub.io/esb/oauth/token</tokenUrl>
+</AuthProvider>

@@ -1,0 +1,15 @@
+<!--
+/**
+ * Visualforce Component - Style Base.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/bootstrap.vertical-tabs.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/bootstrap.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/bootstrap-theme.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/CustomFrameworkClassic.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBaseLightning_CF, 'assets/styles/checkbox-toggle.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBaseLightning_CF, 'assets/styles/button-lightning.css')}" />
+</apex:component>

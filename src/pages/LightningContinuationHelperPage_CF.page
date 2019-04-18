@@ -1,0 +1,46 @@
+<apex:page controller="LightningContinuationHelperController_CF" showHeader="false" standardStylesheets="false" showChat="false" applyBodyTag="false" 
+        applyHtmlTag="false" showQuickActionVfHeader="false" sidebar="false">
+    <script>
+    
+        //Global variables.
+        var strScope;
+    
+        /**
+         * Executes the provided Remote Action method.
+         *
+         * @param objDataReceived Data received.
+         */
+        window.addEventListener('message', function(objDataReceived) {
+        
+            //Parameters.
+            var strMethod = objDataReceived.data.strMethod;
+            var objParameters = objDataReceived.data.objParameters;
+            strScope = objDataReceived.data.strScope;
+            
+            //If class and method were provided, we proceed with the execution.
+            if(strMethod != null && strScope != null) {
+                if(objParameters != null) {
+                    objParameters = JSON.stringify(objParameters);
+                }
+                
+                //Finally, we execute the corresponding method.
+                eval('LightningContinuationHelperController_CF.' + strMethod + '(objParameters, remoteAction);');
+            }
+        });
+        
+        /**
+         * Executes the Remote Action method dynamically.
+         *
+         * @param objDataReceived Results.
+         * @param objEvent Event fired.
+         */
+        function remoteAction(objResult, objEvent) {
+            var objResponse = {
+                objResult: objResult,
+                objEvent: objEvent,
+                strScope: strScope
+            };
+            parent.postMessage(JSON.stringify(objResponse), '*');
+        }
+    </script>
+</apex:page>

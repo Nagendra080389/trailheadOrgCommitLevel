@@ -1,0 +1,18 @@
+<!--
+ - Created by nagesingh on 8/7/2018.
+ -->
+
+<aura:component description="DataFromServerComponent2">
+    <aura:attribute name="imgs" type="List" default="[]"/>
+    <aura:handler event="c:DataFromServerEvent" action="{!c.showReposList}"/>
+
+    <div style="padding-top: 30px">
+        <aura:iteration items="{!v.imgs}" var="img" indexVar="key" >
+            <div style="display: inline-block; padding: 10px">
+                <h1>From Component 2</h1>
+                <h1> Branch Name : {!img.name}</h1>
+                <h1> Author Name : {!img.login}</h1>
+            </div>
+        </aura:iteration>
+    </div>
+</aura:component>

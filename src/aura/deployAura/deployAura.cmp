@@ -1,0 +1,21 @@
+<!--
+/**
+ * Description of the class
+ * <p /><p />
+ * @author nagesingh
+ */
+ -->
+<aura:component description="deployAura">
+
+
+
+	<!--Scripts-->
+	// Scripts goes here
+
+	<!--Attributes-->
+	// Attributes goes here
+
+	<!--Handlers-->
+	// Handlers goes here
+
+</aura:component>

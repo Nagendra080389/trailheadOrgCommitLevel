@@ -1,0 +1,8 @@
+<!--
+ - Created by nagesingh on 8/7/2018.
+ This is deployed via delta deployment tool
+ -->
+
+<aura:event type="APPLICATION" description="DataFromServerEvent">
+    <aura:attribute name="Images" type="List" default="[]"/>
+</aura:event>

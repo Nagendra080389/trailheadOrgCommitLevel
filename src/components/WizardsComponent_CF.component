@@ -1,0 +1,252 @@
+<!--
+/**
+ * Visualforce Component - Wizard.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <script>
+
+        //Global variables.
+        var intWizardTransitionSpeed = 300;
+
+        //On document ready.
+        $(document).ready(function() {
+
+            //Creating wizards.
+            createWizard('.wizard');
+        });
+
+        /*
+         * Creates a wizard component.
+         *
+         * @param objComponentSelector  Container.
+         * @param intLandingPage    Landing page.
+         */
+        function createWizard(objComponentSelector, intLandingPage) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var strWizardId = guidNumber();
+                var intNumberOfPages = 0;
+                var intTotalNumberOfPages = $('div.wizardPage', objContainer).length;
+                objContainer.attr('wizard-id', strWizardId);
+
+                //Configuring each wizard page.
+                $('div.wizardPage', objContainer).wrapInner( "<wizardPageContainer></wizardPageContainer>").each(function() {
+                    var strDefaultButtons = $(this).attr('default-buttons');
+                    var strShowPreviousButton = $(this).attr('show-previous-button');
+                    var strShowNextButton = $(this).attr('show-next-button');
+                    var strNextButtonLabel = $(this).attr('next-default-button-label');
+                    var strPreviousButtonLabel = $(this).attr('previous-default-button-label');
+                    var strFinishButtonLabel = $(this).attr('finish-default-button-label');
+                    var strAdditionalContainer = $(this).attr('additional-bottom-elements-container');
+                    var strCallback = $(this).attr('callback-on-finish');
+                    var objAdditionalContainerElements = $(strAdditionalContainer, $(this));
+
+                    //Adding page number to current div.
+                    intNumberOfPages++;
+                    $(this).attr('page-number', intNumberOfPages);
+
+                    //Wrapping content if default buttons are required.
+                    if((stringIsNotBlank(strDefaultButtons) && strDefaultButtons == 'true') || (stringIsNotBlank(strShowPreviousButton) && strShowPreviousButton == 'true') || 
+                            (stringIsNotBlank(strShowNextButton) && strShowNextButton == 'true')) {
+                        if(stringIsBlank(strNextButtonLabel)) {
+                            strNextButtonLabel = 'Next';
+                        }
+                        if(stringIsBlank(strPreviousButtonLabel)) {
+                            strPreviousButtonLabel = 'Previous';
+                        }
+                        if(stringIsBlank(strFinishButtonLabel)) {
+                            strFinishButtonLabel = 'Finish';
+                        }
+
+                        //Creating buttons structure.
+                        var strWrapper =
+                                '<div class="row">' +
+                                    '<div class="col-md-12 wizardPageContainer" />' +
+                                '</div>' +
+                                '<div class="row">' +
+                                    '<div class="col-md-8 wizardAdditionalElementsBottom" style="text-align: right;" />' +
+                                    '<div class="col-md-2" style="text-align: right;" >';
+                        if(intNumberOfPages > 1 && (strDefaultButtons == 'true' || strShowPreviousButton == 'true')) {
+                            strWrapper += '<button type="button" class="btn btn-default hf-background-button-white" onclick="wizardPreviousPage(\'div[wizard-id=' + strWizardId + ']\');">' + strPreviousButtonLabel + '</button>';
+                        } else {
+                            strWrapper += '&nbsp;';
+                        }
+                        strWrapper +=
+                                    '</div>' +
+                                    '<div class="col-md-2" style="text-align: right;" >';
+                        if(intNumberOfPages < intTotalNumberOfPages && (strDefaultButtons == 'true' || strShowNextButton == 'true')) {
+                            strWrapper += '<button type="button" class="btn btn-success" onclick="wizardNextPage(\'div[wizard-id=' + strWizardId + ']\');">' + strNextButtonLabel + '</button>';
+                        } else if(stringIsNotBlank(strCallback)) {
+                            strWrapper += '<button type="button" class="btn btn-success" onclick="eval(\'' + strCallback + '\');">' + strFinishButtonLabel + '</button>';
+                        } else {
+                            strWrapper += '&nbsp;';
+                        }
+                        strWrapper +=
+                                    '</div>' +
+                                '</div>';
+
+                        //Wrapping content.
+                        var objNewHTML = $(strWrapper);
+                        $(this).wrapInner('<div class="wizardInnerContainer"></div>');
+                        $(this).append(objNewHTML);
+                        $('.wizardInnerContainer', $(this)).appendTo($('.wizardPageContainer', $(this)));
+
+                        //Adding additional elements.
+                        if(objAdditionalContainerElements != null && objAdditionalContainerElements.length > 0) {
+                            $('.wizardAdditionalElementsBottom', $(this)).append(objAdditionalContainerElements);
+                        }
+                    }
+
+                    //Hidding page.
+                    $(this).hide();
+                });
+
+                //Showing the first page or the selected one.
+                if(intLandingPage == null || isNaN(intLandingPage) || intLandingPage < 0 || intLandingPage > intNumberOfPages) {
+                    intLandingPage = 1;
+                }
+                $('div[page-number=' + intLandingPage + ']', objContainer).show();
+                objContainer.attr('current-page', intLandingPage);
+            }
+        }
+
+        /*
+         * Validates the fields on the current page.
+         * @param objComponentSelector  Parent component.
+         * @return Boolean true if current page.
+         */
+        function wizardValidateCurrentPage(objComponentSelector) {
+            var boolResult = true;
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('current-page'));
+                boolResult = validateFields($('div[page-number=' + intCurrentPage + '] wizardPageContainer', objContainer));
+            }
+            return boolResult;
+        }
+
+        /*
+         * Moves the wizard to the required page.
+         *
+         * @param objComponentSelector  Parent component.
+         * @param strValidationsButton  If validations should run.
+         * @param strTransition Transition specified.
+         * @param strTransitionSpeed    Transition Speed.
+         * @param intCurrentPage    Current page.
+         * @param intNewPage    Target page.
+         */
+        function wizardChangePage(objComponentSelector, strValidationsButton, strTransition, strTransitionSpeed, intCurrentPage, intNewPage) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var boolShouldContinue = false;
+
+                //Checking if validations must be run.
+                if(stringIsNotBlank(strValidationsButton) && strValidationsButton == 'true') {
+                    boolShouldContinue = validateFields($('div[page-number=' + intCurrentPage + '] wizardPageContainer', objContainer));
+                } else {
+                    boolShouldContinue = true;
+                }
+
+                //Checking if the required page exists.
+                if($('div[page-number=' + intNewPage + ']', objContainer).length <= 0) {
+                    boolShouldContinue = false;
+                }
+
+                //Executing transitions.
+                if(boolShouldContinue) {
+
+                    //Defining transition.
+                    if(stringIsBlank(strTransition)) {
+                        strTransition = strEffectBlind;
+                    }
+                    if(stringIsBlank(strTransitionSpeed)) {
+                        strTransitionSpeed = intWizardTransitionSpeed;
+                    }
+
+                    //Hiding current page.
+                    $('div[page-number=' + intCurrentPage + ']', objContainer).toggle(strTransition, strTransitionSpeed, function() {
+
+                        //Showing required page.
+                        $('div[page-number=' + intNewPage + ']', objContainer).toggle(strTransition, strTransitionSpeed);
+                        objContainer.attr('current-page', intNewPage);
+                    });
+                }
+            }
+        }
+
+        /*
+         * Moves the wizard to the next page.
+         *
+         * @param objComponentSelector  Wizard component.
+         */
+        function wizardNextPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('current-page'));
+                var intNewPage = intCurrentPage + 1;
+                var objWizardPage = $('div[page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objWizardPage.attr('run-validations-on-next-default-buttons');
+                var strTransition = objWizardPage.attr('transition-next');
+                var strTransitionSpeed = objWizardPage.attr('transition-speed-next');
+                wizardChangePage(objContainer, strValidationsButton, strTransition, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Moves the wizard to the previous page.
+         *
+         * @param objComponentSelector  Wizard component.
+         */
+        function wizardPreviousPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('current-page'));
+                var intNewPage = intCurrentPage - 1;
+                var objWizardPage = $('div[page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objWizardPage.attr('run-validations-on-previous-default-buttons');
+                var strTransition = objWizardPage.attr('transition-previous');
+                var strTransitionSpeed = objWizardPage.attr('transition-speed-previous');
+                wizardChangePage(objContainer, strValidationsButton, strTransition, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Moves the wizard to the first page.
+         *
+         * @param objComponentSelector  Wizard component.
+         */
+        function wizardFirstPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('current-page'));
+                var intNewPage = 0;
+                var objWizardPage = $('div[page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objWizardPage.attr('run-validations-on-previous-default-buttons');
+                var strTransition = objWizardPage.attr('transition-previous');
+                var strTransitionSpeed = objWizardPage.attr('transition-speed-previous');
+                wizardChangePage(objContainer, strValidationsButton, strTransition, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Moves the wizard to the last page.
+         *
+         * @param objComponentSelector  Wizard component.
+         */
+        function wizardLastPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('current-page'));
+                var intNewPage = $('div.wizardPage', objContainer).length;
+                var objWizardPage = $('div[page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objWizardPage.attr('run-validations-on-next-default-buttons');
+                var strTransition = objWizardPage.attr('transition-next');
+                var strTransitionSpeed = objWizardPage.attr('transition-speed-next');
+                wizardChangePage(objContainer, strValidationsButton, strTransition, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+    </script>
+</apex:component>

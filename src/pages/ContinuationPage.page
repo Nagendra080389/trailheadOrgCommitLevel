@@ -1,0 +1,18 @@
+<!--
+/**
+ * Description of the page
+ * <p /><p />
+ * @author nagesingh
+ */
+ -->
+<apex:page id="ContinuationPage" controller="retrieveDataByCI">
+	<apex:form >
+		<apex:commandButton styleClass="btn btn-primary btn-md btn-block" action="{!continuation}" value="GetData" reRender="showData"/>
+
+		<div id="testTable">
+			<apex:outputPanel id="showData">
+				
+			</apex:outputPanel>
+		</div>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Error Log</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Error Logs</value>
+    </caseValues>
+    <fields>
+        <help><!-- Additional serialized object that the developer can indicate, for further analysis. --></help>
+        <label><!-- Additional Serialized Object --></label>
+        <name>AdditionalSerializedObject_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Class which threw the exception. --></help>
+        <label><!-- Class Name --></label>
+        <name>ClassName_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- External Id. --></help>
+        <label><!-- External Id --></label>
+        <name>ExternalId_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Error message. --></help>
+        <label><!-- Message --></label>
+        <name>Message_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Method which threw the exception. --></help>
+        <label><!-- Method Name --></label>
+        <name>MethodName_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Serialized Class which caused the exception. --></help>
+        <label><!-- Serialized Class --></label>
+        <name>SerializedClass_CF__c</name>
+    </fields>
+    <fields>
+        <help><!-- Stack Trace of the Exception. --></help>
+        <label><!-- Stack Trace --></label>
+        <name>StackTrace_CF__c</name>
+    </fields>
+    <layouts>
+        <layout>Error Log Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Serialized data --></label>
+            <section>Serialized data</section>
+        </sections>
+    </layouts>
+    <startsWith>Vowel</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,19 @@
+/**
+* Description of the 0VisualforcePagesListener.
+* <p/><p/>
+* @author Nagendra Kumar Singh
+*/
+<aura:component>
+
+	<!--Scripts-->
+	<script>
+        // Scripts goes here
+    
+	</script>
+
+	<!--Attributes-->
+
+
+	<!--Handlers-->
+
+</aura:component>

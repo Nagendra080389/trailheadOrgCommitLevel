@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>nagesingh@deloitte.com</contactEmail>
+    <label>PMDReviewNgrok</label>
+    <oauthConfig>
+        <callbackUrl>https://e099227b.ngrok.io/authenticate</callbackUrl>
+        <consumerKey>3MVG9d8..z.hDcPLDlm9QqJ3hRThsmFA5gAJCfNE3eaJvCZtcleL878e0ps4qOJkXf9Z5uRsXeamKgFB5dPMd</consumerKey>
+        <scopes>Full</scopes>
+    </oauthConfig>
+</ConnectedApp>

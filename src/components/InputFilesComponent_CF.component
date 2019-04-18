@@ -1,0 +1,451 @@
+<!--
+/**
+ * Visualforce Component -Input File.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/fileinput.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/fileinput.min.css')}" />
+    <script>
+        
+        //Global variables
+        var intMBSize = 1024;
+        var intDefaultMaxFileCount = 10;
+        
+        //On document ready.
+        $(document).ready(function() {
+
+            //Create Input File component.
+            createInputFile('.inputFile');    
+        });
+        
+        /*
+         * Create input file component.
+         *
+         * @param objContainerSelector  jQuery object / selector.
+         */
+        function createInputFile(objContainerSelector) {
+            var objComponent = getJQueryObject(objContainerSelector);
+            if(objComponent != null) {
+                objComponent.each(function(index) {
+                    
+                    //Global variables.
+                    var objSelectedInputFile;
+                    
+                    //Component configuration.
+                    var strUploadType = "";
+                    var strInputFileId = guidNumber();
+                    var objWrapper = $(this);
+                    var objInputFile = $('input[type="file"]', objWrapper);
+                    
+                    //Component type configuration AJAX or prepared for remoting.
+                    var strUploadType =  objWrapper.attr('upload-type');
+                    var strParentId = objWrapper.attr('parent-id');
+                    var strUploadBase64Function = objWrapper.attr('upload-base-64-function');
+                    var strOnCompleteFunction = objWrapper.attr('on-complete-function');
+                    
+                    //Component elements configuration.
+                    var strAddMultipleElements = objWrapper.attr('add-multiple-elements');
+                    var strUploadLabel = objWrapper.attr('upload-label');
+                    var strRemoveLabel = objWrapper.attr('remove-label');
+                    var strCancelLabel = objWrapper.attr('cancel-label');
+                    var strBrowseLabel = objWrapper.attr('browse-label');
+                    var strDropZoneLabel = objWrapper.attr('drop-zone-label');
+                    var strShowUpload = objWrapper.attr('show-upload');
+                    var strShowRemove = objWrapper.attr('show-remove');
+                    var strShowClose = objWrapper.attr('show-close');
+                    var strShowCancel = objWrapper.attr('show-cancel');
+                    var strShowPreview = objWrapper.attr('show-preview');
+                    var strShowCaption = objWrapper.attr('show-caption');
+                    var strAddMultipleElements = objWrapper.attr('add-multiple-elements');
+                    var strPlaceholder = objWrapper.attr('placeholder');
+                    var strAllowedFileExtensions = objWrapper.attr('allowed-file-extensions');
+                    var strMaxFileSize = objWrapper.attr('max-file-size');
+                    var strMaxFileCount = objWrapper.attr('max-file-count');
+                    var intMaxFileSize;
+                    var intMaxFileCount;
+                    var arrAllowedFileExtensions;
+                    
+                    //Containers.
+                    var strErrorMessageContainer = objWrapper.attr('error-message-container');
+                    var strPreviewContainer = objWrapper.attr('preview-container-container');
+                    var strPreviewImage = objWrapper.attr('preview-image-container');
+                    
+                    //Layout template.
+                    var strActionDelete = objWrapper.attr('action-delete-button');
+                    
+                    //Messages.
+                    var strInlineMessages = objWrapper.attr('inline-message');
+                    var strUploadMessageContainer = objWrapper.attr('upload-message-container');
+                    var strUploadErrorMessage = objWrapper.attr('upload-error-message');
+                    var strUploadSuccessMessage = objWrapper.attr('upload-success-message');
+                    var strManualControlResult = objWrapper.attr('manual-control-result');
+                    var boolShowUpload = true;
+                    var boolShowClose = false;
+                    var boolShowRemove = true;
+                    var boolShowCancel = false;
+                    var boolShowPreview = false;
+                    var boolShowCaption = true;
+                    var boolUploadAjaxToolkit = false;
+                    var boolUploadBase64 =  false;
+                    if(strShowUpload == 'false') {
+                        boolShowUpload = false;
+                    }
+                    if(strShowClose == 'true') {
+                        boolShowClose = true;
+                    }
+                    if(strShowRemove == 'false') {
+                        boolShowRemove = false;
+                    }
+                    if(strShowCancel == 'true') {
+                        boolShowCancel = true;
+                    }
+                    if(strShowPreview == 'true') {
+                        boolShowPreview = true;
+                    }
+                    if(strShowCaption == 'false') {
+                        boolShowCaption = false;
+                    }
+                    if(strAddMultipleElements == 'true') {
+                        objInputFile.attr('multiple','');
+                    }
+                    if(stringIsBlank(strDropZoneLabel)) {
+                        strDropZoneLabel = '{!JSENCODE($Label.InputFilesComponent_InputFileDragDrop_CF)}';
+                    }
+                    if(stringIsNotBlank(strAllowedFileExtensions)) {
+                        strAllowedFileExtensions = strAllowedFileExtensions.replace(/\.|\s|\"/g,'');
+                        arrAllowedFileExtensions = strAllowedFileExtensions.split(",");
+                    }
+                    if(stringIsNotBlank(strMaxFileSize) && !isNaN(strMaxFileSize)) {
+                        intMaxFileSize = strMaxFileSize * intMBSize;
+                    }
+                    if(stringIsBlank(strMaxFileCount) && isNaN(strMaxFileCount)) {
+                        intMaxFileCount = intDefaultMaxFileCount;
+                    } else {
+                        intMaxFileCount = strMaxFileCount;
+                    }
+                    
+                    //Setting custom attribute to final component.
+                    objInputFile.attr('input-file-id', strInputFileId);
+                    objInputFile.attr('inline-message', strInlineMessages);
+                    objInputFile.attr('upload-message-container', strUploadMessageContainer);
+                    objInputFile.attr('upload-error-message', strUploadErrorMessage);
+                    objInputFile.attr('upload-success-message', strUploadSuccessMessage);
+                    objInputFile.attr('manual-control-result', strManualControlResult);
+                    
+                    //Upload type setup
+                    if(stringIsNotBlank(strUploadType)) {
+                         switch(strUploadType) {
+                            case strUploadTypeBase64:
+                                objInputFile.attr('upload-type', strUploadTypeBase64);
+                                objInputFile.attr('upload-base-64-function', strUploadBase64Function);
+                            break;
+                            case strUploadTypeAjaxToolkit:
+                                objInputFile.attr('upload-type', strUploadTypeAjaxToolkit);
+                                objInputFile.attr('parent-id', strParentId);
+                                objInputFile.attr('on-complete-function', strOnCompleteFunction);
+                            break;
+                            default:
+                                console.log('{!JSENCODE($Label.ValidationsComponent_InputFileTypeErrorMessage_CF)}');
+                            break;
+                         }
+                    }
+                    
+                    //Component configuration.
+                    var objConfigurationParameters = {
+                        language: strLanguage,
+                        allowedFileExtensions: arrAllowedFileExtensions,
+                        
+                        //Labels.
+                        uploadLabel: strUploadLabel,
+                        removeLabel: strRemoveLabel,
+                        cancelLabel: strCancelLabel,
+                        browseLabel: strBrowseLabel,
+                        dropZoneTitle: strDropZoneLabel,
+                        
+                        //Max Size
+                        maxFileSize: intMaxFileSize,
+                        msgSizeTooLarge: '{!JSENCODE($Label.InputFilesComponent_InputFilesSizeLimit_CF)}',
+                        
+                        //Buttons.
+                        showUpload: boolShowUpload,
+                        showCancel: boolShowCancel,
+                        showRemove: boolShowRemove,
+                        showClose: boolShowClose,
+                        showUpload: boolShowUpload,
+                        uploadClass: "btn btn-primary",
+                        removeClass: "btn btn-primary",
+                        cancelClass: "btn btn-primary",
+                        
+                        //Component Preview.
+                        showPreview: boolShowPreview,
+                        showCaption: boolShowCaption,
+                        
+                        //Component Limits.
+                        initialCaption: strPlaceholder,
+                        maxFileCount: intMaxFileCount,
+                        
+                        //AJAX Asyncronous upload.
+                        uploadUrl: 'null',
+                        uploadAsync: true,
+                        
+                        //Additional parameters.
+                        elErrorContainer: strErrorMessageContainer,
+                        elPreviewContainer: strPreviewContainer,
+                        elPreviewImage: strPreviewImage,
+                        layoutTemplates: {
+                            actionDelete: strActionDelete
+                        }
+                    };
+                    
+                    //Initializing plugin.
+                    objInputFile.fileinput(objConfigurationParameters);
+                    
+                    // Handler to execute custom logic to fill array with files to be uploaded.
+                    objInputFile.on('fileloaded', function(event, file, previewId, index, reader) {
+                        var strShowSpinner = $(event.currentTarget).parent().parent().parent().attr('show-spinner');
+                        if(strShowSpinner != 'false') {
+                            spinner(true);
+                        }
+                        var reader = new FileReader();
+                        var file = file;
+                        reader.file = file;
+                        reader.onload = function(event) {
+                            var filetype = file.type;
+                            var filename = file.name;
+                            var fileContent = String(event.target.result);
+                            var index = fileContent.indexOf('base64,');
+                            var attachBody = fileContent.substring(index + 7);
+                            try {
+                                if(stringIsNotBlank(strUploadType)) {
+                                    switch(strUploadType) {
+                                        case strUploadTypeBase64:
+                                            var objFileBase64 = {name: filename,
+                                                    contentType: filetype,
+                                                    body: attachBody,
+                                                    description: filename};
+                                            filesBase64[strInputFileId + '&&&' + filename + '&&&' + file.size] = objFileBase64
+                                        break;
+                                        case strUploadTypeAjaxToolkit:
+                                            var attachment = new sforce.SObject('Attachment');
+                                            attachment.Name = filename;
+                                            attachment.ContentType = filetype;
+                                            attachment.Body = attachBody;
+                                            attachment.IsPrivate = false;
+                                            attachment.Description = filename;
+                                            attachments[strInputFileId + '&&&' + filename + '&&&' + file.size] = attachment;
+                                        break;
+                                        default:
+                                            console.log('{!JSENCODE($Label.ValidationsComponent_InputFileTypeErrorMessage_CF)}');
+                                        break;
+                                    }
+                                }
+                            } catch(error) {
+                                console.log(error);
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                        spinner(false);
+                    });
+
+                    //Handler to execute custom logic to delete from list of attachments.
+                    objInputFile.on('filecleared', function(event) {
+                        try {
+                            strSelectedInputFileId = $(event.currentTarget).attr('input-file-id');
+                            strSelectedUploadType = $(event.currentTarget).attr('upload-type');
+                            if(stringIsNotBlank(strUploadType)) {
+                                switch(strSelectedUploadType) {
+                                    case strUploadTypeBase64:
+                                        for (strIndex in filesBase64) {
+                                            if (filesBase64[strIndex] != null && strIndex.indexOf(strSelectedInputFileId)== 0) {
+                                                delete filesBase64[strIndex];
+                                            }
+                                        }
+                                    break;
+                                    case strUploadTypeAjaxToolkit:
+                                        for (strIndex in attachments) {
+                                            if (attachments[strIndex] != null && strIndex.indexOf(strSelectedInputFileId)== 0) {
+                                                delete attachments[strIndex];
+                                            }
+                                        }
+                                    break;
+                                    default:
+                                        console.log('{!JSENCODE($Label.ValidationsComponent_InputFileTypeErrorMessage_CF)}');
+                                    break;
+                                }
+                            }
+                        } catch(error) {
+                            console.log(error);
+                        }
+                    });
+                    
+                     // Handler to execute custom logic to upload attachments via AJAX toolkit.
+                    objInputFile.on('filelock', function(event, filestack, extraData) {
+                        var strShowSpinner = $(event.currentTarget).parent().parent().parent().attr('show-spinner');
+                        if(strShowSpinner != 'false') {
+                            spinner(true);
+                        }
+                    });
+                    
+                    // Handler to execute custom logic when uploading process has finish.
+                    objInputFile.on('fileunlock', function(event, filestack, extraData) {
+                        var boolResult = false;
+                        var strUploadInlineMessages = "";
+                        var selectedAttachments = {};
+                        var selectedFilesBase64 = {};
+                        var uploadedFiles = {};
+                        var boolManualControlResult =  false;
+                        var intAlertType = "";
+                        var strMessage = "";
+                        objCurrentTarget = $(event.currentTarget);
+                        strUploadInlineMessages = objCurrentTarget.attr('inline-message');
+                        strSelectedInputFileId =objCurrentTarget.attr('input-file-id');
+                        strSelectedUploadType = objCurrentTarget.attr('upload-type');
+                        strUploadMessageContainer = objCurrentTarget.attr('upload-message-container');
+                        strUploadErrorMessage = objCurrentTarget.attr('upload-error-message');
+                        strUploadSuccessMessage = objCurrentTarget.attr('upload-success-message');
+                        strManualControlResult = objCurrentTarget.attr('manual-control-result');
+                        hideAlert(strUploadMessageContainer);
+                        hideAlert('.inlineAlert');
+                        if(stringIsNotBlank(strManualControlResult) && strManualControlResult == 'true') {
+                            boolManualControlResult = true;
+                        }
+                        if(stringIsNotBlank(strSelectedUploadType)) {
+                            switch(strSelectedUploadType) {
+                                case strUploadTypeBase64:
+                                    var strUploadBase64Function = objCurrentTarget.attr('upload-base-64-function');
+                                    for (strIndex in filesBase64) {
+                                        if (filesBase64[strIndex] != null && strIndex.indexOf(strSelectedInputFileId) == 0) {
+                                            selectedFilesBase64[strIndex] = filesBase64[strIndex];
+                                        }
+                                    }
+                                    if(stringIsNotBlank(strUploadBase64Function) && selectedFilesBase64 != null) {
+                                        eval(strUploadBase64Function);
+                                        boolResult = boolEvalFunctionInputFileResult;
+                                        
+                                        //Cleaning uploaded files list.
+                                        if(boolResult != null) {
+                                            boolEvalFunctionInputFileResult = null;
+                                            if(boolResult){
+                                                for(strIndex in selectedFilesBase64) {
+                                                    if(strIndex.indexOf(strSelectedInputFileId) == 0) {
+                                                        delete filesBase64[strIndex];
+                                                    }
+                                                }
+                                            }
+                                            uploadedFiles = selectedFilesBase64;
+                                        }
+                                    }
+                                break;
+                                case strUploadTypeAjaxToolkit:
+                                    var strSelectedParentId = objCurrentTarget.attr('parent-id');
+                                    var strOnCompleteFunction = objCurrentTarget.attr('on-complete-function');
+                                    var strUploadedFiles = "";
+                                    for (strIndex in attachments) {
+                                        if (attachments[strIndex] != null && strIndex.indexOf(strSelectedInputFileId) == 0) {
+                                            selectedAttachments[strIndex] = attachments[strIndex];
+                                        }
+                                    }
+                                    if(stringIsNotBlank(strSelectedParentId) && selectedAttachments != null) {
+                                        boolResult = uploadFiles(selectedAttachments, strSelectedParentId);
+                                        
+                                        //Cleaning uploaded files list.
+                                        if(boolResult) {
+                                            for(strIndex in selectedAttachments) {
+                                                if(strIndex.indexOf(strSelectedInputFileId) == 0) {
+                                                    delete attachments[strIndex];
+                                                }
+                                            }
+                                            uploadedFiles = selectedAttachments;
+                                            for(strIndex in uploadedFiles) {
+                                                var arrRules = strIndex.split('&&&');
+                                                strUploadedFiles = strUploadedFiles.concat(arrRules[intFileNameIndexPosition]+ ", ").toString();
+                                            }
+                                             intAlertType = intAlertTypeSuccess;
+                                             strMessage = strUploadedFiles + " " + strUploadSuccessMessage;
+                                        } else {
+                                            intAlertType = intAlertTypeDanger;
+                                            strMessage = strUploadErrorMessage;
+                                        }
+                                        
+                                        //On complete.
+                                        if(typeof strOnCompleteFunction !== "undefined"  && strOnCompleteFunction != null) {
+                                            eval(strOnCompleteFunction);
+                                        }
+                                    }
+                                break;
+                                default:
+                                    console.log('{!JSENCODE($Label.ValidationsComponent_InputFileTypeErrorMessage_CF)}');
+                                break;
+                            }
+                            objInputFile.fileinput('clear');
+                            if(!boolManualControlResult) {
+                                var boolUploadInlineMessages = false;
+                                if(strUploadInlineMessages == 'true') {
+                                    boolUploadInlineMessages = true;
+                                }
+                                if(boolUploadInlineMessages) {
+                                    showInlineAlert(objInputFile.closest('inputfile'), intAlertType, strMessage, null, false);
+                                } else {
+                                    showAlert(strUploadMessageContainer, intAlertType, strMessage, null, false);
+                                }
+                                spinner(false);
+                            }
+                        }
+                    });
+                });
+            }  
+        }
+
+        /*
+         * Allows to control the result of uploading files.
+         *
+         * @param objContainerSelector  jQuery object / selector.
+         * @param intAlertType  Alert type.
+         * @param strMessage    Message to be displayed.
+         */
+        function showUploadResult(objContainerSelector, intAlertType, strMessage) {
+            var objComponent = getJQueryObject(objContainerSelector);
+            showAlert(objComponent, intAlertType, strMessage, null, false);
+            spinner(false);
+        }
+        
+        /*
+         * Upload attachment files.
+         *
+         * @param attachments   Files.
+         * @param strParentId   Case Id.
+         */
+        function uploadFiles(attachments, strParentId) {
+            var result = false;
+            var objComponent;
+            if(strParentId != null && strParentId != '') {
+                try {
+                    var attachList = [];
+                      var hasAttachments = false;
+                      var i;
+                      for (i in attachments) {
+                          if (attachments[i] != null && typeof attachments[i] !== 'function') {
+                              attachments[i].ParentId = strParentId;
+                              attachList.push(attachments[i]);
+                              hasAttachments = true;
+                          }
+                      }
+                      if (hasAttachments) {
+                        sforce.connection.sessionId = '{!GETSESSIONID()}';
+                        var results = sforce.connection.create(attachList);
+                        if(results.length > 0) {
+                            var result = true;
+                        }
+                      }
+                } catch (error) {
+                    console.log(error);
+                    console.log(error.message);
+                }
+            }
+            return result;
+        }
+    </script>
+</apex:component>

@@ -1,0 +1,2547 @@
+<!--
+/**
+ * Visualforce Page for Framework Components.
+ * <p /><p />
+ * @author Alejandro Cajica
+ */
+-->
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" showChat="false" controller="ExamplesController_CF" docType="html-5.0" action="{!customFrameworkExamplesAction}" lightningStylesheets="false">
+    <c:FrameworkBaseComponent_CF boolBaseStyle="true" boolValidations="true" boolCalendars="true" boolDataTables="true" boolCharts="true" boolInputFiles="true" boolMultiSelects="true"
+            boolCustomStyle="false" boolWizards="true" boolLightningAssets="true" />
+    <script> 
+
+        //Global variables.
+        objDefaultLineChartOptions  = {
+            title : {
+                text: 'Line Chart Example',
+                subtext: 'Subtitle',
+                triggerEvent: true
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['Volume','Weight']
+            },
+            toolbox : objFullFeaturesToolbox,
+            calculable : true,
+            xAxis : [
+                {
+                type : 'category',
+                boundaryGap : false,
+                data : ['0','10','22','30','40','50','60']
+                }
+            ],
+            yAxis : [
+                {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} Measure'
+                }
+                }
+            ],
+            series : [
+                {
+                name:'Volume',
+                type:'line',
+                data:[11, 11, 15, 13, 12, 13, 10],
+                markPoint : {
+                    data : [
+                        {type : 'max', name: 'Top', symbolSize: 50},
+                        {type : 'min', name: 'Bottom', symbolSize: 50}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name: 'Average Volume'}
+                    ]
+                }
+                },
+                {
+                name:'Weight',
+                type:'line',
+                data:[1, -2, 2, 5, 3, 2, 0],
+                markPoint : {
+                    data : [
+                        {name : 'name', value : -2, xAxis: 1, yAxis: -1.5, symbolSize:50}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name : 'Average weight'}
+                    ]
+                }
+                }
+            ]
+        };
+        var objDefaultPieChartOptions1 = {
+            title: {
+                x: 'center',
+                y: 'top',
+                itemGap: 45,
+                textStyle: {
+                    fontSize: 14,
+                    fontWeight: 'bolder'
+                },
+                subtextStyle: {
+                    color: SFDCText,
+                    fontSize: 18,
+                    fontWeight: 'bolder'
+                }
+            },
+            tooltip: {
+                show: true,
+                formatter: "{b} : {c}"
+            },
+            legend: {
+                show: false,
+                orient: 'horizontal',
+                x: 'center',
+                y: 'bottom',
+                data: [],
+                textStyle: {
+                    fontSize: 9,
+                    color: 'transparent'
+                },
+            },
+            calculable: false,
+            series: [{
+                type: 'pie',
+                radius: ['50%', '65%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    }
+                }
+            }]
+        };
+        var objUsedSection = {
+            normal : {
+                color: standardBlue
+            },
+            emphasis: {
+                color: SFDCBlack
+            }
+        };
+        var objEmptySection = {
+            normal : {
+                color: SFDCGrey
+            },
+            emphasis: {
+                color: SFDCBlack
+            }
+        };
+        var objDefaultPieChartOptions2 = {
+            title: {
+                subtext: '30',
+                x: 'center',
+                y: 'top',
+                itemGap: 45,
+                textStyle: {
+                    fontSize: 14,
+                    fontWeight: 'bolder'
+                },
+                subtextStyle: {
+                    color: SFDCText,
+                    fontSize: 18,
+                    fontWeight: 'bolder'
+                },
+            },
+            tooltip: {
+                show: true,
+                formatter: "{b} : {c}"
+            },
+            legend: {
+                show: false,
+                orient: 'horizontal',
+                x: 'center',
+                y: 'bottom',
+                data: [],
+                textStyle: {
+                    fontSize: 9,
+                    color: 'transparent'
+                },
+            },
+            toolbox: objRestoreToolbox,
+            calculable: false,
+            series: [{
+                type: 'pie',
+                radius: ['70%', '80%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    }
+                },
+                data:[
+                    {value: 30, name: 'Not assigned', itemStyle: {normal : {color:SFDCGrey}}},
+                    {value: 70, name: 'Delayed', itemStyle: {normal : {color:standardYellow}}},
+                    {value: 70, name: 'Cancelled', itemStyle: {normal : {color:standardRed}}},
+                    {value: 70, name: 'Finish', itemStyle: {normal : {color:mediumGreen}}}
+                ],
+            }]
+        };
+        var objDefaultPieChartOptions3 = {
+            title: {
+                subtext: '30',
+                x: 'center',
+                y: 'top',
+                itemGap: 45,
+                textStyle: {
+                    fontSize: 14,
+                    fontWeight: 'bolder'
+                },
+                subtextStyle: {
+                    color: SFDCText,
+                    fontSize: 18,
+                    fontWeight: 'bolder'
+                },
+            },
+            tooltip: {
+                show: true,
+                formatter: "{b} : {c}"
+            },
+            legend: {
+                show: false,
+                orient: 'horizontal',
+                x: 'center',
+                y: 'bottom',
+                data: [],
+                textStyle: {
+                    fontSize: 9,
+                    color: 'transparent'
+                },
+            },
+            toolbox: objDataViewToolbox,
+            calculable: false,
+            series: [{
+                type: 'pie',
+                radius: ['50%', '60%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    }
+                },
+                data:[
+                    {value: 30, name: 'In Progress', itemStyle: {normal : {color:standardBlue}}},
+                    {value: 70, name: 'Empty', itemStyle: {normal : {color:SFDCGrey}}}
+                ],
+            }]
+        };
+        var objDefaultPieChartOptions4 = {
+           title: {
+                subtext: '30',
+                x: 'center',
+                y: 'top',
+                itemGap: 45,
+                textStyle: {
+                    fontSize: 14,
+                    fontWeight: 'bolder'
+                },
+                subtextStyle: {
+                    color: SFDCText,
+                    fontSize: 18,
+                    fontWeight: 'bolder'
+                },
+            },
+            tooltip: {
+                show: true,
+                formatter: "{b} : {c}"
+            },
+            legend: {
+                show: false,
+                orient: 'horizontal',
+                x: 'center',
+                y: 'bottom',
+                data: [],
+                textStyle: {
+                    fontSize: 9,
+                    color: 'transparent'
+                },
+            },
+            toolbox: objSaveAsImageToolbox,
+            calculable: false,
+            series: [{
+                type: 'pie',
+                radius: ['50%', '60%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    }
+                },
+                data:[
+                    {value: 30, name: 'In Progress', itemStyle: {normal : {color:standardBlue}}},
+                    {value: 70, name: 'Empty', itemStyle: {normal : {color:SFDCGrey}}}
+                ],
+            }]
+        };
+        var objDefaultBarChartOptions1 = {
+            title : {
+                text: 'Prices Histogram',
+                subtext: 'Year 2020',
+                triggerEvent: true
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                show : true,
+                data:['Base Price','Real Price']
+            },
+            toolbox: objSaveAsImageToolbox,
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : ['Jan','Feb','Mar','Abr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'Base Price',
+                    type:'bar',
+                    data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: 'Top', symbolSize:50},
+                            {type : 'min', name: 'Low', symbolSize:50}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: 'Average Price'}
+                        ]
+                    }
+                },
+                {
+                    name:'Real Price',
+                    type:'bar',
+                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                    markPoint : {
+                        data : [
+                            {name : 'Strategy Goal', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:50},
+                            {name : 'Corporate Goal', value : 2.3, xAxis: 11, yAxis: 3, symbolSize:50}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : 'Average Real Price'}
+                        ]
+                    }
+                }
+            ]
+        };
+        var objDefaultBarChartOptions2 = {
+            title: {
+                x: 'center',
+                text: 'Multiple Colors Bar Chart Example',
+                subtext: 'Subtitle Example',
+                link: 'google.com'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            toolbox: objDataViewToolbox,
+            calculable: true,
+            grid: {
+                borderWidth: 0,
+                y: 80,
+                y2: 60
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    show: false,
+                    data: [ 'Line', 'Bar', 'Scatter', 'K', 'Pie', 'Radar', 'Chord', 'Force', 'Map', 'Gauge', 'Funnel']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    show: false
+                }
+            ],
+            series: [
+                {
+                    name: 'Examples of statistics',
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: function (params) {
+                                return objStandardColorPalette[params.dataIndex]
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: '{b} \n {c}'
+                            }
+                        }
+                    },
+                    data: [12,21,10,4,12,5,6,5,25,23,7],
+                    markPoint: {
+                        tooltip: {
+                            trigger: 'item',
+                            backgroundColor: 'rgba (0,0,0,0)',
+                            formatter: function (params) {
+                                return '<img src = "' + Params.data.symbol.replace('image: //', '') + '" /> ';
+                            }
+                        },
+                        data: [
+                            {XAxis: 0, y: 350, name: 'Line', symbolSize: 20},
+                            {XAxis: 1, y: 350, name: 'Bar', symbolSize: 20},
+                            {XAxis: 2, y: 350, name: 'Scatter', symbolSize: 20},
+                            {XAxis: 3, y: 350, name: 'K', symbolSize: 20},
+                            {XAxis: 4, y: 350, name: 'Pie', symbolSize: 20},
+                            {XAxis: 5, y: 350, name: 'Radar', symbolSize: 20},
+                            {XAxis: 6, y: 350, name: 'Chord', symbolSize: 20},
+                            {XAxis: 7, y: 350, name: 'Force', symbolSize: 20},
+                            {XAxis: 8, y: 350, name: 'Map', symbolSize: 20},
+                            {XAxis: 9, y: 350, name: 'Gauge', symbolSize: 20},
+                            {XAxis: 10, y: 350, name: 'Funnel', symbolSize: 20},
+                        ]
+                    }
+                }
+            ]
+        };
+        objDefaultRoseChartOptions = {
+            title : {
+                text: 'Rose Pie Chart',
+                subtext: 'Example',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                x : 'center',
+                y : 'bottom',
+                data:['Product 1','Product 2','Product 3','Product 4','Product 5','Product 6','Product 7','Product 8']
+            },
+            toolbox : objFullFeaturesToolbox,
+            calculable : true,
+            series : [
+                {
+                    name:'Radius Mode',
+                    type:'pie',
+                    radius : [20, 110],
+                    center : ['25%', 200],
+                    roseType : 'radius',
+                    width: '40%',       // for funnel
+                    max: 40,            // for funnel
+                    itemStyle : {
+                        normal : {
+                            label : {show : false},
+                            labelLine : {show : false}
+                        },
+                        emphasis : {
+                            label : {show : true},
+                            labelLine : {show : true}
+                        }
+                    },
+                    data:[
+                        {value:10, name:'Product 1'},
+                        {value:5,  name:'Product 2'},
+                        {value:15, name:'Product 3'},
+                        {value:25, name:'Product 4'},
+                        {value:20, name:'Product 5'},
+                        {value:35, name:'Product 6'},
+                        {value:30, name:'Product 7'},
+                        {value:40, name:'Product 9'}
+                    ]
+                },
+                {
+                    name:'Area mode',
+                    type:'pie',
+                    radius : [30, 110],
+                    center : ['75%', 200],
+                    roseType : 'area',
+                    x: '50%',               // for funnel
+                    max: 40,                // for funnel
+                    sort : 'ascending',     // for funnel
+                    data:[
+                        {value:10, name:'Product 1'},
+                        {value:5,  name:'Product 2'},
+                        {value:15, name:'Product 3'},
+                        {value:25, name:'Product 4'},
+                        {value:20, name:'Product 5'},
+                        {value:35, name:'Product 6'},
+                        {value:30, name:'Product 7'},
+                        {value:40, name:'Product 9'}
+                    ]
+                }
+            ]
+        };
+
+        //On document ready.
+        $(document).ready(function() {
+
+            //Updating page messages on page loading.
+            updateStandardPageMessagesComponent($("[id$='message']"));
+
+            //Creating autocomplete field.
+            attachAutoComplete(3, '#htmlField', searchExample, selectExample, resultExample);
+
+            //Creating custom table
+            var objDataTableCustomProperties = {
+                "columnDefs":[{"type":'natural-nohtml',"targets":1}],
+            }
+            createDataTable('.dataTable-custom', intDataTableTypeCustom, objDataTableCustomProperties);
+
+            //echarts
+            //Configuring dinamically.
+            objDefaultPieChartOptions1.legend.data = [];
+            objDefaultPieChartOptions1.legend.data.push('3');
+            objDefaultPieChartOptions1.legend.data.push('4');
+            objDefaultPieChartOptions1.title.text = "Title";
+            objDefaultPieChartOptions1.title.subtext ="Subtext";
+            objDefaultPieChartOptions1.series[0].data = [
+                {value: 30,         name: 'used',   itemStyle: objUsedSection},
+                {value: 70,     name: 'Empty',  itemStyle: objEmptySection}
+            ];
+
+            //Creating echarts
+            $('#idPanelGraphs').on('shown.bs.collapse', function () {
+                createChart('#lineChart', objDefaultLineChartOptions);
+                var barchart = createChart('#barChart1', objDefaultBarChartOptions1);
+                createChart('#barChart2', objDefaultBarChartOptions2);
+                createChart('#pieChart1', objDefaultPieChartOptions1);
+                createChart('#pieChart2', objDefaultPieChartOptions2);
+                createChart('#pieChart3', objDefaultPieChartOptions3);
+                createChart('#pieChart4', objDefaultPieChartOptions4);
+                createChart('#roseChart', objDefaultRoseChartOptions);
+
+                barchart.on('click', function(params){
+                    console.log('params -> '+params);
+                });
+            })
+        });
+
+        /*
+         * Search example function.
+         *
+         * @param strQuery Query.
+         * @param response Response
+         */
+        function searchExample(strQuery, response) {
+            var objList = [];
+            ExamplesController_CF.remoteAction(strQuery, function(result, event) {
+                if(event.type != 'exception') {
+                    for(var intCounter = 0; intCounter < result.length; intCounter++){
+                        var objRecord = new Object();
+                        objRecord.strName = result[intCounter].strName;
+                        objRecord.strPosition = result[intCounter].strPosition;
+                        objRecord.strOffice = result[intCounter].strOffice;
+                        objRecord.strSalary = result[intCounter].strSalary;
+                        objList.push(objRecord);
+                    }
+                    response(objList);
+                }
+            });
+        }
+
+        /*
+         * Select example function.
+         */
+        function selectExample(event, ui) {
+            alert('On selection: ' + ui.item.strName);
+            $('#htmlField').val(ui.item.strName);
+            return false;
+        }
+
+        /*
+         * Result example function.
+         */
+        function resultExample(ul, item) {
+            return $("<li>")
+                    .append("<a>" + item.strName + "<br>" + item.strPosition + "</a>")
+                    .appendTo(ul);
+        }
+
+        /*
+         * Example for input file to upload files using remoting.
+         *
+         * @param lstFiles  List of files to be uploaded.
+         */
+        function myfunctionToApplyRemoting(lstFiles) {
+            boolEvalFunctionInputFileResult = true;
+            var strFiles = "";
+            for(strIndex in lstFiles) {
+                var arrRules = strIndex.split('&&&');
+                strFiles = strFiles.concat(arrRules[intFileNameIndexPosition]+ ", ").toString();
+            }
+            alert('Executing Base 64 Input File for: ' + strFiles);
+        }
+
+        /**
+         * This method is to detect if you are working on Salesforce Classic or Lightning
+         *
+         * @return True if detect salesforce theme.
+         */
+         function detectSalesforceTheme () {
+            if(typeof sforce !== "undefined"  && sforce != null && sforce && sforce.one) {
+                return true;
+            } else {
+                return false;
+            }
+         }
+    </script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="panel-group collapsible-group" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapse1">
+                        <h4 class="panel-title">
+                            External Collapsible panel - Expanded
+                            <i class="indicator glyphicon glyphicon-chevron-up" />
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="alert alert-success progress-bar-striped" role="alert">
+                                <a href="#" class="alert-link">This is a success message.</a>
+                            </div>
+                            <div class="alert alert-info progress-bar-striped" role="alert">
+                                <a href="#" class="alert-link">This is an info message.</a>
+                            </div>
+                            <div class="alert alert-warning progress-bar-striped" role="alert">
+                                <a href="#" class="alert-link">This is an alert message.</a>
+                            </div>
+                            <div class="alert alert-danger progress-bar-striped" role="alert">
+                                <a href="#" class="alert-link">This is an error message.</a>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="alertsLabel">Open alerts programatically: </label>
+                                    <br />
+                                    <button type="button" class="btn btn-default" onclick="showAlert('#alertContainer', intAlertTypeSuccess, 'Opening alert.', 'Id', false);">Open alert</button>&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-default" onclick="hideAlert('#alertContainer');">Close alert</button>
+                                    <div id="alertContainer" />
+                                    <br />
+                                    <label for="alertsLabel">Convert apex:pageMessages into custom alerts: </label>
+                                    <br />
+                                    <apex:form >
+                                        <apex:commandButton styleClass="btn btn-default" action="{!fatal}" value="AJAX call" oncomplete="updateStandardPageMessagesComponent('message');" rerender="message"/>
+                                        &nbsp;
+                                        <apex:commandButton styleClass="btn btn-default" action="{!success}" value="Fully rerendered"/>
+                                        <br />
+                                        <br />
+                                        <apex:pageMessages id="message" />
+                                    </apex:form>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="alertsLabel">Focus Area Functionality: </label>
+                                    <br />
+                                        <button type="button" class="btn btn-default focusArea" focusTile="#idPanel1">Focus Panel 1</button>&nbsp;&nbsp;
+                                        <button type="button" class="btn btn-default focusArea" focusTile="#idPanel2">Focus Panel 2</button>
+                                    <div id="alertContainer" />
+                                    <br />
+                                    <label for="alertsLabel">Additional Focus Area Functionality: </label>
+                                    <br />
+                                        <button type="button" class="btn btn-default focusArea" focusTile="#idPanel3">Focus Panel 3</button>&nbsp;&nbsp;
+                                        <button type="button" id="idPanel4" class="btn btn-default focusArea idPanel" focusTile="#idPanel4">Focus Panel 4</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Toast functionality: </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-default" onClick="showToast(4000, 'This is an Alert on a Toast', intAlertTypeSuccess, strAlertPositionTop); 
+                                            return false;">Success Toast</button>&nbsp;&nbsp;
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-default" onClick="showToast(4000, 'This is an Alert on a Toast', intAlertTypeWarning, strAlertPositionBottom); 
+                                            return false;">Warning Toast</button>&nbsp;&nbsp;
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-default" onClick="showToast(4000, 'This is an Alert on a Toast', intAlertTypeDanger, strAlertPositionLeft); 
+                                            return false;">Danger Toast</button>&nbsp;&nbsp;
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-default" onClick="showToast(4000, 'This is an Alert on a Toast', '', strAlertPositionCustom, 'right: 10%; bottom: 10%;'); 
+                                            return false;">Default Toast</button>&nbsp;&nbsp;
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-default" onClick="showToast(4000, 'This is an Alert on a Toast', intAlertTypeInfo, strAlertPositionRight); 
+                                            return false;">Info Toast</button>&nbsp;&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="idPanelGraphs" class="idPanel panel-group collapsible-group" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseGraphTab">
+                        <h4 class="panel-title">
+                            Graphs
+                            <i class="indicator glyphicon glyphicon-chevron-up"/>
+                        </h4>
+                    </div>
+                    <div id="collapseGraphTab" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                 <div class="col-md-12">
+                                    <div class="row">
+                                         <div class="col-md-12">
+                                            <h4>Graphs</h4>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-12">
+                                            <div id="lineChart" style="height:255px;" />
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-12">
+                                            <div id="barChart1"  style="height:255px;" />
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-12">
+                                            <div id="barChart2"  style="height:255px;" />
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div id="pieChart1" style="height:150px;" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div id="pieChart2" style="height:150px;" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div id="pieChart3" style="height:150px;" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div id="pieChart4" style="height:150px;" />
+                                                </div>
+                                            </div>
+                                         </div>
+                                         <div class="col-md-6">
+                                            <div id="roseChart" style="height:450px;" />
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-6">
+                                            <H4>Color Palette for Charts</H4>
+                                         </div>
+                                    </div>
+                                    <div class="row">
+                                         <div class="col-md-6">
+                                            <style>
+                                                .palette td{
+                                                    width: 200px;
+                                                    height: 20px;
+                                                }
+                                            </style>
+                                            <table class="palette">
+                                                <tr>
+                                                    <td>neutralGrey</td>
+                                                    <td>fairGrey</td>
+                                                    <td>mediumGrey</td>
+                                                    <td>standardGrey</td>
+                                                    <td>deepGrey</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#E7E6E6 "/>
+                                                    <td style="background-color:#D0CECE "/>
+                                                    <td style="background-color:#C0C0C0 "/>
+                                                    <td style="background-color:#969696 "/>
+                                                    <td style="background-color:#333333 "/>
+                                                </tr>
+                                                <tr>
+                                                    <td>neutralBlue</td>
+                                                    <td>fairBlue</td>
+                                                    <td>mediumBlue</td>
+                                                    <td>standardBlue</td>
+                                                    <td>deepBlue</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#D8DDE6 "/>
+                                                    <td style="background-color:#95AEC5 "/>
+                                                    <td style="background-color:#0C8EFF "/>
+                                                    <td style="background-color:#005FB2 "/>
+                                                    <td style="background-color:#00396B "/>
+                                                </tr>
+                                                <tr>
+                                                    <td>neutralTurquoise</td>
+                                                    <td>fairTurquoise</td>
+                                                    <td>mediumTurquoise</td>
+                                                    <td>standardTurquoise</td>
+                                                    <td>deepTurquoise</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#ADF7E6 "/>
+                                                    <td style="background-color:#50E3C2 "/>
+                                                    <td style="background-color:#34B59D "/>
+                                                    <td style="background-color:#00C6B7 "/>
+                                                    <td style="background-color:#22A48A "/>
+                                                </tr>
+                                                <tr>
+                                                    <td>neutralGreen</td>
+                                                    <td>fairGreen </td>
+                                                    <td>mediumGreen</td>
+                                                    <td>standardGreen</td>
+                                                    <td>deepGreen</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#CDDE8E"/>
+                                                    <td style="background-color:#BDD25F "/>
+                                                    <td style="background-color:#5FCC64 "/>
+                                                    <td style="background-color:#04844b "/>
+                                                    <td style="background-color:#32AF5C "/>
+                                                </tr>
+                                                <tr>
+                                                    <td>neutralYellow</td>
+                                                    <td>fairYellow</td>
+                                                    <td>mediumYellow</td>
+                                                    <td>standardYellow</td>
+                                                    <td>deepYellow</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#F7DD93 "/>
+                                                    <td style="background-color:#F2CF5B "/>
+                                                    <td style="background-color:#E7DA35 "/>
+                                                    <td style="background-color:#FFB75d "/>
+                                                    <td style="background-color:#F8B156 "/>
+                                                </tr>
+                                                <tr>
+                                                    <td>neutralRed</td>
+                                                    <td>fairRed</td>
+                                                    <td>mediumRed</td>
+                                                    <td>standardRed</td>
+                                                    <td>deepRed</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#FEB8C7 "/>
+                                                    <td style="background-color:#FF7B84 "/>
+                                                    <td style="background-color:#E15D76 "/>
+                                                    <td style="background-color:#C23934 "/>
+                                                    <td style="background-color:#D95879 "/>
+                                                </tr>
+                                            </table>
+                                         </div>
+                                         <div class="col-md-6">
+                                            <table class="palette">
+                                                <tr>
+                                                    <td>SFDCText</td>
+                                                    <td>SFDCLightText</td>
+                                                    <td>SFDCBlack</td>
+                                                    <td>SFDCGrey</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#54698D "/>
+                                                    <td style="background-color:#D8DDE6 "/>
+                                                    <td style="background-color:#444444 "/>
+                                                    <td style="background-color:#E0E5EE "/>
+                                                    <td style="background-color: "/>
+                                                </tr>
+                                            </table>
+                                         </div>
+                                    </div>
+                                    <div class="customDivider" />
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="idPanel3" class="idPanel panel-group collapsible-group" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#collapseTabs">
+                            <h4 class="panel-title">
+                                Tabs
+                                <i class="indicator glyphicon glyphicon-chevron-up" />
+                            </h4>
+                        </div>
+                        <div id="collapseTabs" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="alertsLabel">Horizontal Tabs:</label>
+                                        <br />
+                                        <div>
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li role="presentation" class="active">
+                                                    <a href="#vertical-tab1" aria-controls="vertical-tab1" role="tab" data-toggle="tab">Tab 1</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#vertical-tab2" aria-controls="vertical-tab2" role="tab" data-toggle="tab">Tab 2</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#vertical-tab3" aria-controls="vertical-tab3" role="tab" data-toggle="tab">Tab 3</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#vertical-tab4" aria-controls="vertical-tab4" role="tab" data-toggle="tab">Tab 4</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div role="tabpanel" class="tab-pane fade in active" id="vertical-tab1">Content Tab 1</div>
+                                                <div role="tabpanel" class="tab-pane fade" id="vertical-tab2">Content Tab 2</div>
+                                                <div role="tabpanel" class="tab-pane fade" id="vertical-tab3">Content Tab 3</div>
+                                                <div role="tabpanel" class="tab-pane fade" id="vertical-tab4">Content Tab 4</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="customDivider" />
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="alertsLabel">Vertical Tabs (Left):</label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <ul class="nav nav-tabs tabs-left" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#horizontal-left-tab1" aria-controls="horizontal-left-tab1" role="tab" data-toggle="tab">Tab 1</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#horizontal-left-tab2" aria-controls="horizontal-left-tab2" role="tab" data-toggle="tab">Tab 2</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#horizontal-left-tab3" aria-controls="horizontal-left-tab3" role="tab" data-toggle="tab">Tab 3</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#horizontal-left-tab4" aria-controls="horizontal-left-tab4" role="tab" data-toggle="tab">Tab 4</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade in active" id="horizontal-left-tab1">Content Tab 1</div>
+                                            <div role="tabpanel" class="tab-pane fade" id="horizontal-left-tab2">Content Tab 2</div>
+                                            <div role="tabpanel" class="tab-pane fade" id="horizontal-left-tab3">Content Tab 3</div>
+                                            <div role="tabpanel" class="tab-pane fade" id="horizontal-left-tab4">Content Tab 4</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="customDivider" />
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade in active" id="horizontal-right-tab1">Content Tab 1</div>
+                                            <div role="tabpanel" class="tab-pane fade" id="horizontal-right-tab2">Content Tab 2</div>
+                                            <div role="tabpanel" class="tab-pane fade" id="horizontal-right-tab3">Content Tab 3</div>
+                                            <div role="tabpanel" class="tab-pane fade" id="horizontal-right-tab4">Content Tab 4</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <ul class="nav nav-tabs tabs-right" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#horizontal-right-tab1" aria-controls="horizontal-right-tab1" role="tab" data-toggle="tab">Tab 1</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#horizontal-right-tab2" aria-controls="horizontal-right-tab2" role="tab" data-toggle="tab">Tab 2</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#horizontal-right-tab3" aria-controls="horizontal-right-tab3" role="tab" data-toggle="tab">Tab 3</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a href="#horizontal-right-tab4" aria-controls="horizontal-right-tab4" role="tab" data-toggle="tab">
+                                                    Tab 4
+                                                    <i class="fa fa-camera-retro fa-5x icon-electric-blue"></i>
+                                                    <div>Example inside tab.</div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="alertsLabel">Vertical Tabs (right):</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="idPanel5" class="idPanel panel-group collapsible-group" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#collapseWizard">
+                            <h4 class="panel-title">
+                                Wizard
+                                <i class="indicator glyphicon glyphicon-chevron-up" />
+                            </h4>
+                        </div>
+                        <div id="collapseWizard" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="wizard">
+                                            <div class="wizardPage" default-buttons="true">
+                                                <h3>Page 1</h3>
+                                            </div>
+                                            <div class="wizardPage" default-buttons="true" run-validations-on-next-default-buttons="true">
+                                                Page 2
+                                                <input type="text" id="validationWizard" name="validationWizard" value="" class="form-control" placeholder="This is a placeholder."
+                                                        validation-activated="true" validate-required="true" validate-required-alert-type="4"
+                                                        validate-required-error-message="Required field."
+                                                        validation-inline-message="true" />
+                                            </div>
+                                            <div class="wizardPage" default-buttons="true" additional-bottom-elements-container="#extraSection">
+                                                <span>Span here</span>
+                                                Page 3
+                                                <span id="extraSection">This is an extra section <a>link</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <apex:form >
+                    <div id="idPanel1" class="idPanel panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="htmlField">HTML field + Autocomplete (RemoteAction)</label>
+                                        <input type="text" id="htmlField" name="htmlField" value="" class="form-control" placeholder="This is a placeholder." />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="inputText">apex:inputText - masked</label>
+                                        <apex:inputText id="inputText" value="{!strInputText}" styleClass="form-control maskField" html-masking-pattern="000-00-0000"
+                                                html-placeholder="000-00-0000" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="inputField">apex:inputField - Calendar only Date</label>
+                                        <input type="text" id="calendarField" name="calendarField" value="" class="form-control calendar" calendar-format="MM/DD/YYYY" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="htmlTextArea">HTML Text Area</label>
+                                        <textarea id="htmlTextArea" name="htmlTextArea" class="form-control" rows="3" placeholder="This is a placeholder." />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="radio1">Radio buttons - Group</label>
+                                        <input type="radio" id="radio1" name="radios" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="radio2">Radio buttons - Group</label>
+                                        <input type="radio" id="radio2" name="radios" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="checkbox">Checkbox field</label>
+                                        <input type="checkbox" id="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="picklist">Picklist</label>
+                                        <select class="form-control" id="picklist">
+                                            <option value="value1">Option 1</option>
+                                            <option value="value2">Option 2</option>
+                                            <option value="value3">Option 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="picklist">Multi-select Picklist - Default</label>
+                                        <br />
+                                        <select class="form-control defaultMultiselectPicklist" id="multiselectpicklist">
+                                            <option value="value1">Option 1</option>
+                                            <option value="value2">Option 2</option>
+                                            <option value="value3">Option 3</option>
+                                            <option value="value4">Option 4</option>
+                                        </select>
+                                        <button type="button" class="btn btn-default" onclick="alert($('#multiselectpicklist').val());">Get values.</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="picklist">Multi-select Picklist - Select All</label>
+                                        <br />
+                                        <select class="form-control selectAllMultiselectPicklist" id="multiselectpicklistAll">
+                                            <option value="value1">Option 1</option>
+                                            <option value="value2">Option 2</option>
+                                            <option value="value3">Option 3</option>
+                                            <option value="value4">Option 4</option>
+                                        </select>
+                                        <button type="button" class="btn btn-default" onclick="alert($('#multiselectpicklistAll').val());">Get values.</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="picklist">Multi-select Picklist - Filtering</label>
+                                        <br />
+                                        <select class="form-control filterMultiselectPicklist" id="multiselectpicklistFilter">
+                                            <option value="value1">Option 1</option>
+                                            <option value="value2">Option 2</option>
+                                            <option value="value3">Option 3</option>
+                                            <option value="value4">Option 4</option>
+                                        </select>
+                                        <button type="button" class="btn btn-default" onclick="alert($('#multiselectpicklistFilter').val());">Get values.</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="picklist">Multi-select Picklist - Select All and Filtering</label>
+                                        <br />
+                                        <select class="form-control selectAllAndFilterMultiselectPicklist" id="multiselectpicklistAllFilter">
+                                            <option value="value1">Option 1</option>
+                                            <option value="value2">Option 2</option>
+                                            <option value="value3">Option 3</option>
+                                            <option value="value4">Option 4</option>
+                                        </select>
+                                        <button type="button" class="btn btn-default" onclick="alert($('#multiselectpicklistAllFilter').val());">Get values.</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="customDivider" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Input file - Attachments</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id= "uploadMessagesAttachments"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Single-select - Input File</label>
+                                            <inputFile class="inputFile file"
+                                                upload-type = "attach"
+                                                parent-id = "{!strLeadIdForAttachments}"
+                                                upload-label = "Upload file" remove-label = "Delete files" browse-label = "Attach File"
+                                                show-upload = "true"
+                                                show-caption = "false"
+                                                show-preview = "true"
+                                                add-multiple-elements = "false"
+                                                placeholder = "Select file"
+                                                inline-message = "false"
+                                                upload-message-container = "#uploadMessagesAttachments"
+                                                upload-error-message = "There is an error to get fixed"
+                                                upload-success-message = "Upload succesful">
+                                                <input type="file" />
+                                            </inputFile>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Multi-select - Input File</label>
+                                    <!-- Use parent-id:         to determine parent to add attachment-->
+                                    <!-- Use class inputFile:   to configure plugin (Can change)-->
+                                    <!-- Use class file:        to add plugin (Cannot be change)-->
+                                    <inputFile class="inputFile file"
+                                        upload-type = "attach"
+                                        parent-id = "{!strLeadIdForAttachments}"
+                                        upload-label = "Attach to:"
+                                        remove-label = "Delete Selection"
+                                        browse-label = "Browse"
+                                        show-upload = "true"
+                                        add-multiple-elements = "true"
+                                        placeholder = "Select files"
+                                        inline-message="true"
+                                        upload-message-container="#uploadMessages"
+                                        upload-error-message="There is an error to get fixed"
+                                        upload-success-message="Upload succesful">
+                                       <apex:inputFile value="{!objAttachment.body}" filename="{!objAttachment.name}" id="file2"/>
+                                    </inputFile>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a onclick = "openSubTabAndFocus('/{!strLeadIdForAttachments}','Lead example')" >Files are going to be updated to lead: {!strLeadIdForAttachments}</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Input file - Base64</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id= "uploadMessagesBase64"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Single-select - Input File</label>
+                                            <inputFile class="inputFile file"
+                                                    upload-type = "base64"
+                                                    upload-base-64-function = "var boolResult = myfunctionToApplyRemoting(filesBase64);"
+                                                    upload-label = "Upload file" remove-label = "Delete files" browse-label = "Attach File"
+                                                    show-upload = "true"
+                                                    add-multiple-elements = "false"
+                                                    placeholder = "Select file"
+                                                    inline-message = "false"
+                                                    upload-message-container = "#uploadMessagesBase64"
+                                                    upload-error-message = "There is an error to get fixed"
+                                                    upload-success-message = "Upload succesful">
+                                                <input type="file" />
+                                            </inputFile>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Multi-select - Input File</label>
+                                    <!-- Use parent-id:         to determine parent to add attachment-->
+                                    <!-- Use class inputFile:   to configure plugin (Can change)-->
+                                    <!-- Use class file:        to add plugin (Cannot be change)-->
+                                    <!-- Use upload-type:       to define metho to upload files.
+                                                    Available values: attach, base64 -->
+                                    <inputFile class="inputFile file"
+                                            upload-type = "base64"
+                                            upload-base-64-function = "var boolResult = myfunctionToApplyRemoting(filesBase64);"
+                                            upload-label = "Attach to:"
+                                            remove-label = "Delete Selection"
+                                            browse-label = "Browse"
+                                            show-upload = "true"
+                                            add-multiple-elements = "true"
+                                            placeholder = "Select files"
+                                            inline-message="true"
+                                            upload-message-container="#uploadMessages"
+                                            upload-error-message="There is an error to get fixed"
+                                            upload-success-message="Upload succesful">
+                                        <apex:inputFile value="{!objAttachment.body}" filename="{!objAttachment.name}" id="file"/>
+                                    </inputFile>
+                                </div>
+                            </div>
+                            <div class="customDivider" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>Validations: </h4>
+                                    <button type="button" class="btn btn-default" onclick="alert('Are all the fields valid? ' + validateFields());">Fire all validations.</button>
+                                    <button type="button" class="btn btn-default" onclick="validateFields('#validation4');">Validate only specific field.</button>
+                                    <button type="button" class="btn btn-default" onclick="clearValidations('#validation4');">Clear specific field.</button>
+                                    <button type="button" class="btn btn-default" onclick="clearValidations();">Clear all validations.</button>
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.groupValidation');">Validate specific group of fields.</button>
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.validationFocusOnFail');">Focus on fail.</button>
+                                    <br />
+                                    <br />
+                                    <div id="validationContainer1" />
+                                    <div id="validationContainer2" />
+                                    <br />
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation1">Input Text - Inline error message</label>
+                                        <input type="text" id="validation1" name="validation1" value="" class="form-control" placeholder="This is a placeholder."
+                                                validation-activated="true" validate-required="true" validate-required-alert-type="4"
+                                                validate-required-error-message="Required field."
+                                                validate-minimum-length="3" validate-minimum-length-error-message="Minimum 3 characters."
+                                                validate-maximum-length="10" validate-maximum-length-error-message="Maximum 10 characters."
+                                                validation-inline-message="true" validation-message-container="#validationContainer1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation1">Input Text - Error message in container</label>
+                                        <apex:inputText id="validation2" value="{!strInputText}" styleClass="form-control maskField" html-masking-pattern="000-00-0000"
+                                                html-placeholder="000-00-0000" html-validation-activated="true" html-validate-required="true"
+                                                html-validate-required-alert-type="3" html-validate-on-change="true"
+                                                html-validate-required-error-message="Masked Required field."
+                                                html-validation-inline-message="false" html-validation-message-container="#validationContainer1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation3">Input Text - Validation disabled</label>
+                                        <apex:inputText id="validation3" value="{!strInputText}" styleClass="form-control calendar"
+                                                html-calendar-format="MM/DD/YYYY" html-validation-activated="false" html-validate-required="true"
+                                                html-validate-required-alert-type="2"
+                                                html-validate-required-error-message="Required field."
+                                                html-validation-inline-message="false" html-validation-message-container="#validationContainer1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation4">Text Area - Regex - Different alert type</label>
+                                        <textarea id="validation4" name="validation4" class="form-control" rows="3" placeholder="This is a placeholder."
+                                                validation-activated="true" validate-required="true" validate-required-alert-type="1"
+                                                validate-required-error-message="Text area Required field." validate-regex-alert-type="1"
+                                                validate-regex="[0-9 -()+]+$" validate-regex-error-message="Only numbers."
+                                                validation-inline-message="false" validation-message-container="#validationContainer2" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation5">Radio buttons - Group - Field 1 - Any option required</label>
+                                        <input type="radio" id="validation5" name="radios" value="value1" class="groupValidation"
+                                                validation-activated="true" validate-on-change="false" validate-specific-value="value2"
+                                                validate-specific-value-alert-type="3"
+                                                validate-specific-value-error-message="Please select Radio 2."
+                                                validate-required="true" validate-required-alert-type="1"
+                                                validate-required-error-message="Radio Required field."
+                                                validation-inline-message="true" validation-message-container="#validationContainer1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation6">Radio buttons - Group - Field 2 - Any option required</label>
+                                        <input type="radio" id="validation6" name="radios" value="value2" class="groupValidation"
+                                                validation-activated="true" validate-on-change="false" validate-specific-value="value2"
+                                                validate-specific-value-alert-type="3"
+                                                validate-specific-value-error-message="Please select Radio 2."
+                                                validate-required="true" validate-required-alert-type="1"
+                                                validate-required-error-message="Radio Required field."
+                                                validation-inline-message="true" validation-message-container="#validationContainer1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation7">Checkbox field - Required</label>
+                                        <input type="checkbox" id="validation7" validation-activated="true" class="groupValidation"
+                                                validate-required="true" validate-required-alert-type="1"
+                                                validate-required-error-message="Checkbox Required field."
+                                                validation-inline-message="false" validation-message-container="#validationContainer1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="validation8">Picklist - Specific value - Validate on Change</label>
+                                        <select class="form-control" id="validation8"
+                                                validation-activated="true" validate-on-change="true" validate-specific-value="value2"
+                                                validate-specific-value-alert-type="2"
+                                                validate-specific-value-error-message="Please select Option 2."
+                                                validation-inline-message="true" validation-message-container="#validationContainer2">
+                                            <option value="value1">Option 1</option>
+                                            <option value="value2">Option 2</option>
+                                            <option value="value3">Option 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row dates1">
+                                <div class="col-md-3">
+                                    <label for="validationBeforeToday">INPUT TEXT - SAME OR BEFORE TODAY</label>
+                                    <input type="text" id="validationBeforeToday" class="form-control calendar validateDates"
+                                        placeholder="MM/DD/YYYY"
+                                        calendar-format="MM/DD/YYYY"
+                                        validation-activated="true"
+                                        validation-inline-message="true"
+                                        validate-dateTime="true"
+                                        validate-dateTime-alert-types="4"
+                                        validate-dateTime-rules="isSameOrBefore---Today---MM/DD/YYYY"
+                                        validation-dateTime-error-messages="Select a date same or before today"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="validationAfterToday">INPUT TEXT - AFTER TODAY</label>
+                                    <input type="text" id="validationAfterToday" class="form-control calendar validateDates"
+                                        placeholder="MM/DD/YYYY"
+                                        calendar-format="MM/DD/YYYY"
+                                        validation-activated="true"
+                                        validation-inline-message="true"
+                                        validate-dateTime="true"
+                                        validate-dateTime-alert-types="4"
+                                        validate-dateTime-rules="isAfter---Today---MM/DD/YYYY"
+                                        validation-dateTime-error-messages="Select a date after today"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-default"  onclick="validateFields('.validateDates'); return false;">TEST DATES</button>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row dates2">
+                                <div class="col-md-3">
+                                    <label for="validationStartDate">INPUT TEXT - START DATE - BEFORE TODAY</label>
+                                    <input type="text" id="validationStartDate" class="form-control calendar startDate validateDates2"
+                                        placeholder="MM/DD/YYYY"
+                                        calendar-format="MM/DD/YYYY"
+                                        validation-activated="true"
+                                        validation-inline-message="true"
+                                        validate-dateTime="true"
+                                        validate-dateTime-alert-types="4"
+                                        validate-dateTime-rules="isSameOrBefore---Today---MM/DD/YYYY&&&isSameOrBefore---.endDate---MM/DD/YYYY"
+                                        validation-dateTime-error-messages="Select a date before today&&&Select a date before END DATE"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="validationEndDate">INPUT TEXT - END DATE - AFTER START DATE</label>
+                                    <input type="text" id="validationEndDate" class="form-control calendar endDate validateDates2"
+                                        placeholder="MM/DD/YYYY"
+                                        calendar-format="MM/DD/YYYY"
+                                        validation-activated="true"
+                                        validation-inline-message="true"
+                                        validate-dateTime="true"
+                                        validate-dateTime-alert-types="4"
+                                        validate-dateTime-rules="isAfter---Today---MM/DD/YYYY"
+                                        validation-dateTime-error-messages="Select a date after START DATE"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-default"  onclick="validateFields('.validateDates2'); return false;">TEST DATES</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.validationSpecificValue');">Specific Value</button>
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.validationValue1');">Minimum value</button>
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.validationValue2');">Maximum value</button>
+                                    <br />
+                                    <br />
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="validationSpecificValue">INPUT TEXT - SPECIFIC VALUE : 10</label>
+                                    <input type="text" id="validationSpecificValue" value="{!strInputText}" class="form-control validationSpecificValue validationFocusOnFail"
+                                            validation-activated= "true"
+                                            validate-specific-value="100"
+                                            validate-specific-value-alert-type="2"
+                                            validate-specific-value-error-message="Specific value is 100."
+                                            validation-inline-message="true"
+                                            validation-message-container="#validationContainer2"
+                                            validation-focus-on-fail="true"
+                                            validate-required="true" validate-required-alert-type="4"
+                                            validate-required-error-message="Required field." />
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="validationMinimumValue">INPUT TEXT - MINIMUM VALUE : 21</label>
+                                    <input type="text" id="validationMinimumValue" value="{!strInputText}" class="form-control validationValue1 validationFocusOnFail"
+                                            validate-minimum-value="21"
+                                            validate-minimum-value-error-message="Age value should be equals or more than 21 years."
+                                            validation-inline-message="true"
+                                            validation-activated= "true"
+                                            validation-message-container="#validationContainer2"
+                                            validation-focus-on-fail="true"
+                                            validate-required="true"
+                                            validate-required-alert-type="4"
+                                            validate-required-error-message="Required field." />
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="validationMaximumValue">INPUT TEXT - MAXIMUM VALUE : 40</label>
+                                    <input type="text" id="validationMaximumValue" value="{!strInputText}" class="form-control validationValue2 validationFocusOnFail"
+                                            validate-maximum-value="40"
+                                            validate-maximum-value-error-message="Age value should be equals or less than 40 years."
+                                            validation-inline-message="true"
+                                            validation-activated= "true"
+                                            validation-message-container="#validationContainer2"
+                                            validation-focus-on-fail="true"
+                                            validate-required="true"
+                                            validate-required-alert-type="4"
+                                            validate-required-error-message="Required field." />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.validationLength1');">Maximum Length</button>
+                                    <button type="button" class="btn btn-default" onclick="validateFields('.validationLength2');">Minimum Length</button>
+                                    <br />
+                                    <br />
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="validationMaximumLength">INPUT TEXT - MAXIMUM LENGTH</label>
+                                    <input type="text" id="validationMaximumLength" value="{!strInputText}"  class="form-control validationLength1 validationFocusOnFail"
+                                            validate-maximum-length="7"
+                                            validation-inline-message="true"
+                                            validate-maximum-length-error-message="Maximum length 7 characters."
+                                            validation-activated= "true"
+                                            validation-message-container="#validationContainer2"
+                                            validation-focus-on-fail="true"
+                                            validate-required="true"
+                                            validate-required-alert-type="4"
+                                            validate-required-error-message="Required field."/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="validationMinimumLength">INPUT TEXT - MINIMUM LENGTH</label>
+                                    <input type="text" id="validationMinimumLength" value="{!strInputText}" class="form-control validationLength2 validationFocusOnFail"
+                                            validate-minimum-length="10"
+                                            validate-minimum-length-error-message="Minimum length 10 characters."
+                                            validation-inline-message="true"
+                                            validation-activated= "true"
+                                            validation-message-container="#validationContainer2"
+                                            validation-focus-on-fail="true"
+                                            validate-required="true"
+                                            validate-required-alert-type="4"
+                                            validate-required-error-message="Required field." />
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="checkbox">Spinner within specific section/card: </label>
+                                    <br />
+                                    <button type="button" class="btn btn-success" onclick="spinnerSection('#idPanel2', true);">Activate</button>&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-danger" onclick="spinnerSection('#idPanel2', false);">Deactivate</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="panel-group opaque-background collapsible-group internalPanelMargin" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" data-toggle="collapse" data-target="#collapse2">
+                                            <h4 class="panel-title">
+                                                Internal Collapsible panel
+                                                <i class="indicator glyphicon glyphicon-chevron-down" />
+                                            </h4>
+                                        </div>
+                                        <div id="collapse2" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label for="checkbox">Button group: </label>
+                                                        <br />
+                                                        <div class="btn-group" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default">Left</button>
+                                                            <button type="button" class="btn btn-default">Middle</button>
+                                                            <button type="button" class="btn btn-default">Right</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="checkbox">Button group (toggle): </label>
+                                                        <br />
+                                                        <div class="btn-group" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-default toggleButton">Left</button>
+                                                            <button type="button" class="btn btn-default toggleButton">Middle</button>
+                                                            <button type="button" class="btn btn-default toggleButton">Right</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="checkbox">Individual buttons: </label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-default">Default</button>
+                                                        <button type="button" class="btn btn-primary">Primary</button>
+                                                        <button type="button" class="btn btn-success">Success</button>
+                                                        <button type="button" class="btn btn-info">Info</button>
+                                                        <button type="button" class="btn btn-warning">Warning</button>
+                                                        <button type="button" class="btn btn-danger">Danger</button>
+                                                    </div>
+                                                </div>
+                                                <div class="customDivider" />
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label>Checkbox - Toggle:</label>
+                                                        <br />
+                                                        <label class="switch">
+                                                            <input type="checkbox" checked="checked" />
+                                                            <span class="slider round" />
+                                                        </label>
+                                                        <label class="switch">
+                                                            <input type="checkbox" />
+                                                            <span class="slider round" />
+                                                        </label>
+                                                        <label class="switch">
+                                                            <input type="checkbox" checked="checked" />
+                                                            <span class="slider" />
+                                                        </label>
+                                                        <label class="switch">
+                                                            <input type="checkbox" />
+                                                            <span class="slider" />
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>LIGHTNING - BUTTONS ICONS</label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-default btn-lightning">
+                                                            <i class="glyphicon glyphicon glyphicon-wrench btn-lightning-icon" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="customDivider" />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h1>Top divider</h1>
+                                                    </div>
+                                                    <div class="col-md-6 customDivider-vertical-left">
+                                                        <h2>Vertical divider</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="customDivider" />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h1>Header 1</h1>
+                                                        <h2>Header 2</h2>
+                                                        <h3>Header 3</h3>
+                                                        <h4>Header 4</h4>
+                                                        <h5>Header 5</h5>
+                                                        <h6>Header 6</h6>
+                                                        <br />
+                                                        <label for="checkbox">Popovers: </label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title"
+                                                                data-content="Popover content" data-placement="bottom">Toggle popover (click)</button>&nbsp;&nbsp;&nbsp;
+                                                        <button type="button" class="btn btn-lg btn-info" data-toggle="popover" title="Popover title"
+                                                                data-content="Popover content" data-trigger="hover">Toggle popover (hover)</button>
+                                                        <br />
+                                                        <br />
+                                                        <label for="checkbox">Spinner: </label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-success" onclick="spinner(true);">Activate</button>&nbsp;&nbsp;&nbsp;
+                                                        <button type="button" class="btn btn-danger" onclick="spinner(false);">Deactivate</button>
+                                                    </div>
+                                                    <div class="col-md-6 customDivider-vertical-left">
+                                                        <label for="checkbox">Labels: </label>
+                                                        <br />
+                                                        <span class="label label-default">Default</span>
+                                                        <span class="label label-primary">Primary</span>
+                                                        <span class="label label-success">Success</span>
+                                                        <span class="label label-info">Info</span>
+                                                        <span class="label label-warning">Warning</span>
+                                                        <span class="label label-danger">Danger</span>
+                                                        <br />
+                                                        <br />
+                                                        <label for="checkbox">Icons: </label>
+                                                        <br />
+                                                        <span style="font-size: 30px;">
+                                                            <i class="glyphicon glyphicon-info-sign icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-question-sign icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-usd icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-duplicate icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-pencil icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-ok icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-check icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-list-alt icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-briefcase icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-list-alt icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-home icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-user icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-plane icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-earphone icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-alert icon-electric-blue" />
+                                                            <i class="glyphicon glyphicon-plus icon-electric-blue" />
+                                                            <i class="fa fa-ambulance icon-electric-blue" />
+                                                            <i class="fa fa-h-square icon-electric-blue" />
+                                                            <i class="fa fa-heart icon-electric-blue" />
+                                                            <i class="fa fa-heart-o icon-electric-blue" />
+                                                            <i class="fa fa-heartbeat icon-electric-blue" />
+                                                            <i class="fa fa-hospital-o icon-electric-blue" />
+                                                            <i class="fa fa-medkit icon-electric-blue" />
+                                                            <i class="fa fa-plus-square icon-electric-blue" />
+                                                            <i class="fa fa-stethoscope icon-electric-blue" />
+                                                            <i class="fa fa-user-md icon-electric-blue" />
+                                                            <i class="fa fa-wheelchair icon-electric-blue" />
+                                                        </span>
+                                                        <br />
+                                                        <br />
+                                                        <label for="checkbox">Icon sizes: </label>
+                                                        <br />
+                                                        <i class="fa fa-camera-retro fa-lg icon-electric-blue"></i> fa-lg
+                                                        <i class="fa fa-camera-retro fa-2x icon-electric-blue"></i> fa-2x
+                                                        <i class="fa fa-camera-retro fa-3x icon-electric-blue"></i> fa-3x
+                                                        <i class="fa fa-camera-retro fa-4x icon-electric-blue"></i> fa-4x
+                                                        <i class="fa fa-camera-retro fa-5x icon-electric-blue"></i> fa-5x
+                                                        <br />
+                                                        <br />
+                                                        <label for="checkbox">Modals: </label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                                            Small modal
+                                                        </button>&nbsp;&nbsp;&nbsp;
+                                                        <a href="#" data-toggle="modal" data-target="#myModal2">Large Modal</a>&nbsp;&nbsp;&nbsp;
+                                                        <span style="cursor: pointer;" onclick="$('#myModal3').modal('show');">Span which opens modal programatically</span>&nbsp;&nbsp;&nbsp;
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4">
+                                                            Extra Large modal
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5">
+                                                            XL Modal Height control
+                                                        </button>
+                                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                            <div class="modal-dialog modal-sm" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="well well-sm" style="text-align: center;">
+                                                                            <span>Text text text text</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                            <div class="modal-dialog modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="well well-sm" style="text-align: center;">
+                                                                            <span>Text text text text</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Default size</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="well well-sm" style="text-align: center;">
+                                                                            <span>Text text text text</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                            <div class="modal-dialog modal-xl" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Title</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="well well-sm" style="text-align: center;">
+                                                                            <div class="row">
+                                                                                <div class="col-md-3">
+                                                                                    <label for="outputText1">Label</label>
+                                                                                    <br />
+                                                                                    <apex:outputText id="outputText1" value="Text" />
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <label for="outputText2">Label</label>
+                                                                                    <br />
+                                                                                    <apex:outputText id="outputText2" value="Text" />
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <label for="outputText3">Label</label>
+                                                                                    <br />
+                                                                                    <apex:outputText id="outputText3" value="Text" />
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <label for="outputText4">Label</label>
+                                                                                    <br />
+                                                                                    <apex:outputText id="outputText4" value="Text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <table class="display dataTable-full">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Name</th>
+                                                                                    <th>Position</th>
+                                                                                    <th>Office</th>
+                                                                                    <th>Status</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>Tiger Nixon</td>
+                                                                                    <td>System Architect</td>
+                                                                                    <td>Edinburgh</td>
+                                                                                    <td>
+                                                                                        <span class="label label-default">Default</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Garrett Winters</td>
+                                                                                    <td>Accountant</td>
+                                                                                    <td>Tokyo</td>
+                                                                                    <td>
+                                                                                        <span class="label label-primary">Primary</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Ashton Cox</td>
+                                                                                    <td>Junior Technical Author</td>
+                                                                                    <td>San Francisco</td>
+                                                                                    <td>
+                                                                                        <span class="label label-success">Success</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModal5">
+                                                            <div class="modal-dialog modal-xl" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Title</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <table class="display dataTable-full">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Name</th>
+                                                                                    <th>Position</th>
+                                                                                    <th>Office</th>
+                                                                                    <th>Status</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>Tiger Nixon</td>
+                                                                                    <td>System Architect</td>
+                                                                                    <td>Edinburgh</td>
+                                                                                    <td>
+                                                                                        <span class="label label-default">Default</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Garrett Winters</td>
+                                                                                    <td>Accountant</td>
+                                                                                    <td>Tokyo</td>
+                                                                                    <td>
+                                                                                        <span class="label label-primary">Primary</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Ashton Cox</td>
+                                                                                    <td>Junior Technical Author</td>
+                                                                                    <td>San Francisco</td>
+                                                                                    <td>
+                                                                                        <span class="label label-success">Success</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="customDivider" />
+                                                        <label>Enter id or VFP or URL to open in Classic</label>
+                                                        <br />
+                                                        <input class="form-control" id="openTabIdValue" type="text" value="/ExamplePageOpenTabAndSubtabClassic_CF" />
+                                                        <label>Is this a salesforce Id</label>
+                                                        <input id="openTabSubTabIsId" type="checkbox" />
+                                                        <br /> 
+                                                        
+                                                        <button type="button" class="btn btn-primary" onclick="if(detectSalesforceTheme()) {
+                                                                alert('You are not working in Salesforce Classic.\nVisualforce page will not open.\nSwitch to Salesforce Classic to open this Visualforce page in a new SubTab.');
+                                                                } else {
+                                                                openSubTabAndFocus($('#openTabIdValue').val(),'Sub Tab Name', $('#openTabSubTabIsId').is(':checked'));}">OPEN SUBTAB</button>
+                                                        <button type="button" class="btn btn-primary" onclick="if(detectSalesforceTheme()){
+                                                            alert('You are not working in Salesforce Classic.\nVisualforce page will not open.\nSwitch to Salesforce Classic to open this Visualforce page in a new Tab.');
+                                                            } else {var boolFlag2 = $('#openTabSubTabIsId').is(':checked'); openTab($('#openTabIdValue').val(),'Tab Name',boolFlag2);}">OPEN TAB</button>
+                                                        <br />
+                                                        <br />
+                                                        <label for="checkbox">Close current tab: </label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-primary" onclick="closeTab();">
+                                                            Close tab/Go back history/Close Browser tab
+                                                        </button>
+                                                        <div class="customDivider" />
+                                                        <label>Enter id or VFP or URL to open in Lightning</label>
+                                                        <br />
+                                                        <input class="form-control" id="openTabIdValue2" type="text" value="/ExamplePageOpenTabAndSubtabLightning_CF" />
+                                                        <label>Is this a salesforce Id</label>
+                                                        <input id="openTabSubTabIsId2" type="checkbox" />
+                                                        <br /> 
+                                                        
+                                                        <button type="button" class="btn btn-default" onclick="if(detectSalesforceTheme()) {
+                                                            openSubTabAndFocus($('#openTabIdValue2').val(), 'Sub Tab Name', $('#openTabSubTabIsId2').is(':checked'));
+                                                            } else {alert('You are not working in Lightning Experience.\nLightning page will not open.\nSwitch to Lightning Experience to open the Lightning page in a new SubTab.');}">OPEN SUBTAB</button>
+                                                        <button type="button" class="btn btn-default" onclick="if(detectSalesforceTheme()) {
+                                                            openTab($('#openTabIdValue2').val(), 'Tab Name', $('#openTabSubTabIsId2').is(':checked'));
+                                                            } else {alert('You are not working in Lightning Experience.\nLightning page will not open.\nSwitch to Lightning Experience to open the Lightning page in a new Tab.');}">OPEN TAB</button>
+                                                        <div class="customDivider" />
+                                                        <br />
+                                                        <label>Open/Close panel programatically: </label>
+                                                        <br />
+                                                        <button type="button" class="btn btn-primary" onclick="openClosePanel('#card4', true);">
+                                                            Open panel.
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" onclick="openClosePanel('#card4', false);">
+                                                            Close panel.
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="idPanel2" class="idPanel panel-group collapsible-group card" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#collapse3">
+                            <h4 class="panel-title">
+                                <i class="glyphicon glyphicon-cloud header-icon icon-electric-blue" />
+                                Card 1 - Pure HTML table - Full features
+                                <i class="indicator glyphicon glyphicon-chevron-down pull-right" />
+                            </h4>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="display dataTable-full">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Office</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tiger Nixon</td>
+                                            <td>System Architect</td>
+                                            <td>Edinburgh</td>
+                                            <td>$320,800</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Garrett Winters</td>
+                                            <td>Accountant</td>
+                                            <td>Tokyo</td>
+                                            <td>$170,750</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ashton Cox</td>
+                                            <td>Junior Technical Author</td>
+                                            <td>San Francisco</td>
+                                            <td>$86,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cedric Kelly</td>
+                                            <td>Senior Javascript Developer</td>
+                                            <td>Edinburgh</td>
+                                            <td>$433,060</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Airi Satou</td>
+                                            <td>Accountant</td>
+                                            <td>Tokyo</td>
+                                            <td>$162,700</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Brielle Williamson</td>
+                                            <td>Integration Specialist</td>
+                                            <td>New York</td>
+                                            <td>$372,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Herrod Chandler</td>
+                                            <td>Sales Assistant</td>
+                                            <td>San Francisco</td>
+                                            <td>$137,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rhona Davidson</td>
+                                            <td>Integration Specialist</td>
+                                            <td>Tokyo</td>
+                                            <td>$327,900</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Colleen Hurst</td>
+                                            <td>Javascript Developer</td>
+                                            <td>San Francisco</td>
+                                            <td>$205,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sonya Frost</td>
+                                            <td>Software Engineer</td>
+                                            <td>Edinburgh</td>
+                                            <td>$103,600</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jena Gaines</td>
+                                            <td>Office Manager</td>
+                                            <td>London</td>
+                                            <td>$90,560</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Quinn Flynn</td>
+                                            <td>Support Lead</td>
+                                            <td>Edinburgh</td>
+                                            <td>$342,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel-group collapsible-group card" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#collapse4">
+                            <h4 class="panel-title">
+                                <i class="glyphicon glyphicon-cog header-icon icon-electric-blue" />
+                                Card 2 - apex:dataTable - Plain table
+                                <i class="indicator glyphicon glyphicon-chevron-down pull-right" />
+                            </h4>
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <apex:dataTable value="{!lstRecords}" var="objRecord" id="theTable" rowClasses="odd, even" styleClass="display dataTable-plain">
+                                    <apex:column value="{!objRecord.strName}" headerValue="Name" />
+                                    <apex:column value="{!objRecord.strPosition}" headerValue="Position" />
+                                    <apex:column value="{!objRecord.strOffice}" headerValue="Office" />
+                                    <apex:column value="{!objRecord.strSalary}" headerValue="Salary" />
+                                </apex:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id ="customTableCard" class="panel-group collapsible-group card" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#collapse7">
+                            <h4 class="panel-title">
+                                <i class="glyphicon glyphicon-cog header-icon icon-electric-blue" />
+                                Card 5 - apex:dataTable - Custom table and sorting
+                                <i class="indicator glyphicon glyphicon-chevron-down pull-right" />
+                            </h4>
+                        </div>
+                        <div id="collapse7" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <apex:dataTable value="{!lstRecordsOrder}" var="objRecord" id="customSortTable" rowClasses="odd, even"
+                                            styleClass="display dataTable-custom">
+                                    <apex:column value="{!objRecord.strAlphaCode}" headerValue="Alpha Code - Standard Sort" />
+                                    <apex:column value="{!objRecord.strAlphaCode}" headerValue="Alpha Code - Custom Sort" />
+                                    <apex:column value="{!objRecord.strPosition}" headerValue="Position" />
+                                </apex:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <apex:form >
+                    <div class="panel-group collapsible-group card" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" data-toggle="collapse" data-target="#collapse5">
+                                <h4 class="panel-title">
+                                    <i class="glyphicon glyphicon-cog header-icon icon-electric-blue" />
+                                    Card 3
+                                    <i class="indicator glyphicon glyphicon-chevron-down pull-right" />
+                                    <apex:commandButton id="commandButton" value="Action Method" action="{!actionMethod}" onclick="alert('JavaScript actions.');"
+                                            styleClass="btn btn-primary pull-right panelHeader-button" />
+                                </h4>
+                            </div>
+                            <div id="collapse5" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="well well-sm">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="card1OutputText1">Label</label>
+                                                <br />
+                                                <apex:outputText id="card1OutputText1" value="Text" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="card1OutputText2">Label</label>
+                                                <br />
+                                                <apex:outputText id="card1OutputText2" value="Text" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="card1OutputText3">Label</label>
+                                                <br />
+                                                <apex:outputText id="card1OutputText3" value="Text" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText4">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText4" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText5">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText5" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText6">Label</label>
+                                            <br />
+                                            <span class="label label-info">Info</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText7">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText7" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText8">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText8" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">&nbsp;</div>
+                                    </div>
+                                    <div class="customDivider" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText9">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText9" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText10">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText10" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText11">Label</label>
+                                            <br />
+                                            <span class="label label-warning">Warning</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText12">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText12" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText13">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText13" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">&nbsp;</div>
+                                    </div>
+                                    <div class="customDivider" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText14">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText14" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText15">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText15" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText16">Label</label>
+                                            <br />
+                                            <span class="label label-danger">Danger</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText18">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText18" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="card1OutputText19">Label</label>
+                                            <br />
+                                            <apex:outputText id="card1OutputText19" value="Text" />
+                                        </div>
+                                        <div class="col-md-4">&nbsp;</div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <p data-toggle="modal" data-target="#myModal5">Modal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:form>
+            </div>
+            <div class="col-md-4">
+                <div id="card4" class="panel-group collapsible-group card" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#collapse6">
+                            <h4 class="panel-title">
+                                <i class="glyphicon glyphicon-cog header-icon icon-electric-blue" />
+                                Card 4
+                                <i class="indicator glyphicon glyphicon-chevron-down pull-right" />
+                            </h4>
+                        </div>
+                        <div id="collapse6" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <apex:dataTable value="{!lstRecords}" var="objRecord" id="theTable3" rowClasses="odd, even" styleClass="display dataTable-plain">
+                                    <apex:column value="{!objRecord.strName}" headerValue="Name" />
+                                    <apex:column value="{!objRecord.strPosition}" headerValue="Position" />
+                                </apex:dataTable>
+                                <div class="customDivider" />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="card2OutputText1">Label</label>
+                                        <br />
+                                        <apex:outputText id="card2OutputText1" value="Text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="card2OutputText2">Label</label>
+                                        <br />
+                                        <apex:outputText id="card2OutputText2" value="Text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="card2OutputText3">Label</label>
+                                        <br />
+                                        <apex:outputText id="card2OutputText3" value="Text" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="card2OutputText4">Label</label>
+                                        <br />
+                                        <apex:outputText id="card2OutputText4" value="Text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="card2OutputText5">Label</label>
+                                        <br />
+                                        <apex:outputText id="card2OutputText5" value="Text" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="card2OutputText6">Label</label>
+                                        <br />
+                                        <apex:outputText id="card2OutputText6" value="Text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel-group collapsible-group" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapse8">
+                        <h4 class="panel-title">
+                            Lightning Design System - Elements.
+                            <i class="indicator glyphicon glyphicon-chevron-up" />
+                        </h4>
+                    </div>
+                    <div id="collapse8" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>LIGHTNING - ICONS</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2" align="center">
+                                            <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+                                                <svg aria-hidden="true" class="slds-icon slds-icon--large">
+                                                  <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                                                </svg>
+                                                <figcaption class="slds-p-top--x-small slds-text-body--small">user</figcaption>
+                                            </html>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" align="center">
+                                            <a class="blueMCFont" onclick="openSubTabAndFocus('https://www.lightningdesignsystem.com/icons/');">Click here to view more Lightning Icons.</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>LIGHTNING - FONTS</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" align="justify">
+                                            <label>Body Size Default</label>
+                                            <br />
+                                            <div class="slds-text-body--regular">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                        <div class="col-md-4" align="justify">
+                                            <label>Body Size Small</label>
+                                            <br />
+                                            <div class="slds-text-body--small">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" align="justify">
+                                            <label>Heading Size Large</label>
+                                            <br />
+                                            <div class="slds-text-heading--large">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                        <div class="col-md-4" align="justify">
+                                            <label>Heading Size Medium</label>
+                                            <br />
+                                            <div class="slds-text-heading--medium">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                        <div class="col-md-4" align="justify">
+                                            <label>Heading Size Small</label>
+                                            <br />
+                                            <div class="slds-text-heading--small">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" align="justify">
+                                            <label>Color Weak</label>
+                                            <br />
+                                            <div class="slds-text-color--weak">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                        <div class="col-md-4" align="justify">
+                                            <label>Color error</label>
+                                            <br />
+                                            <div class="slds-text-color--error">The quick brown fox jumps over the lazy dog.</div>
+                                        </div>
+                                        <div class="col-md-4" align="justify">
+                                            <label>Color inverse</label>
+                                            <br />
+                                            <div style="padding: 0.5rem; background: rgb(22, 50, 92);">
+                                                <div class="slds-text-color--inverse">The quick brown fox jumps over the lazy dog.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                              <div class="slds-col">Lightning Design System Grid</div>
+                            </div>
+                            <div class="slds-grid">
+                              <div class="slds-col">col</div>
+                              <div class="slds-col">col</div>
+                            </div>
+                            <div class="slds-grid slds-grid--pull-padded">
+                              <div class="slds-col--padded">col--padded</div>
+                              <div class="slds-col--padded">col--padded</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel-group collapsible-group" data-chevron-down="glyphicon-chevron-down" data-chevron-up="glyphicon-chevron-up">
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapse9">
+                        <h4 class="panel-title">
+                            Integration Class - Example
+                            <i class="indicator glyphicon glyphicon-chevron-up" />
+                        </h4>
+                    </div>
+                    <div id="collapse9" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>Integration Details for Web Services - Git Example</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <apex:form >
+                                                <p>
+                                                    <button onclick="createIntegration(); return false;" class="btn">
+                                                        Click Me
+                                                    </button>
+                                                </p>
+                                                <p>
+                                                    This is the link for the lates created Integration detail Record. Once you click the button, the link will be updated.
+                                                    <apex:outputPanel id="showstate">
+                                                        <apex:outputLink value="/{!strIntegrationServiceRecordId}"> View Record Page </apex:outputLink>
+                                                    </apex:outputPanel>
+                                                </p>
+                                                <apex:actionFunction action="{!createIntegrationDetail}" name="createIntegration" rerender="showstate"/>
+                                            </apex:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="well well-sm" style="text-align: center;">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="outputText1">Label</label>
+                                <br />
+                                <apex:outputText id="outputText1" value="Text" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="outputText2">Label</label>
+                                <br />
+                                <apex:outputText id="outputText2" value="Text" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="outputText3">Label</label>
+                                <br />
+                                <apex:outputText id="outputText3" value="Text" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="outputText4">Label</label>
+                                <br />
+                                <apex:outputText id="outputText4" value="Text" />
+                            </div>
+                        </div>
+                    </div>
+                    <table class="display dataTable-full">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tiger Nixon</td>
+                                <td>System Architect</td>
+                                <td>Edinburgh</td>
+                                <td>
+                                    <span class="label label-default">Default</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Garrett Winters</td>
+                                <td>Accountant</td>
+                                <td>Tokyo</td>
+                                <td>
+                                    <span class="label label-primary">Primary</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ashton Cox</td>
+                                <td>Junior Technical Author</td>
+                                <td>San Francisco</td>
+                                <td>
+                                    <span class="label label-success">Success</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:page>

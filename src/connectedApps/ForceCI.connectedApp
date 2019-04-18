@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <canvasConfig>
+        <accessMethod>Post</accessMethod>
+        <canvasUrl>https://forcecicanvas.herokuapp.com/canvas</canvasUrl>
+        <samlInitiationMethod>None</samlInitiationMethod>
+    </canvasConfig>
+    <contactEmail>nagesingh@deloitte.com</contactEmail>
+    <description>https://forceci.herokuapp.com/</description>
+    <iconUrl>https://forcecicanvas.herokuapp.com/icon.png</iconUrl>
+    <infoUrl>https://forcecicanvas.herokuapp.com/welcome.jsp</infoUrl>
+    <label>ForceCI</label>
+    <logoUrl>https://forcecicanvas.herokuapp.com/logo.png</logoUrl>
+    <oauthConfig>
+        <callbackUrl>https://forcecicanvas.herokuapp.com/callback</callbackUrl>
+        <consumerKey>3MVG9d8..z.hDcPLDlm9QqJ3hRU.KdS7Xk42qe0NfUmuzlYhqcHo8736cLC2qevt0Nv.677tBRoq7hmF2TOdm</consumerKey>
+        <scopes>Basic</scopes>
+        <scopes>Chatter</scopes>
+    </oauthConfig>
+</ConnectedApp>

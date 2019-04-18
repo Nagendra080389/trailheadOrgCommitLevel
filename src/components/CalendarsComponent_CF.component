@@ -1,0 +1,223 @@
+<!--
+/**
+ * Visualforce Component - Calendar.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/moment-with-locales.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/moment-timezone-with-data.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.FrameworkBase_CF, 'js/bootstrap-datetimepicker.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.FrameworkBase_CF, 'css/bootstrap-datetimepicker.min.css')}" />
+    <script>
+        
+        // Global Variables
+        var strDefaultDateMaskPattern = '00/00/0000';
+        var strWidgetPositioningHorizontal = 'calendar-position-horizontal';
+        var strWidgetPositioningVertical = 'calendar-position-vertical';
+        var amPmDefinition = {
+          byPassKeys: [8, 9, 37, 38, 39, 40],
+          translation: {
+                        '0': {pattern: /[\d]/},
+                        '9': {pattern: /\d/, optional: true},
+                        '#': {pattern: /\d/, recursive: true},
+                        'P': {pattern: /[AaPp]/, optional: true},
+                        'p': {pattern: /[Mm]/, optional: true},
+                        'S': {pattern: /[a-zA-Z]/}
+                    }
+        };
+            
+        //On document ready.
+        $(document).ready(function() {
+            
+            //Creating calendars.
+            createCalendar('.calendar');
+            
+            //Enabling on Change  event for calendar components.
+            enableOnChangeDatepicker('.calendar');
+        });
+        
+        /*
+         * Creates a calendar.
+         *
+         * @param objContainerSelector   jQuery selector.
+         */
+        function createCalendar(objContainerSelector) {
+            if(objContainerSelector != null) {
+                var objComponent = getJQueryObject(objContainerSelector);
+                $(objComponent).each(function(index) {
+                    var objParameters = {};
+                    var formatPattern = $(this).attr(strDateTimeValidationCalendarFormatAttribute);
+                    var strPositionHorizontal = $(this).attr(strWidgetPositioningHorizontal);
+                    var strPositionVertical = $(this).attr(strWidgetPositioningVertical);
+                    var inputField;
+                    if($(this).is("input")) {
+                        inputField = $(this);
+                    } else {
+                        inputField = $(this).find('input');
+                    }
+                    if(stringIsNotBlank(strPositionHorizontal) || stringIsNotBlank(strPositionVertical)) {
+                        objParameters.widgetPositioning = {};
+                        if(stringIsNotBlank(strPositionHorizontal)) {
+                            objParameters.widgetPositioning.horizontal = strPositionHorizontal;
+                        }
+                        if(stringIsNotBlank(strPositionVertical)) {
+                            objParameters.widgetPositioning.vertical = strPositionVertical;
+                        }
+                    }
+                    if(inputField != null) {
+                        var strCurrentValue;
+                        var strValueAfterFormatCompletition = "";
+                        var valueCount = 0;
+                        var boolKeepCurrentValue = false;
+                        var boolKeepInvalid = true;
+                        strCurrentValue = inputField.val();
+                        if(!moment(strCurrentValue, formatPattern).isValid()) {
+                            strCurrentValue = "";
+                            inputField.val(strCurrentValue);
+                        }
+                        boolKeepCurrentValue = true;
+                        if($(this).attr("allow-manual-entry") == 'true') {
+                            boolKeepInvalid = false;
+                        }
+                        $(inputField).prop('onfocus', null);
+                        if(formatPattern != null) {
+                            objParameters.format = formatPattern;
+                            objParameters.keepInvalid = boolKeepInvalid;
+                            $(inputField).datetimepicker(objParameters);
+                        } else {
+                            $(inputField).datetimepicker(objParameters);
+                        }
+                        addValidationAttributes (this, formatPattern);
+                        if(stringIsNotBlank(strCurrentValue)) {
+                            strValueAfterFormatCompletition = moment(strCurrentValue).format(formatPattern); 
+                            $(this).val(strValueAfterFormatCompletition);
+                        }
+                        var strParentTag = $(inputField).parent().prop("tagName").toLowerCase();
+                        if(strParentTag == 'span' && $(inputField).parent().hasClass('dateInput')) {
+                            $(inputField).siblings().remove();
+                        }
+                    }
+                });
+            }
+        }
+        
+        /*
+         * Enables onChange event for Date Picker Components.
+         *
+         * @param objComponentSelector   jQuery selector.
+         */ 
+        function enableOnChangeDatepicker (objComponentSelector) {
+            var objComponent;
+            if(objComponentSelector != null) {
+                if(objComponentSelector instanceof jQuery) {
+                objComponent = objComponentSelector;
+                } else {
+                objComponent = $(objComponentSelector);
+                }
+
+                // Enable On Change Event
+                $('[validate-on-change="true"]').on('dp.change', objComponent, function() {
+                    validateFields('.callerDateOfCall');
+                });
+            }
+        }
+
+        /*
+         * Calculates default date to be presented in a field.
+         *
+         * @param objComponentSelector  Field(s) to validate.
+         * @param strDateRequired   Date to calculate.
+         */     
+        function defaultDate(objComponentSelector, strDateRequired) {
+            
+            var objComponent;
+            if(stringIsNotBlank(objComponentSelector) && objComponentSelector instanceof jQuery) {
+                objComponent = objComponentSelector;
+            } else if(stringIsNotBlank(objComponentSelector)){
+                objComponent = $(objComponentSelector);
+            }
+            
+            //Set Default Date.
+            var objParameters = {};
+            var strFormatPattern = objComponent.attr(strDateTimeValidationCalendarFormatAttribute);
+            var strPositionHorizontal = $(this).attr(strWidgetPositioningHorizontal);
+            var strPositionVertical = $(this).attr(strWidgetPositioningVertical);
+            if(stringIsNotBlank(strPositionHorizontal) || stringIsNotBlank(strPositionVertical)) {
+                objParameters.widgetPositioning = {};
+                if(stringIsNotBlank(strPositionHorizontal)) {
+                    objParameters.widgetPositioning.horizontal = strPositionHorizontal;
+                }
+                if(stringIsNotBlank(strPositionVertical)) {
+                    objParameters.widgetPositioning.vertical = strPositionVertical;
+                }
+            }
+            if(objComponent != null && stringIsNotBlank(strDateRequired)) {
+                var strReferenceDate = new Date();
+                switch(strDateRequired) {
+                    case strDateTimeSetDefaultToday:
+                        strDate = strReferenceDate;
+                    break;
+                    case strDateTimeSetDefaultYesterday:
+                        strDate = moment(strReferenceDate).add("-1", "day");
+                    break;
+                    case strDateTimeSetDefaultTomorrow:
+                        strDate = moment(strReferenceDate).add("1", "day");
+                    break;
+                }
+                
+                // Determine default date to be displayed.
+                objParameters.local = 'en';
+                objParameters.format = strFormatPattern;
+                objParameters.defaultDate = moment(strDate).hours(0).minutes(0).seconds(0).milliseconds(0);
+                (objComponent).datetimepicker(objParameters);    
+            }
+        }
+        
+        /*
+         * Add validation attributes to calendar.
+         *
+         * @param objComponentSelector   jQuery selector.
+         * @param strPattern
+         */ 
+        function addValidationAttributes (objComponentSelector, strPattern) {
+            if(objComponentSelector != null) {
+                var objComponent = getJQueryObject(objComponentSelector);
+                objComponent.addClass('calendarValidation');
+                if(strPattern != null) {
+                    if(!objComponent.is('[strDateTimeValidationCalendarFormatAttribute]')) {
+                        strPattern = strPattern.replace(/D|M|Y|h|m|s/g,"0");
+                        var strDatePattern = strPattern.replace(/a/gi,"Pp");
+                        strDatePattern = strPattern.replace(/LT/gi,"00:00 Pp");
+                        objComponent.attr('masking-pattern', strDatePattern);
+                    }
+                } else {
+                    objComponent.attr('masking-pattern', strDefaultDateMaskPattern);
+                }
+                 
+                if(!objComponent.hasClass('calendarValidation')) {
+                    objComponent.addClass('calendarValidation');
+                }
+                objComponent.unmask();
+                objComponent.removeClass('maskField');
+                $(objComponent).mask(strDatePattern, amPmDefinition);
+                
+                //Handlers
+                //Validate date logic
+                objComponent.blur(function() {
+                    var objCurrentCalendar = $(this);
+                    var formatPattern = objCurrentCalendar.attr(strDateTimeValidationCalendarFormatAttribute);
+                    var strCurrentValue = objCurrentCalendar.val();
+                    if (stringIsNotBlank(strCurrentValue)) {
+                         if(!moment(strCurrentValue, formatPattern, true).isValid()) {
+                            objCurrentCalendar.val("");
+                         } else {
+                            objCurrentCalendar.val(strCurrentValue.toUpperCase());
+                         }
+                    }
+                });
+            }   
+        }
+    </script>
+</apex:component>

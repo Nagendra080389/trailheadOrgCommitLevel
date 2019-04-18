@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Keyboard Shortcuts for CustomFramework.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>JSCode_CF__c</fullName>
+        <description>JS Code</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JS Code</inlineHelpText>
+        <label>JS Code</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <label>KeyboardShortcuts</label>
+    <visibility>Public</visibility>
+</CustomObject>

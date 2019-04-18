@@ -1,0 +1,10 @@
+<!--
+/**
+ * Description of the class
+ * <p /><p />
+ * @author nagesingh
+ */
+ -->
+
+<aura:event type="APPLICATION" description="TestEvent">
+</aura:event>

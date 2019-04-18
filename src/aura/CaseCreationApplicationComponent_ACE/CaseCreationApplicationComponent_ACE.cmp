@@ -1,0 +1,104 @@
+<!--
+ /**
+  * @CaseCreationEvent_ACE defined here as register event generates an Application Event as soon as a case is created. This event is then read by the
+  * CaseRelatedArticleComponent_ACE.cmp and it fires a query on server side to get the list of articles which is related to that word.
+  * <p /><p />
+  * @author Nagendra Singh
+  */
+ -->
+<aura:component description="CaseCreationApplicationComponent_ACE" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId"
+                controller="CaseCreationLightingController_ACE">
+
+	<!-- Attributes -->
+	<aura:attribute name="objCase" type="Case" default="{'sobjectType': 'Case','Status': '','Origin': '','Comments': ''}" access="global"/>
+	<aura:attribute name="boolSpinner" type="boolean" default="false"/>
+	<aura:attribute name="idContact" type="Id"/>
+	<aura:attribute name="boolError" type="Boolean"/>
+	<aura:attribute name="boolSuccess" type="Boolean"/>
+	<aura:attribute name="strErrorNumber" type="String"/>
+
+	<!-- Events -->
+	<aura:registerEvent name="caseCreationEvent" type="c:CaseCreationEvent_ACE"/>
+
+	<!-- Handlers -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<!-- Spinner tag -->
+	<aura:if isTrue="{!v.boolSpinner}">
+		<div aura:id="spinnerId" class="slds-spinner_container">
+			<div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+				<span class="slds-assistive-text">Loading</span>
+				<div class="slds-spinner__dot-a"></div>
+				<div class="slds-spinner__dot-b"></div>
+			</div>
+		</div>
+	</aura:if>
+
+	<!-- Header Section. -->
+	<div>
+		<div class="slds-page-header">
+			<div class="slds-media">
+				<div class="slds-media__body">
+					<div>
+					{!$Label.c.ApexUser}
+					</div>
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Create New Case">Create New Case
+						<span>
+                            <lightning:button aura:id="refreshScreen" class="slds-button slds-button_neutral" onclick="{!c.refreshScreen}"> Refresh </lightning:button>
+                        </span>
+					</h1>
+				</div>
+			</div>
+		</div>
+
+		<!-- Body Section. -->
+		<div class="slds-grid slds-wrap sldsWrapStyling">
+
+			<!-- Check to see if we need to show error message, else we check if we need to show success message else we show the form to create the case -->
+			<aura:if isTrue="{!v.boolError}">
+				<div class="errorDiv">
+					<h1 class="beautifyErrorMessage">An error has occurred <br/>
+						<span class="beautifyErrorNumber">{!v.strErrorNumber}</span>
+					</h1>
+				</div>
+				<aura:set attribute="else">
+					<aura:if isTrue="{!v.boolSuccess}">
+						<div>
+							<h1 class="beautifySuccessMessage">Case Created!</h1>
+						</div>
+						<aura:set attribute="else">
+							<!-- Create case form. -->
+							<div class="slds-size_1-of-2 formElementPadding">
+								<lightning:select aura:id="statusId" name="status" label="Status" required="true" messageWhenValueMissing="Please select a status">
+									<option value="">--None--</option>
+									<option value="new">New</option>
+									<option value="escalated">Escalated</option>
+									<option value="closed">Closed</option>
+								</lightning:select>
+							</div>
+							<div class="slds-size_1-of-2">
+								<lightning:select aura:id="originId" name="origin" label="Origin" required="true" messageWhenValueMissing="Please select an Orgin">
+									<option value="">--None--</option>
+									<option value="phone">Phone</option>
+									<option value="email">Email</option>
+									<option value="web">Web</option>
+								</lightning:select>
+							</div>
+							<div class="slds-size_1-of-1 buttonPadding">
+								<lightning:textarea aura:id="commentId" name="comments" required="true" value="{!v.objCase.Comments}" placeholder="Enter comments here"
+								                    label="Comments" messageWhenValueMissing="Comments required" minlength="3"/>
+							</div>
+							<div class="slds-size_1-of-2 buttonPadding" align="left">
+								<lightning:button aura:id="createCaseId" class="slds-button slds-button_brand" onclick="{!c.createCaseController}"> Create case Contact
+								</lightning:button>
+							</div>
+							<div class="slds-size_1-of-2 buttonPadding" align="right">
+								<lightning:button aura:id="clearFieldsId" class="slds-button slds-button_neutral" onclick="{!c.clearFields}"> Clear </lightning:button>
+							</div>
+						</aura:set>
+					</aura:if>
+				</aura:set>
+			</aura:if>
+		</div>
+	</div>
+</aura:component>

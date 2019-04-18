@@ -1,0 +1,14 @@
+<!--
+/**
+ * Description of the class
+ * <p /><p />
+ * @author nagesingh
+ */
+ -->
+<aura:documentation>
+	<aura:description>Documentation for camping</aura:description>
+	<aura:example name="camping" ref="camping" label="camping">
+		Example for camping
+	</aura:example>
+
+</aura:documentation>

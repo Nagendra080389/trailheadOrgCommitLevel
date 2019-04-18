@@ -1,0 +1,6 @@
+<!--
+ - Created by nagesingh on 3/28/2018.
+ -->
+
+<aura:component description="FoodzzComponent" implements="flexipage:availableForAllPageTypes">
+</aura:component>

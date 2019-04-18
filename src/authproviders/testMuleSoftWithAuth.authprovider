@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <consumerKey>dcd12d74562b4ab684c44169c8169bdc</consumerKey>
+    <consumerSecret>dLK3/TLlo0cQLN7shi84SndwKSK4puWGaJRrIPCWIcVwQRj3Ygtq1w==</consumerSecret>
+    <friendlyName>testMuleSoftWithAuth</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>Twitter</providerType>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+</AuthProvider>

@@ -1,0 +1,85 @@
+<!--
+/**
+ * Visualforce Page for Contact Management.
+ * <p /><p />
+ * @author Nikhil Palekar
+ */
+-->
+<apex:page id="idPage" sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0" controller="ContactsManagerController_ACE">
+    <c:FrameworkBaseComponent_CF boolCFBaseStyle="true"  boolCFDataTables="true" boolCFCharts="true" boolCFInputFiles="true" boolCFMultiSelects="true"
+                                 boolCFStyle="true" boolCFWizards="true" boolCFLightningAssets="true" />
+    <style>
+        .buttonAdjustment{
+            margin-top: 26px !important;
+            width: 50%;
+        }
+    </style>
+    <div class="container-fluid" id="idWrapper">
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <div class="slds-text-heading--large">{!$Label.Contact_Manager_ACE}</div>
+            </div>
+        </div>
+        <div id="idSuccessAlert">
+        </div>        
+        <div class="row">
+            <apex:form id="idForm">
+                <div class="col-md-3">
+                    <label for="idNewFirstName">{!$Label.First_Name_ACE}</label>
+                    <apex:inputText id="idNewFirstName" value="{!strNewFirstName}"
+                                    styleClass="form-control validationLength2 validationFocusOnFail"/>
+                </div>
+                <div class="col-md-3">
+                    <label for="idNewLastName">{!$Label.Last_Name_ACE}</label>
+                    <apex:inputText id="idNewLastName" value="{!strNewLastName}"
+                                    styleClass="form-control validationLength2 validationFocusOnFail"
+                                    required="true"/>
+                </div>
+                <div class="col-md-3" align="right">
+                    <apex:commandButton id="idNewButton" styleClass="btn btn-info buttonAdjustment"
+                                        action="{!createNewContact}" value="{!$Label.New_ACE}"
+                                        disabled="{!boolIsNewButtonDisabled}" reRender="idContactListPanel"
+                                        oncomplete="showAlert('#idSuccessAlert', intAlertTypeSuccess,
+                                                    'Contact created successfully.', 'Id', false);"/>
+                </div>
+                <div class="col-md-3" align="center">
+                    <apex:commandButton id="idSearchButton" styleClass="btn btn-success buttonAdjustment"
+                                        action="{!searchContacts}"
+                                        value="{!$Label.Search_ACE}" reRender="idContactListPanel, idNewButton" />
+                </div>
+            </apex:form>
+        </div>            
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <apex:outputPanel id="idContactListPanel">
+                    <table class="display dataTable">
+                        <thead>
+                            <tr>
+                                <th>{!$Label.First_Name_ACE}</th>
+                                <th>{!$Label.Last_Name_ACE}</th>
+                                <th>{!$Label.Link_ACE}</th>
+                                <th>{!$Label.Additional_Information_ACE}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" style="text-align:center"><apex:outputText value="{!$Label.No_Contacts_found_ACE}" rendered="{!boolIsResults}" /></td>
+                            </tr>
+                            <apex:repeat value="{!lstContactWrapper}" var="recordContact">
+                                <tr>
+                                    <td>{!recordContact.strFirstName}</td>
+                                    <td>{!recordContact.strLastName}</td>
+                                    <td>
+                                        <apex:outputLink value="/{!recordContact.strId}" target="_blank">
+                                        	{!$Label.View_Record_ACE}
+                                        </apex:outputLink></td>
+                                    <td>{!$Label.One_ACE} {!recordContact.strOne} <br/> {!$Label.Key_ACE} {!recordContact.strKey}</td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+            </div>
+        </div>
+    </div>    
+</apex:page>

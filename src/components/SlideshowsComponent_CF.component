@@ -1,0 +1,331 @@
+<!--
+/**
+ * Visualforce Component - Slideshows.
+ * <p /><p />
+ * @author Raymundo Rodríguez 
+ */ 
+-->
+<apex:component access="global">
+    <script>
+
+        //Global variables.
+        var intSlideshowTransitionSpeed = 300;
+
+        //On document ready.
+        $(document).ready(function() {
+
+            //Creating Slideshows.
+            createSlideshow('.slideshow');
+        });
+
+        /*
+         * Creates a slideshow component.
+         *
+         * @param objComponentSelector  Container.
+         * @param intLandingPage    Landing page.
+         */
+        function createSlideshow(objComponentSelector, intLandingPage) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var strSlideshowId = guidNumber();
+                var intNumberOfPages = 0;
+                var intTotalNumberOfPages = $('div.slideshowPage', objContainer).length;
+                objContainer.attr('slideshow-id', strSlideshowId);
+                objContainer.css('overflow-y', 'hidden');
+                objContainer.css('height', '100%');
+                var intSlideshowCustomLandingPage = objContainer.attr('slideshow-custom-landing-page');
+
+                //Configuring each slideshow page.
+                $('div.slideshowPage', objContainer).wrapInner( "<slideshowPageContainer></slideshowPageContainer>").each(function() {
+                    var strDefaultButtons = $(this).attr('slideshow-default-buttons');
+                    var strNextButtonLabel = $(this).attr('slideshow-next-default-button-label');
+                    var strPreviousButtonLabel = $(this).attr('slideshow-previous-default-button-label');
+                    var strFinishButtonLabel = $(this).attr('slideshow-finish-default-button-label');
+                    var strAdditionalContainer = $(this).attr('slideshow-additional-bottom-elements-container');
+                    var strButtonsSectionContainer = $(this).attr('slideshow-buttons-section-container');
+                    var objAdditionalContainerElements = $(strAdditionalContainer, $(this));
+
+                    //Adding page number to current div.
+                    intNumberOfPages++;
+                    $(this).attr('slideshow-page-number', intNumberOfPages);
+
+                    //Wrapping content if default buttons are required.
+                    if(stringIsNotBlank(strDefaultButtons) && strDefaultButtons == 'true') {
+                        if(stringIsBlank(strNextButtonLabel)) {
+                            strNextButtonLabel = 'Next';
+                        }
+                        if(stringIsBlank(strPreviousButtonLabel)) {
+                            strPreviousButtonLabel = 'Previous';
+                        }
+                        if(stringIsBlank(strFinishButtonLabel)) {
+                            strFinishButtonLabel = 'Finish';
+                        }
+
+                        //Creating buttons structure.
+                        var strWrapper =
+                                '<div class="row">' +
+                                    '<div class="col-md-12 slideshowPageContainer" />' +
+                                '</div>' +
+                                '<div class="row" style="width:100%" id="standardButtons"><div class="col-md-12" align="right">' +
+                                    '<div class="slideshowAdditionalElementsBottom" style="text-align: right; display: inline-block;" />';
+                        if(intNumberOfPages > 1) {
+                            strWrapper += '<button type="button" class="btn btn-default btn-extended hf-background-button-white" onclick="slideshowPreviousPage(\'div[slideshow-id=' + strSlideshowId + ']\');">' + strPreviousButtonLabel + '</button>';
+                        } else {
+                            strWrapper += ' ';
+                        }
+                        if(intNumberOfPages < intTotalNumberOfPages) {
+                            strWrapper += '<button type="button" class="btn btn-success btn-extended" onclick="slideshowNextPage(\'div[slideshow-id=' + strSlideshowId + ']\');">' + strNextButtonLabel + '</button>';
+                        } else {
+                            strWrapper += '<button type="button" class="btn btn-success btn-extended" onclick="slideshowOnFinish(\'div[slideshow-id=' + strSlideshowId + ']\')">' + strFinishButtonLabel + '</button>';
+                        }
+                        strWrapper +=
+                                '</div></div>';
+
+                        //Wrapping content.
+                        var objNewHTML = $(strWrapper);
+                        $(this).wrapInner('<div class="slideshowInnerContainer"></div>');
+                        $(this).append(objNewHTML);
+                        $('.slideshowInnerContainer', $(this)).appendTo($('.slideshowPageContainer', $(this)));
+
+                        //Moving buttons to custom container.
+                        if(stringIsNotBlank(strButtonsSectionContainer)) {
+                            $($('#standardButtons', $(this))).appendTo($(strButtonsSectionContainer, $(this)));
+                        }
+
+                        //Adding additional elements.
+                        if(objAdditionalContainerElements != null && objAdditionalContainerElements.length > 0) {
+                            $('.slideshowAdditionalElementsBottom', $(this)).append(objAdditionalContainerElements);
+                        }
+                    }
+
+                    //Adding scrolling.
+                    $(this).hide();
+                    $(this).css('height', '100%');
+                    $(this).css('overflow-y', 'auto');
+                    $(this).css('overflow-x', 'hidden');
+                });
+
+                //Showing the first page or the selected one.
+                if(intSlideshowCustomLandingPage != null && !isNaN(intSlideshowCustomLandingPage) && intSlideshowCustomLandingPage > 0 && intSlideshowCustomLandingPage <= intNumberOfPages) {
+                    intLandingPage = intSlideshowCustomLandingPage;
+                }
+                if(intLandingPage == null || isNaN(intLandingPage) || intLandingPage < 0 || intLandingPage > intNumberOfPages) {
+                    intLandingPage = 1;
+                }
+                $('div[slideshow-page-number=' + intLandingPage + ']', objContainer).show();
+                objContainer.attr('slideshow-current-page', intLandingPage);
+            }
+        }
+
+        /*
+         * Validates the fields on the current page.
+         *
+         * @param objComponentSelector  Parent component.
+         * @return Boolean true if current page is active.
+         */
+        function slideshowValidateCurrentPage(objComponentSelector) {
+            var boolResult = true;
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('slideshow-current-page'));
+                boolResult = validateFields($('div[slideshow-page-number=' + intCurrentPage + '] slideshowPageContainer', objContainer));
+            }
+            return boolResult;
+        }
+
+        /*
+         * Moves the slideshow to the required page.
+         *
+         * @param objComponentSelector  Parent component.
+         * @param strValidationsButton  If validations should run.
+         * @param strTransitionSpeed    Transition Speed.
+         * @param intCurrentPage    Current page.
+         * @param intNewPage    Target page.
+         */
+        function slideshowChangePage(objComponentSelector, strValidationsButton, strTransitionSpeed, intCurrentPage, intNewPage) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var boolShouldContinue = false;
+
+                //Checking if validations must be run.
+                if(stringIsNotBlank(strValidationsButton) && strValidationsButton == 'true') {
+                    boolShouldContinue = validateFields($('div[slideshow-page-number=' + intCurrentPage + '] slideshowPageContainer', objContainer));
+                } else {
+                    boolShouldContinue = true;
+                }
+
+                //Checking if the required page exists.
+                if($('div[slideshow-page-number=' + intNewPage + ']', objContainer).length <= 0) {
+                    boolShouldContinue = false;
+                }
+
+                //Executing transitions.
+                if(boolShouldContinue) {
+                    objContainer.attr('slideshow-current-page', intNewPage);
+
+                    //Executing method before page change.
+                    var strBeforePageChangeAction = $(objContainer).attr('slideshow-before-page-change-action');
+                    if(stringIsNotBlank(strBeforePageChangeAction)) {
+                        eval(strBeforePageChangeAction);
+                    }
+
+                    //Defining transition speed
+                    if(stringIsBlank(strTransitionSpeed)) {
+                        strTransitionSpeed = intSlideshowTransitionSpeed;
+                    }
+
+                    //Scrolling to required page.
+                    var objSpecifiedContainer = getJQueryObject(objContainer.attr('slideshow-scroll-container'));
+                    if(objSpecifiedContainer == null) {
+                        objSpecifiedContainer = objContainer;
+                    }
+                    var strHideDirection = 'up';
+                    var strShowDirection = 'down';
+                    if(intCurrentPage > intNewPage) {
+                        strHideDirection = 'down';
+                        strShowDirection = 'up';
+                    }
+                    var objHideParameters = {
+                        direction: strHideDirection
+                    };
+                    var objShowParameters = {
+                        direction: strShowDirection
+                    };
+
+                    //Getting easing style, if defined.
+                    var strEasing = objContainer.attr('slideshow-easing');
+                    if(stringIsNotBlank(strEasing)) {
+                        objHideParameters.easing = strEasing;
+                        objShowParameters.easing = strEasing;
+                    }
+
+                    //Overriding standard function to avoid issues with page transition.
+                    var objOriginalFunction = $.fn.css;
+                    var objOriginalModifiedFunction = $.fn.css;
+                    $.fn.css = function() {
+                        delete arguments[0].width;
+                        delete arguments[0].height;
+                        return objOriginalModifiedFunction.apply(this, arguments);
+                    }
+
+                    //Setting transitions.
+                    objSpecifiedContainer.hide('slide', objHideParameters, strTransitionSpeed, function() {
+                        $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer).css('display', 'none');
+                        $('div[slideshow-page-number=' + intNewPage + ']', objContainer).css('display', '');
+                        objSpecifiedContainer.show('slide', objShowParameters, strTransitionSpeed, function() {
+                            $.fn.css = objOriginalFunction;
+
+                            //Executing method after page change.
+                            var strAfterPageChangeAction = $(objContainer).attr('slideshow-after-page-change-action');
+                            if(stringIsNotBlank(strAfterPageChangeAction)) {
+                                eval(strAfterPageChangeAction);
+                            }
+                        });
+                    });
+                } else {
+
+                    //Executing method if validations detect errors.
+                    var objCurrentPage = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer);
+                    var strAfterValidationErrorAction = objCurrentPage.attr('slideshow-after-validation-error-action');
+                    if(stringIsNotBlank(strAfterValidationErrorAction)) {
+                        eval(strAfterValidationErrorAction);
+                    }
+                }
+            }
+        }
+
+        /*
+         * Moves the slideshow to the next page.
+         *
+         * @param objComponentSelector  Slideshow component.
+         */
+        function slideshowNextPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('slideshow-current-page'));
+                var intNewPage = intCurrentPage + 1;
+                var objSlideshowPage = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objSlideshowPage.attr('slideshow-run-validations-on-next-default-buttons');
+                var strTransitionSpeed = objSlideshowPage.attr('slideshow-transition-speed-next');
+                slideshowChangePage(objContainer, strValidationsButton, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Moves the slideshow to the previous page.
+         *
+         * @param objComponentSelector  Slideshow component.
+         */
+        function slideshowPreviousPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('slideshow-current-page'));
+                var intNewPage = intCurrentPage - 1;
+                var objSlideshowPage = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objSlideshowPage.attr('slideshow-run-validations-on-previous-default-buttons');
+                var strTransitionSpeed = objSlideshowPage.attr('slideshow-transition-speed-previous');
+                slideshowChangePage(objContainer, strValidationsButton, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Moves the slideshow to the first page.
+         *
+         * @param objComponentSelector  Slideshow component.
+         */
+        function slideshowFirstPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('slideshow-current-page'));
+                var intNewPage = 0;
+                var objSlideshowPage = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objSlideshowPage.attr('slideshow-run-validations-on-previous-default-buttons');
+                var strTransitionSpeed = objSlideshowPage.attr('slideshow-transition-speed-previous');
+                slideshowChangePage(objContainer, strValidationsButton, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Moves the slideshow to the last page.
+         *
+         * @param objComponentSelector  Slideshow component.
+         */
+        function slideshowLastPage(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('slideshow-current-page'));
+                var intNewPage = $('div.slideshowPage', objContainer).length;
+                var objSlideshowPage = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer);
+                var strValidationsButton = objSlideshowPage.attr('slideshow-run-validations-on-next-default-buttons');
+                var strTransitionSpeed = objSlideshowPage.attr('slideshow-transition-speed-next');
+                slideshowChangePage(objContainer, strValidationsButton, strTransitionSpeed, intCurrentPage, intNewPage);
+            }
+        }
+
+        /*
+         * Executes on Slideshow finishes.
+         *
+         * @param objComponentSelector  Slideshow component.
+         */
+        function slideshowOnFinish(objComponentSelector) {
+            var objContainer = getJQueryObject(objComponentSelector);
+            if(objContainer != null) {
+                var intCurrentPage = parseInt(objContainer.attr('slideshow-current-page'));
+                var strCallback = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer).attr('slideshow-callback-on-finish');
+                var strValidationsButton = $('div[slideshow-page-number=' + intCurrentPage + ']', objContainer).attr('slideshow-run-validations-on-next-default-buttons');
+
+                //Checking if validations must be run.
+                if(stringIsNotBlank(strValidationsButton) && strValidationsButton == 'true') {
+                    boolShouldContinue = validateFields($('div[slideshow-page-number=' + intCurrentPage + '] slideshowPageContainer', objContainer));
+                } else {
+                    boolShouldContinue = true;
+                }
+
+                //Executing callback method.
+                if(boolShouldContinue && stringIsNotBlank(strCallback)) {
+                    eval(strCallback);
+                }
+            }
+        }
+    </script>
+</apex:component>

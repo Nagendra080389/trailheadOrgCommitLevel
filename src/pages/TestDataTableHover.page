@@ -1,0 +1,46 @@
+<!--
+/**
+ * Description of the TestDataTableHover.
+ * <p /><p />
+ * @author Nagendra Kumar Singh
+ */-->
+<apex:page controller="dataTableCon">
+	<c:FrameworkBaseComponent_CF boolBaseStyle="true" boolDataTables="true" boolCustomStyle="true"
+	                             boolValidations="true"/>
+	<script>
+	$(document).ready(function() {
+	$(".floatbar").hover(function(){
+    $(this).find(".popup").stop().fadeIn("slow");
+}, function(){
+    $(this).find(".popup").stop().fadeOut("fast");
+});
+});
+	</script>
+
+	<style>
+	.floatbar {
+    position:relative;
+}
+
+.popup {
+    position:absolute;
+    top:25px;
+    left:0px;
+    height:40px;
+    width: 100px;
+    background:#ccc;
+    display:none;
+}
+	</style>
+	<apex:dataTable value="{!accounts}" var="account"
+	                rowClasses="odd, even" styleClass="display dataTable-full">
+		<apex:column headerValue="First Name">
+			 <span class="floatbar">
+		<div class="popup">
+				{!account.owner.name}
+		</div>
+					 {!account.name}
+			 </span>
+		</apex:column>
+	</apex:dataTable>
+</apex:page>

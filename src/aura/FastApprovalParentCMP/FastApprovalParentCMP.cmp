@@ -1,0 +1,11 @@
+<aura:component implements="force:hasRecordId,force:LightningQuickAction,flexipage:availableForAllPageTypes">
+	<div class="slds-grid slds-wrap slds-gutters" style="padding:10px; background-color:white;marging:30px;">
+        <div class="slds-box slds-col slds-size_1-of-1 " style="padding:20px; marging:200px;">
+            <c:FastApprovalCMP1/>
+        </div>
+        
+        <div class="slds-box slds-col slds-size_1-of-1 " style="padding:20px; marging:200px;">
+            <c:FastApprovalCMP2/>
+        </div>
+    </div>
+</aura:component>
