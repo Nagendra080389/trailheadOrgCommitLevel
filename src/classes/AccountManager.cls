@@ -1,6 +1,7 @@
 // This is a commit commit from UCS
 @RestResource(urlMapping='/Accounts/*/contacts')
 global with sharing class AccountManager {
+
 	@HttpGet
 	global static Account getAccount() {
 		Vehicle__c vehicle = new Vehicle__c();
