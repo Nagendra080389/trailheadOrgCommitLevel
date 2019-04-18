@@ -11,7 +11,7 @@ public class TowerMapController {
         List<String> theFilters = new List<String>();  //empty filter list
         String sortField = 'Name';
         String sortOrder = 'ASC';
-        List<Tower__c> allTowers = UtilityClass.queryObjects(theObject, theFields, theFilters, sortField, sortOrder);
+        List<Tower__c> allTowers = new List<Tower__c>();
         return allTowers;
     }
 }

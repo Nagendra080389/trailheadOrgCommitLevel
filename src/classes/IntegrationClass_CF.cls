@@ -270,9 +270,9 @@ public without sharing class IntegrationClass_CF {
         if(objIntegration != null && String.IsNotBlank(objIntegration.strRequestKey)) {
             HttpResponse objResponse = Continuation.getResponse(objIntegration.strRequestKey);
             objIntegration.strResponseBody = objResponse.getBody();
-            objIntegration.intResponseStatusCode = String.valueOf(objResponse.getStatusCode());
+            objIntegration.strResponseStatusCode = String.valueOf(objResponse.getStatusCode());
             saveIntegrationDetailsDifferentInstance(objIntegration.strLinker, null, objIntegration.strRequestBody, objIntegration.strResponseBody, 
-                    objIntegration.intResponseStatusCode);
+                    objIntegration.strResponseStatusCode);
         }
         return objIntegration;
     }
@@ -460,9 +460,9 @@ public without sharing class IntegrationClass_CF {
                             Http objHttp = new Http();
                             HttpResponse objResponse = objHttp.send(objHttpRequest);
                             objIntegration.strResponseBody = objResponse.getBody();
-                            objIntegration.intResponseStatusCode = String.valueOf(objResponse.getStatusCode());
+                            objIntegration.strResponseStatusCode = String.valueOf(objResponse.getStatusCode());
                             saveIntegrationDetailsDifferentInstance(objIntegration.strLinker, strEndpointName, strBody, objIntegration.strResponseBody, 
-                                    objIntegration.intResponseStatusCode);
+                                    objIntegration.strResponseStatusCode);
                         } else {
                             futureCallout(JSON.serialize(objEndpointRecord), strBody, intTimeout, boolIsHTTPGetRequest, boolIncludeQuestionMarkGetMethod, mapHeaderValues, 
                                     objIntegration.strLinker);
