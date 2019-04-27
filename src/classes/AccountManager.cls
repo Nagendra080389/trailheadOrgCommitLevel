@@ -12,6 +12,7 @@ global with sharing class AccountManager {
 			FROM Account WHERE Id = :accId
 		];
 		return acc;
+		
 	}
     // This is UCD Deployment
 	public static void testThisMethod(){
