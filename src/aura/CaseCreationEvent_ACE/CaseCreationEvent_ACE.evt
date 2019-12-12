@@ -2,7 +2,7 @@
  /**
   * This component is used as a data bridge between the CaseCreationApplicationComponent_ACE.cmp and CaseRelatedArticleComponent_ACE.cmp.
   * <p /><p />
-  * @author Nagendra Singh
+  * @author Nagendra Singh Test
   */
  -->
 <aura:event type="APPLICATION" description="CaseCreationEvent_ACE">
