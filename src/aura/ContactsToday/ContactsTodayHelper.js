@@ -1,6 +1,6 @@
 ({
 	helperMethod : function() {
-	    // this is test
+	    // this is test Practice
 		
 	}
 })
