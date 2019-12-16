@@ -19,6 +19,7 @@ public class AccountProcessor {
                 }
             }
             if(accountId != null) {
+                // Test Here
                 accountsToBeUpdated.add(new Account(Id = accountId, Number_of_Contacts__c = count));
             }
         }
