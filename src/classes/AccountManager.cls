@@ -1,4 +1,4 @@
-// This is a commit commit from UCS
+// This is a commit commit from connect
 @RestResource(urlMapping='/Accounts/*/contacts')
 global with sharing class AccountManager {
 
