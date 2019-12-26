@@ -1,4 +1,4 @@
-// This is a commit commit from connect
+// This is a commit commit from connect1
 @RestResource(urlMapping='/Accounts/*/contacts')
 global with sharing class AccountManager {
 
