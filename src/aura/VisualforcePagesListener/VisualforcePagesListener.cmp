@@ -1,8 +1,9 @@
-/**
+<!--
 * Description of the 0VisualforcePagesListener.
 * <p/><p/>
 * @author Nagendra Kumar Singh
 */
+-->
 <aura:component>
 	<!--Attributes-->
 	<!--Handlers-->
