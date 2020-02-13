@@ -3,7 +3,7 @@
  */
 
 trigger AccountAddressTrigger on Account (before insert, before update) {
-
+    // Test
 
     List<Account> accounts = (List<Account>) Trigger.new;
     // Test this here fdr
