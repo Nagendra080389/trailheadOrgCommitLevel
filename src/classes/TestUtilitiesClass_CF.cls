@@ -30,7 +30,7 @@ public class TestUtilitiesClass_CF {
         objTestUser.LocaleSidKey = 'en_US';
         objTestUser.LanguageLocaleKey = 'en_US';
         objTestUser.ProfileId = objProfile.Id;
-        if(boolInsertUser) {
+        if (boolInsertUser) {
             DMLOperationsClass_CF.insertRecord(objTestUser);
         }
         return objTestUser;

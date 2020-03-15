@@ -4,7 +4,7 @@
  * @author Raymundo Rodriguez
  */
 public without sharing class IntegrationClass_CF {
-    
+
     //Public variables
     public static Boolean BOOL_SKIP_ATTACHMENT_GENERATION = false;
     public static final Integer INTEGER_DEFAULT_TIMEOUT_VALUE_MILLISECONDS = 120000;
@@ -20,7 +20,7 @@ public without sharing class IntegrationClass_CF {
     public static final String STRING_HELPER_URL_ENCODING = 'UTF-8';
     public static final Integer INTEGER_URL_LIMIT = 4095;
     public static final Integer INTEGER_LONG_TEXT_AREA_FIELD_LIMIT = 131072;
-    
+
     /**
      * Executes the request callout.
      *
@@ -31,7 +31,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName) {
         return callout(true, strEndpointName, null, null, null, null, null, null, strCallbackMethodName);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -43,7 +43,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName, String strBody) {
         return callout(true, strEndpointName, strBody, null, null, null, null, null, strCallbackMethodName);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -55,7 +55,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF continuationCalloutNoParameters(String strEndpointName, String strCallbackMethodName, String strURLSuffix) {
         return callout(true, strEndpointName, strURLSuffix, true, false, null, null, null, strCallbackMethodName);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -68,7 +68,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName, String strBody, Boolean boolIsHTTPGetRequest) {
         return callout(true, strEndpointName, strBody, boolIsHTTPGetRequest, null, null, null, null, strCallbackMethodName);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -79,11 +79,11 @@ public without sharing class IntegrationClass_CF {
      * @param mapHeaderValues    Header values.
      * @return Integration Wrapper.
      */
-    public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName, String strBody, Boolean boolIsHTTPGetRequest, 
+    public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName, String strBody, Boolean boolIsHTTPGetRequest,
             Map<String, String> mapHeaderValues) {
         return callout(true, strEndpointName, strBody, boolIsHTTPGetRequest, null, null, mapHeaderValues, null, strCallbackMethodName);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -95,11 +95,11 @@ public without sharing class IntegrationClass_CF {
      * @param intTimeout    Timeout value for the callout (in milliseconds).
      * @return Integration Wrapper.
      */
-    public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName, String strBody, Boolean boolIsHTTPGetRequest, 
+    public static IntegrationWrapperClass_CF continuationCallout(String strEndpointName, String strCallbackMethodName, String strBody, Boolean boolIsHTTPGetRequest,
             Map<String, String> mapHeaderValues, Integer intTimeout) {
         return callout(true, strEndpointName, strBody, boolIsHTTPGetRequest, null, intTimeout, mapHeaderValues, null, strCallbackMethodName);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -109,7 +109,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName) {
         return callout(false, strEndpointName, null, null, null, null, null, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -120,7 +120,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody) {
         return callout(false, strEndpointName, strBody, null, null, null, null, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -131,7 +131,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF synchronousCalloutNoParameters(String strEndpointName, String strURLSuffix) {
         return callout(false, strEndpointName, strURLSuffix, true, false, null, null, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -143,7 +143,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, null, null, null, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -156,7 +156,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, null, null, mapHeaderValues, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -168,11 +168,11 @@ public without sharing class IntegrationClass_CF {
      * @param intTimeout    Timeout value for the callout (in milliseconds).
      * @return Integration Wrapper.
      */
-    public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues, 
+    public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues,
             Boolean boolIncludeQuestionMarkGetMethod, Integer intTimeout) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, boolIncludeQuestionMarkGetMethod, intTimeout, mapHeaderValues, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -183,11 +183,11 @@ public without sharing class IntegrationClass_CF {
      * @param intTimeout    Timeout value for the callout (in milliseconds).
      * @return Integration Wrapper.
      */
-    public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues, 
+    public static IntegrationWrapperClass_CF synchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues,
             Integer intTimeout) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, null, intTimeout, mapHeaderValues, true, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -197,7 +197,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF asynchronousCallout(String strEndpointName) {
         return callout(false, strEndpointName, null, null, null, null, null, false, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -208,7 +208,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF asynchronousCallout(String strEndpointName, String strBody) {
         return callout(false, strEndpointName, strBody, null, null, null, null, false, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -219,7 +219,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF asynchronousCalloutNoParameters(String strEndpointName, String strURLSuffix) {
         return callout(false, strEndpointName, strURLSuffix, true, false, null, null, false, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -231,7 +231,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF asynchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, null, null, null, false, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -244,7 +244,7 @@ public without sharing class IntegrationClass_CF {
     public static IntegrationWrapperClass_CF asynchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, null, null, mapHeaderValues, false, null);
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -255,11 +255,11 @@ public without sharing class IntegrationClass_CF {
      * @param intTimeout    Timeout value for the callout (in milliseconds).
      * @return Integration Wrapper.
      */
-    public static IntegrationWrapperClass_CF asynchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues, 
+    public static IntegrationWrapperClass_CF asynchronousCallout(String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, Map<String, String> mapHeaderValues,
             Integer intTimeout) {
         return callout(false, strEndpointName, strBody, boolIsHTTPGetRequest, null, intTimeout, mapHeaderValues, false, null);
     }
-    
+
     /**
      * Extracts the Continuation result.
      *
@@ -267,16 +267,16 @@ public without sharing class IntegrationClass_CF {
      * @return Integration Wrapper.
      */
     public static IntegrationWrapperClass_CF getContinuationResponse(IntegrationWrapperClass_CF objIntegration) {
-        if(objIntegration != null && String.IsNotBlank(objIntegration.strRequestKey)) {
+        if (objIntegration != null && String.IsNotBlank(objIntegration.strRequestKey)) {
             HttpResponse objResponse = Continuation.getResponse(objIntegration.strRequestKey);
             objIntegration.strResponseBody = objResponse.getBody();
             objIntegration.strResponseStatusCode = String.valueOf(objResponse.getStatusCode());
-            saveIntegrationDetailsDifferentInstance(objIntegration.strLinker, null, objIntegration.strRequestBody, objIntegration.strResponseBody, 
+            saveIntegrationDetailsDifferentInstance(objIntegration.strLinker, null, objIntegration.strRequestBody, objIntegration.strResponseBody,
                     objIntegration.strResponseStatusCode);
         }
         return objIntegration;
     }
-    
+
     /**
      * Extracts the Result.
      *
@@ -289,7 +289,7 @@ public without sharing class IntegrationClass_CF {
      * @param mapHeaderValues    Header values.
      */
     @future(callout = true)
-    public static void futureCallout(String strEndpointRecordSerialized, String strBody, Integer intTimeout, Boolean boolIsHTTPGetRequest, Boolean boolIncludeQuestionMarkGetMethod, 
+    public static void futureCallout(String strEndpointRecordSerialized, String strBody, Integer intTimeout, Boolean boolIsHTTPGetRequest, Boolean boolIncludeQuestionMarkGetMethod,
             Map<String, String> mapHeaderValues, String strLinker) {
         String strEndpoint = '';
         try {
@@ -299,16 +299,16 @@ public without sharing class IntegrationClass_CF {
             Http objHttp = new Http();
             HttpResponse objResponse = objHttp.send(objHttpRequest);
             saveIntegrationDetailsDifferentInstance(strLinker, strEndpoint, strBody, objResponse.getBody(), String.valueOf(objResponse.getStatusCode()));
-        } catch(Exception objException) {
-            
+        } catch (Exception objException) {
+
             //Storing first the request.
             saveIntegrationDetails(strLinker, strEndpoint, strBody, null, null);
-            
+
             //Now the error log.
             ErrorLogClass_CF.processException(objException, strEndpointRecordSerialized, strBody);
         }
     }
-    
+
     /**
      * Stores the Request data for tracking purposes.
      *
@@ -328,23 +328,27 @@ public without sharing class IntegrationClass_CF {
             Attachment objResponseAttachment = new Attachment();
             IntegrationDetail_CF__c objIntegrationDetails = new IntegrationDetail_CF__c();
             List<Attachment> lstAttachments = new List<Attachment>();
-            for(IntegrationDetail_CF__c objExistingRecord : [SELECT LinkerId_CF__c, Endpoint_CF__c, RequestBody_CF__c, ResponseBody_CF__c, ResponseCode_CF__c
-                    FROM IntegrationDetail_CF__c WHERE LinkerId_CF__c = :strLinker LIMIT 1]) {
+            for (IntegrationDetail_CF__c objExistingRecord : [
+                    SELECT LinkerId_CF__c, Endpoint_CF__c, RequestBody_CF__c, ResponseBody_CF__c, ResponseCode_CF__c
+                    FROM IntegrationDetail_CF__c
+                    WHERE LinkerId_CF__c = :strLinker
+                    LIMIT 1
+            ]) {
                 objIntegrationDetails = objExistingRecord;
             }
             objIntegrationDetails.LinkerId_CF__c = strLinker;
-            if(String.IsNotBlank(strEndpoint)) {
+            if (String.IsNotBlank(strEndpoint)) {
                 objIntegrationDetails.Endpoint_CF__c = strEndpoint;
             }
-            
+
             //Now preparing the updats.
-            if(String.IsNotBlank(strRequestBody)) {
-                if(String.IsBlank(objIntegrationDetails.RequestBody_CF__c)) {
+            if (String.IsNotBlank(strRequestBody)) {
+                if (String.IsBlank(objIntegrationDetails.RequestBody_CF__c)) {
                     objIntegrationDetails.RequestBody_CF__c = '';
                 }
                 objIntegrationDetails.RequestBody_CF__c = objIntegrationDetails.RequestBody_CF__c + strRequestBody;
-                if(String.IsNotBlank(objIntegrationDetails.RequestBody_CF__c) && objIntegrationDetails.RequestBody_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
-                    if(BOOL_SKIP_ATTACHMENT_GENERATION) {
+                if (String.IsNotBlank(objIntegrationDetails.RequestBody_CF__c) && objIntegrationDetails.RequestBody_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
+                    if (BOOL_SKIP_ATTACHMENT_GENERATION) {
                         objIntegrationDetails.RequestBody_CF__c = strTrimmedMessage + objIntegrationDetails.RequestBody_CF__c;
                         objIntegrationDetails.RequestBody_CF__c = objIntegrationDetails.RequestBody_CF__c.substring(0, INTEGER_LONG_TEXT_AREA_FIELD_LIMIT - 1);
                     } else {
@@ -355,13 +359,13 @@ public without sharing class IntegrationClass_CF {
                     }
                 }
             }
-            if(String.IsNotBlank(strResponseBody)) {
-                if(String.IsBlank(objIntegrationDetails.ResponseBody_CF__c)) {
+            if (String.IsNotBlank(strResponseBody)) {
+                if (String.IsBlank(objIntegrationDetails.ResponseBody_CF__c)) {
                     objIntegrationDetails.ResponseBody_CF__c = '';
                 }
                 objIntegrationDetails.ResponseBody_CF__c = objIntegrationDetails.ResponseBody_CF__c + strResponseBody;
-                if(String.IsNotBlank(objIntegrationDetails.ResponseBody_CF__c) && objIntegrationDetails.ResponseBody_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
-                    if(BOOL_SKIP_ATTACHMENT_GENERATION) {
+                if (String.IsNotBlank(objIntegrationDetails.ResponseBody_CF__c) && objIntegrationDetails.ResponseBody_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
+                    if (BOOL_SKIP_ATTACHMENT_GENERATION) {
                         objIntegrationDetails.ResponseBody_CF__c = strTrimmedMessage + objIntegrationDetails.ResponseBody_CF__c;
                         objIntegrationDetails.ResponseBody_CF__c = objIntegrationDetails.ResponseBody_CF__c.substring(0, INTEGER_LONG_TEXT_AREA_FIELD_LIMIT - 1);
                     } else {
@@ -372,30 +376,30 @@ public without sharing class IntegrationClass_CF {
                     }
                 }
             }
-            if(String.isNotBlank(strResponseCode)) {
+            if (String.isNotBlank(strResponseCode)) {
                 objIntegrationDetails.ResponseCode_CF__c = strResponseCode;
             }
             upsert objIntegrationDetails LinkerId_CF__c;
-            
+
             //Now we create the attachments.
-            if(!BOOL_SKIP_ATTACHMENT_GENERATION) {
-                for(Attachment objNewAttachment : lstAttachments) {
-                    if(objNewAttachment.ParentId == null) {
+            if (!BOOL_SKIP_ATTACHMENT_GENERATION) {
+                for (Attachment objNewAttachment : lstAttachments) {
+                    if (objNewAttachment.ParentId == null) {
                         objNewAttachment.ParentId = objIntegrationDetails.Id;
                     }
                 }
-                
+
                 //Finally, we insert the attachments.
-                if(lstAttachments.size() > 0) {
+                if (lstAttachments.size() > 0) {
                     insert lstAttachments;
                 }
             }
-        } catch(Exception objInternalException) {
+        } catch (Exception objInternalException) {
             System.debug(objInternalException.getMessage());
             System.debug(objInternalException.getStackTraceString());
         }
     }
-    
+
     /**
      * Executes the request callout.
      *
@@ -411,41 +415,46 @@ public without sharing class IntegrationClass_CF {
      * @param objContinuation    Continuation instance.
      * @return Integration Wrapper.
      */
-    private static IntegrationWrapperClass_CF callout(Boolean boolUseContinuation, String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest, 
+    private static IntegrationWrapperClass_CF callout(Boolean boolUseContinuation, String strEndpointName, String strBody, Boolean boolIsHTTPGetRequest,
             Boolean boolIncludeQuestionMarkGetMethod, Integer intTimeout, Map<String, String> mapHeaderValues, Boolean boolExecuteSynchronously, String strCallbackMethodName) {
         IntegrationWrapperClass_CF objIntegration = new IntegrationWrapperClass_CF();
         String strOrganizationId = UserInfo.getOrganizationId();
-        if(Test.isRunningTest()) {
+        if (Test.isRunningTest()) {
             strOrganizationId = 'Default';
         }
         try {
-            if(String.IsNotBlank(strEndpointName)) {
-                
+            if (String.IsNotBlank(strEndpointName)) {
+
                 //We first get the right endpoint, based on the current Environment.
-                for(IntegrationEndpoint_CF__mdt objEndpointRecord : [SELECT Endpoint_CF__c, AuthenticationToken_CF__c FROM IntegrationEndpoint_CF__mdt WHERE 
-                        MasterLabel = :strEndpointName AND Environment_CF__r.Id__c = :strOrganizationId AND IsActive_CF__c = true AND 
-                        Environment_CF__r.Is_Active_CF__c = true LIMIT 1]) {
+                for (IntegrationEndpoint_CF__mdt objEndpointRecord : [
+                        SELECT Endpoint_CF__c, AuthenticationToken_CF__c
+                        FROM IntegrationEndpoint_CF__mdt
+                        WHERE
+                        MasterLabel = :strEndpointName AND Environment_CF__r.Id__c = :strOrganizationId AND IsActive_CF__c = true AND
+                        Environment_CF__r.Is_Active_CF__c = true
+                        LIMIT 1
+                ]) {
                     strEndpointName = objEndpointRecord.Endpoint_CF__c;
-                    
+
                     //Setting the values for request/response tracking.
-                    if(strBody == null) {
+                    if (strBody == null) {
                         strBody = '';
                     }
                     objIntegration.strLinker = Userinfo.getUserId() + DateTime.now() + ':' + DateTime.now().millisecond();
-                            
+
                     //Now we create the HTTP Request object.
-                    HttpRequest objHttpRequest = createHttpRequest(boolUseContinuation, objEndpointRecord, strBody, intTimeout, boolIsHTTPGetRequest, 
+                    HttpRequest objHttpRequest = createHttpRequest(boolUseContinuation, objEndpointRecord, strBody, intTimeout, boolIsHTTPGetRequest,
                             boolIncludeQuestionMarkGetMethod, mapHeaderValues);
-                    
+
                     //If the developer wants to use continuation.
-                    if(boolUseContinuation == null || boolUseContinuation) {
-                        if(intTimeout == null) {
+                    if (boolUseContinuation == null || boolUseContinuation) {
+                        if (intTimeout == null) {
                             intTimeout = INTEGER_DEFAULT_TIMEOUT_VALUE_MILLISECONDS;
                         }
-                        
+
                         //First, we convert the provided milliseconds to seconds.
                         intTimeout = intTimeout / 1000;
-                        
+
                         //Finally, we set the values for the Continuation method.
                         objIntegration.intTimeout = intTimeout;
                         objIntegration.strCallbackMethodName = strCallbackMethodName;
@@ -454,23 +463,23 @@ public without sharing class IntegrationClass_CF {
                         objIntegration.strRequestEndpoint = objHttpRequest.getEndpoint();
                         objIntegration.mapHeaderValues = mapHeaderValues;
                     } else {
-                        
+
                         //If the developer needs to execute the callout synchronously.
-                        if(boolExecuteSynchronously == null || boolExecuteSynchronously) {
+                        if (boolExecuteSynchronously == null || boolExecuteSynchronously) {
                             Http objHttp = new Http();
                             HttpResponse objResponse = objHttp.send(objHttpRequest);
                             objIntegration.strResponseBody = objResponse.getBody();
                             objIntegration.strResponseStatusCode = String.valueOf(objResponse.getStatusCode());
-                            saveIntegrationDetailsDifferentInstance(objIntegration.strLinker, strEndpointName, strBody, objIntegration.strResponseBody, 
+                            saveIntegrationDetailsDifferentInstance(objIntegration.strLinker, strEndpointName, strBody, objIntegration.strResponseBody,
                                     objIntegration.strResponseStatusCode);
                         } else {
-                            futureCallout(JSON.serialize(objEndpointRecord), strBody, intTimeout, boolIsHTTPGetRequest, boolIncludeQuestionMarkGetMethod, mapHeaderValues, 
+                            futureCallout(JSON.serialize(objEndpointRecord), strBody, intTimeout, boolIsHTTPGetRequest, boolIncludeQuestionMarkGetMethod, mapHeaderValues,
                                     objIntegration.strLinker);
                         }
                     }
                 }
             }
-        } catch(Exception objInternalException) {
+        } catch (Exception objInternalException) {
             ErrorLogWrapperClass_CF objErrorWrapper = ErrorLogClass_CF.processException(objInternalException, objIntegration, strBody);
             objIntegration.strErrorMessage = objErrorWrapper.strErrorMessage;
             System.debug(objInternalException.getMessage());
@@ -478,7 +487,7 @@ public without sharing class IntegrationClass_CF {
         }
         return objIntegration;
     }
-    
+
     /**
      * Extracts the Result.
      *
@@ -491,32 +500,32 @@ public without sharing class IntegrationClass_CF {
      * @param mapHeaderValues    Header values.
      * @return Http Request object.
      */
-    private static HttpRequest createHttpRequest(Boolean boolUseContinuation, IntegrationEndpoint_CF__mdt objEndpointRecord, String strBody, Integer intTimeout, 
+    private static HttpRequest createHttpRequest(Boolean boolUseContinuation, IntegrationEndpoint_CF__mdt objEndpointRecord, String strBody, Integer intTimeout,
             Boolean boolIsHTTPGetRequest, Boolean boolIncludeQuestionMarkGetMethod, Map<String, String> mapHeaderValues) {
         HttpRequest objHttpRequest = new HttpRequest();
-        if(objEndpointRecord != null) {
+        if (objEndpointRecord != null) {
             String strEndpointURL = objEndpointRecord.Endpoint_CF__c;
-            if(boolIsHTTPGetRequest == null || boolIsHTTPGetRequest) {
-                
+            if (boolIsHTTPGetRequest == null || boolIsHTTPGetRequest) {
+
                 //We create the GET request.
                 objHttpRequest.setMethod('GET');
                 strEndpointURL = setGetParameters(objEndpointRecord, strBody, boolIncludeQuestionMarkGetMethod);
             } else {
-                
+
                 //We create the POST request.
                 setPostParameters(objHttpRequest, strBody);
             }
             objHttpRequest.setEndpoint(strEndpointURL);
-            
+
             //Now we set the headers.
             setHeaders(objHttpRequest, mapHeaderValues);
-            
+
             //Finally, we set the Continuation parameters.
             setContinuationParameters(objHttpRequest, boolUseContinuation, intTimeout);
         }
         return objHttpRequest;
     }
-    
+
     /**
      * Stores the Request data for tracking purposes, using an external VFP.
      *
@@ -529,37 +538,37 @@ public without sharing class IntegrationClass_CF {
     private static void saveIntegrationDetailsDifferentInstance(String strLinker, String strEndpoint, String strRequestBody, String strResponseBody, String strResponseCode) {
         try {
             Integer intRootDomainSize = URL.getSalesforceBaseUrl().toExternalForm().length();
-            String strCompleteRequestURL = STRING_HELPER_URL + 
-                    STRING_HELPER_PARAMETER_ENDPOINT + STRING_HELPER_PARAMETER_NAME_SUFFIX + strEndpoint + STRING_HELPER_PARAMETER_SEPARATOR + 
-                    STRING_HELPER_PARAMETER_LINKER + STRING_HELPER_PARAMETER_NAME_SUFFIX + strLinker + STRING_HELPER_PARAMETER_SEPARATOR + 
-                    STRING_HELPER_PARAMETER_REQUEST_BODY + STRING_HELPER_PARAMETER_NAME_SUFFIX + EncodingUtil.urlEncode(strRequestBody, STRING_HELPER_URL_ENCODING) + 
-                    STRING_HELPER_PARAMETER_SEPARATOR + STRING_HELPER_PARAMETER_RESPONSE_BODY + STRING_HELPER_PARAMETER_NAME_SUFFIX + 
+            String strCompleteRequestURL = STRING_HELPER_URL +
+                    STRING_HELPER_PARAMETER_ENDPOINT + STRING_HELPER_PARAMETER_NAME_SUFFIX + strEndpoint + STRING_HELPER_PARAMETER_SEPARATOR +
+                    STRING_HELPER_PARAMETER_LINKER + STRING_HELPER_PARAMETER_NAME_SUFFIX + strLinker + STRING_HELPER_PARAMETER_SEPARATOR +
+                    STRING_HELPER_PARAMETER_REQUEST_BODY + STRING_HELPER_PARAMETER_NAME_SUFFIX + EncodingUtil.urlEncode(strRequestBody, STRING_HELPER_URL_ENCODING) +
+                    STRING_HELPER_PARAMETER_SEPARATOR + STRING_HELPER_PARAMETER_RESPONSE_BODY + STRING_HELPER_PARAMETER_NAME_SUFFIX +
                     EncodingUtil.urlEncode(strResponseBody, STRING_HELPER_URL_ENCODING);
-            if((intRootDomainSize + strCompleteRequestURL.length()) > INTEGER_URL_LIMIT) {
-                String strRequestURL = STRING_HELPER_URL + 
-                        STRING_HELPER_PARAMETER_ENDPOINT + STRING_HELPER_PARAMETER_NAME_SUFFIX + strEndpoint + STRING_HELPER_PARAMETER_SEPARATOR + 
-                        STRING_HELPER_PARAMETER_LINKER + STRING_HELPER_PARAMETER_NAME_SUFFIX + strLinker + STRING_HELPER_PARAMETER_SEPARATOR + 
+            if ((intRootDomainSize + strCompleteRequestURL.length()) > INTEGER_URL_LIMIT) {
+                String strRequestURL = STRING_HELPER_URL +
+                        STRING_HELPER_PARAMETER_ENDPOINT + STRING_HELPER_PARAMETER_NAME_SUFFIX + strEndpoint + STRING_HELPER_PARAMETER_SEPARATOR +
+                        STRING_HELPER_PARAMETER_LINKER + STRING_HELPER_PARAMETER_NAME_SUFFIX + strLinker + STRING_HELPER_PARAMETER_SEPARATOR +
                         STRING_HELPER_PARAMETER_REQUEST_BODY + STRING_HELPER_PARAMETER_NAME_SUFFIX + EncodingUtil.urlEncode(strRequestBody, STRING_HELPER_URL_ENCODING);
-                String strResponseURL = STRING_HELPER_URL + 
-                        STRING_HELPER_PARAMETER_ENDPOINT + STRING_HELPER_PARAMETER_NAME_SUFFIX + strEndpoint + STRING_HELPER_PARAMETER_SEPARATOR + 
-                        STRING_HELPER_PARAMETER_LINKER + STRING_HELPER_PARAMETER_NAME_SUFFIX + strLinker + STRING_HELPER_PARAMETER_SEPARATOR + 
+                String strResponseURL = STRING_HELPER_URL +
+                        STRING_HELPER_PARAMETER_ENDPOINT + STRING_HELPER_PARAMETER_NAME_SUFFIX + strEndpoint + STRING_HELPER_PARAMETER_SEPARATOR +
+                        STRING_HELPER_PARAMETER_LINKER + STRING_HELPER_PARAMETER_NAME_SUFFIX + strLinker + STRING_HELPER_PARAMETER_SEPARATOR +
                         STRING_HELPER_PARAMETER_RESPONSE_BODY + STRING_HELPER_PARAMETER_NAME_SUFFIX + EncodingUtil.urlEncode(strResponseBody, STRING_HELPER_URL_ENCODING);
-                if((intRootDomainSize + strRequestURL.length()) > INTEGER_URL_LIMIT) {
+                if ((intRootDomainSize + strRequestURL.length()) > INTEGER_URL_LIMIT) {
                     strRequestURL = strRequestURL.substring(0, INTEGER_URL_LIMIT - 1);
                 }
-                if((intRootDomainSize + strResponseURL.length()) > INTEGER_URL_LIMIT) {
+                if ((intRootDomainSize + strResponseURL.length()) > INTEGER_URL_LIMIT) {
                     strResponseURL = strResponseURL.substring(0, INTEGER_URL_LIMIT - 1);
                 }
                 try {
                     new PageReference(strRequestURL).getContent();
-                } catch(Exception objInternalException) {
+                } catch (Exception objInternalException) {
                     System.debug(objInternalException.getMessage());
                     System.debug(objInternalException.getStackTraceString());
                     saveIntegrationDetails(strLinker, strEndpoint, strRequestBody, null, strResponseCode);
                 }
                 try {
                     new PageReference(strResponseURL).getContent();
-                } catch(Exception objInternalException) {
+                } catch (Exception objInternalException) {
                     System.debug(objInternalException.getMessage());
                     System.debug(objInternalException.getStackTraceString());
                     saveIntegrationDetails(strLinker, strEndpoint, null, strResponseBody, strResponseCode);
@@ -567,13 +576,13 @@ public without sharing class IntegrationClass_CF {
             } else {
                 new PageReference(strCompleteRequestURL).getContent();
             }
-        } catch(Exception objInternalException) {
+        } catch (Exception objInternalException) {
             System.debug(objInternalException.getMessage());
             System.debug(objInternalException.getStackTraceString());
             saveIntegrationDetails(strLinker, strEndpoint, strRequestBody, strResponseBody, strResponseCode);
         }
     }
-    
+
     /**
      * Creates the GET request.
      *
@@ -584,20 +593,20 @@ public without sharing class IntegrationClass_CF {
      */
     private static String setGetParameters(IntegrationEndpoint_CF__mdt objEndpointRecord, String strBody, Boolean boolIncludeQuestionMarkGetMethod) {
         String strEndpointURL = objEndpointRecord.Endpoint_CF__c;
-        if(String.IsNotBlank(strBody)) {
-            if(boolIncludeQuestionMarkGetMethod == null || boolIncludeQuestionMarkGetMethod) {
+        if (String.IsNotBlank(strBody)) {
+            if (boolIncludeQuestionMarkGetMethod == null || boolIncludeQuestionMarkGetMethod) {
                 strEndpointURL += STRING_GET_SEPARATOR;
             }
             strEndpointURL = strEndpointURL + strBody;
-            if(String.IsNotBlank(objEndpointRecord.AuthenticationToken_CF__c)) {
+            if (String.IsNotBlank(objEndpointRecord.AuthenticationToken_CF__c)) {
                 strEndpointURL += STRING_GET_SEPARATOR_PARAMETER + objEndpointRecord.AuthenticationToken_CF__c;
             }
-        } else if(String.IsNotBlank(objEndpointRecord.AuthenticationToken_CF__c)) {
+        } else if (String.IsNotBlank(objEndpointRecord.AuthenticationToken_CF__c)) {
             strEndpointURL += STRING_GET_SEPARATOR + objEndpointRecord.AuthenticationToken_CF__c;
         }
         return strEndpointURL;
     }
-    
+
     /**
      * Creates the POST request.
      *
@@ -606,11 +615,11 @@ public without sharing class IntegrationClass_CF {
      */
     private static void setPostParameters(HttpRequest objHttpRequest, String strBody) {
         objHttpRequest.setMethod('POST');
-        if(String.IsNotBlank(strBody)) {
+        if (String.IsNotBlank(strBody)) {
             objHttpRequest.setBody(strBody);
         }
     }
-    
+
     /**
      * Sets the Headers to the Request.
      *
@@ -618,13 +627,13 @@ public without sharing class IntegrationClass_CF {
      * @param mapHeaderValues    Header values.
      */
     private static void setHeaders(HttpRequest objHttpRequest, Map<String, String> mapHeaderValues) {
-        if(mapHeaderValues != null) {
-            for(String strKey : mapHeaderValues.keySet()) {
+        if (mapHeaderValues != null) {
+            for (String strKey : mapHeaderValues.keySet()) {
                 objHttpRequest.setHeader(strKey, mapHeaderValues.get(strKey));
             }
         }
     }
-    
+
     /**
      * Creates the Continuation request.
      *
@@ -633,8 +642,8 @@ public without sharing class IntegrationClass_CF {
      * @param intTimeout    Timeout value for the callout (in milliseconds).
      */
     private static void setContinuationParameters(HttpRequest objHttpRequest, Boolean boolUseContinuation, Integer intTimeout) {
-        if(boolUseContinuation != null && !boolUseContinuation) {
-            if(intTimeout == null) {
+        if (boolUseContinuation != null && !boolUseContinuation) {
+            if (intTimeout == null) {
                 intTimeout = INTEGER_DEFAULT_TIMEOUT_VALUE_MILLISECONDS;
             }
             objHttpRequest.setTimeout(intTimeout);

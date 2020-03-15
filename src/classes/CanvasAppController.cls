@@ -38,7 +38,7 @@ public class CanvasAppController {
 
         HttpRequest httpRequest = new HttpRequest();
         SecurityManager manager = new SecurityManager();
-        Map<String,String> stringMap = manager.addSecurityHeaders(getap_userName(), getap_tenant_id());
+        Map<String, String> stringMap = manager.addSecurityHeaders(getap_userName(), getap_tenant_id());
 
         httpRequest.setHeader(SecurityManager.HEADER_USER_NAME, stringMap.get(SecurityManager.HEADER_USER_NAME));
         httpRequest.setHeader(SecurityManager.HEADER_AUTH_TOKEN, stringMap.get(SecurityManager.HEADER_AUTH_TOKEN));
@@ -65,7 +65,7 @@ public class CanvasAppController {
      */
     public static Boolean continuationCallback(Object objState) {
         CalloutBridge objCalloutBridge = (CalloutBridge) objState;
-        System.debug('objCalloutBridge.caseId -> '+objCalloutBridge.caseId);
+        System.debug('objCalloutBridge.caseId -> ' + objCalloutBridge.caseId);
         HttpResponse httpResponse = Continuation.getResponse((String) objCalloutBridge.objResponse);
         List<Goals> goals = (List<Goals>) JSON.deserialize(httpResponse.getBody(), List<Goals>.class);
 

@@ -5,6 +5,6 @@
  */
 @isTest(seeAllData = false)
 public without sharing class IntegrationTest_CF {
-    
+
 
 }

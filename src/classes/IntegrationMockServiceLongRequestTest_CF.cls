@@ -16,7 +16,7 @@ public class IntegrationMockServiceLongRequestTest_CF implements HttpCalloutMock
         HttpResponse objResponse = new HttpResponse();
         objResponse.setHeader('Content-Type', 'application/json');
         String strLongRequest = '';
-        for(Integer intCounter = 0 ; intCounter < 2000; intCounter++) {
+        for (Integer intCounter = 0; intCounter < 2000; intCounter++) {
             strLongRequest = strLongRequest + 'swat';
         }
         objResponse.setBody(strLongRequest);

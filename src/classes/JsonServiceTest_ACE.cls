@@ -6,9 +6,9 @@
 @IsTest
 public class JsonServiceTest_ACE implements HttpCalloutMock {
 
-    private  String strResponseBody;
+    private String strResponseBody;
 
-    public JsonServiceTest_ACE(String strBody){
+    public JsonServiceTest_ACE(String strBody) {
         this.strResponseBody = strBody;
     }
 

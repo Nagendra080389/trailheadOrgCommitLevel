@@ -5,14 +5,14 @@
 public class DemoApplicationComponent {
 
     @AuraEnabled
-    public static Opportunity getOpportunity (){
+    public static Opportunity getOpportunity() {
         Opportunity opportunity = null;
-        try{
+        try {
             System.debug('Get Opportunity Called');
             opportunity = [SELECT Id, Name FROM Opportunity LIMIT 1];
 
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
 
         }
 

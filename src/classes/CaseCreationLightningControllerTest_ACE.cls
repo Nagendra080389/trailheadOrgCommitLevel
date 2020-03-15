@@ -10,6 +10,6 @@
 @IsTest(SeeAllData=false)
 private class CaseCreationLightningControllerTest_ACE {
 
-	private static Id IdknowledgeArticle;
+    private static Id IdknowledgeArticle;
 
 }

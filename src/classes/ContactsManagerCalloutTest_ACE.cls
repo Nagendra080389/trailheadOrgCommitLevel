@@ -4,8 +4,8 @@
  * @author Nikhil Palekar
  */
 @isTest
-public class ContactsManagerCalloutTest_ACE implements HttpCalloutMock{
-	/**
+public class ContactsManagerCalloutTest_ACE implements HttpCalloutMock {
+    /**
      * Simulates the Web Service response for the test class.
      *
      * @param objRequest Simulated request.
@@ -17,5 +17,5 @@ public class ContactsManagerCalloutTest_ACE implements HttpCalloutMock{
         objResponse.setBody('{"one": "two","key": "value"}');
         objResponse.setStatusCode(200);
         return objResponse;
-	}
+    }
 }

@@ -11,8 +11,8 @@ private class ContactSearchControllerTest_ACE {
         String strLastName = 'Singh';
         Contact objContact = new Contact(FirstName = strFirstName, LastName = strLastName);
         DMLOperationsClass_CF.insertRecord(objContact);
-        ApexPages.currentPage().getParameters().put('firstName',strFirstName);
-        ApexPages.currentPage().getParameters().put('lastName',strLastName);
+        ApexPages.currentPage().getParameters().put('firstName', strFirstName);
+        ApexPages.currentPage().getParameters().put('lastName', strLastName);
         String strResponse = '{"title":"qui est esse"}';
         Test.StartTest();
         //We first set the fake web service.
@@ -28,8 +28,8 @@ private class ContactSearchControllerTest_ACE {
 
         String strFirstName = 'Nagendra';
         String strLastName = 'Singh';
-        ApexPages.currentPage().getParameters().put('firstName',strFirstName);
-        ApexPages.currentPage().getParameters().put('lastName',strLastName);
+        ApexPages.currentPage().getParameters().put('firstName', strFirstName);
+        ApexPages.currentPage().getParameters().put('lastName', strLastName);
         String strResponse = '{"title":"qui est esse"}';
         Test.StartTest();
         //We first set the fake web service.
@@ -45,8 +45,8 @@ private class ContactSearchControllerTest_ACE {
 
         String strFirstName = 'Nagendra';
         String strLastName = 'Singh';
-        ApexPages.currentPage().getParameters().put('firstName',strFirstName);
-        ApexPages.currentPage().getParameters().put('lastName',strLastName);
+        ApexPages.currentPage().getParameters().put('firstName', strFirstName);
+        ApexPages.currentPage().getParameters().put('lastName', strLastName);
         String strResponse = null;
         Test.StartTest();
         //We first set the fake web service.
@@ -62,8 +62,8 @@ private class ContactSearchControllerTest_ACE {
 
         String strFirstName = 'Nagendra';
         String strLastName = 'Singh';
-        ApexPages.currentPage().getParameters().put('firstName',strFirstName);
-        ApexPages.currentPage().getParameters().put('lastName',strLastName);
+        ApexPages.currentPage().getParameters().put('firstName', strFirstName);
+        ApexPages.currentPage().getParameters().put('lastName', strLastName);
         String strResponse = '{"title":"qui est esse"}';
         Test.StartTest();
         //We first set the fake web service.
@@ -79,8 +79,8 @@ private class ContactSearchControllerTest_ACE {
 
         String strFirstName = 'Nagendra%';
         String strLastName = 'Singh';
-        ApexPages.currentPage().getParameters().put('firstName',strFirstName);
-        ApexPages.currentPage().getParameters().put('lastName',strLastName);
+        ApexPages.currentPage().getParameters().put('firstName', strFirstName);
+        ApexPages.currentPage().getParameters().put('lastName', strLastName);
         String strResponse = '{"title":"qui est esse"}';
         Test.StartTest();
         //We first set the fake web service.

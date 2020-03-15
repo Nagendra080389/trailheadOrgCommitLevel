@@ -4,7 +4,7 @@
  * @author Raymundo Rodriguez
  */
 public without sharing class ErrorLogClass_CF {
-    
+
     //Public variables.
     public static Boolean BOOL_SKIP_ATTACHMENT_GENERATION = false;
     public static final String STRING_EXCEPTION_MATCHER = '(?i)^(?:class\\.)?([^.]+)\\.?([^\\.\\:]+)?[\\.\\:]?([^\\.\\:]*): line (\\d+), column (\\d+)$';
@@ -20,7 +20,7 @@ public without sharing class ErrorLogClass_CF {
     public static final String STRING_HELPER_URL_ENCODING = 'UTF-8';
     public static final Integer INTEGER_URL_LIMIT = 4096;
     public static final Integer INTEGER_LONG_TEXT_AREA_FIELD_LIMIT = 131072;
-    
+
     /**
      * This method processes the exception, extracting the error message and creating the Error Log record.
      *
@@ -30,7 +30,7 @@ public without sharing class ErrorLogClass_CF {
     public static ErrorLogWrapperClass_CF processException(Exception objException) {
         return extractSingleExceptionMessage(processExceptions(prepareSingleExceptionRecord(objException, null, null), null, null, null));
     }
-    
+
     /**
      * This method processes the exception, extracting the error message and creating the Error Log record.
      *
@@ -43,7 +43,7 @@ public without sharing class ErrorLogClass_CF {
     public static ErrorLogWrapperClass_CF processException(Exception objException, Boolean boolCreateApexPageMessage, String strUserFriendlyMessage, ApexPages.Severity objSeverity) {
         return extractSingleExceptionMessage(processExceptions(prepareSingleExceptionRecord(objException, null, null), boolCreateApexPageMessage, strUserFriendlyMessage, objSeverity));
     }
-    
+
     /**
      * This method processes the exception, extracting the error message and creating the Error Log record.
      *
@@ -55,10 +55,10 @@ public without sharing class ErrorLogClass_CF {
      * @return ErrorLogWrapperClass_CF instance with Exception message.
      */
     public static ErrorLogWrapperClass_CF processException(Exception objException, Boolean boolCreateApexPageMessage, String strUserFriendlyMessage, ApexPages.Severity objSeverity, Object objClass) {
-        return extractSingleExceptionMessage(processExceptions(prepareSingleExceptionRecord(objException, objClass, null), boolCreateApexPageMessage, strUserFriendlyMessage, 
+        return extractSingleExceptionMessage(processExceptions(prepareSingleExceptionRecord(objException, objClass, null), boolCreateApexPageMessage, strUserFriendlyMessage,
                 objSeverity));
     }
-    
+
     /**
      * This method processes the exception, extracting the error message and creating the Error Log record.
      *
@@ -69,7 +69,7 @@ public without sharing class ErrorLogClass_CF {
     public static ErrorLogWrapperClass_CF processException(Exception objException, Object objClass) {
         return extractSingleExceptionMessage(processExceptions(prepareSingleExceptionRecord(objException, objClass, null), null, null, null));
     }
-    
+
     /**
      * This method processes the exception, extracting the error message and creating the Error Log record.
      *
@@ -81,7 +81,7 @@ public without sharing class ErrorLogClass_CF {
     public static ErrorLogWrapperClass_CF processException(Exception objException, Object objClass, Object objAdditionalObject) {
         return extractSingleExceptionMessage(processExceptions(prepareSingleExceptionRecord(objException, objClass, objAdditionalObject), null, null, null));
     }
-    
+
     /**
      * This method extracts the error message from the first error log record.
      *
@@ -91,15 +91,15 @@ public without sharing class ErrorLogClass_CF {
     public static ErrorLogWrapperClass_CF extractSingleExceptionMessage(List<ErrorLogWrapperClass_CF> lstExceptions) {
         ErrorLogWrapperClass_CF objResult = new ErrorLogWrapperClass_CF();
         objResult.strErrorMessage = Label.ErrorLog_Class_CF_UnableToProcessException_CF;
-        if(lstExceptions != null) {
-            for(ErrorLogWrapperClass_CF objNewException : lstExceptions) {
+        if (lstExceptions != null) {
+            for (ErrorLogWrapperClass_CF objNewException : lstExceptions) {
                 objResult = objNewException;
                 break;
             }
         }
         return objResult;
     }
-    
+
     /**
      * This method prepares the list for the generic method, with one single exception record.
      *
@@ -110,7 +110,7 @@ public without sharing class ErrorLogClass_CF {
      */
     public static List<ErrorLogWrapperClass_CF> prepareSingleExceptionRecord(Exception objException, Object objClass, Object objAdditionalObject) {
         List<ErrorLogWrapperClass_CF> lstExceptions = new List<ErrorLogWrapperClass_CF>();
-        if(objException != null) {
+        if (objException != null) {
             ErrorLogWrapperClass_CF objNewException = new ErrorLogWrapperClass_CF();
             objNewException.objException = objException;
             objNewException.objClass = objClass;
@@ -119,7 +119,7 @@ public without sharing class ErrorLogClass_CF {
         }
         return lstExceptions;
     }
-    
+
     /**
      * This method processes a list of exceptions, extracting the error message and creating the Error Log records.
      *
@@ -129,7 +129,7 @@ public without sharing class ErrorLogClass_CF {
     public static List<ErrorLogWrapperClass_CF> processExceptions(List<ErrorLogWrapperClass_CF> lstExceptions) {
         return processExceptions(lstExceptions, null, null, null);
     }
-    
+
     /**
      * This method processes the exception, extracting the error message and creating the Error Log record.
      *
@@ -139,62 +139,62 @@ public without sharing class ErrorLogClass_CF {
      * @param objSeverity    Message Severity for ApexPage Messages.
      * @return String with Exception message.
      */
-    public static List<ErrorLogWrapperClass_CF> processExceptions(List<ErrorLogWrapperClass_CF> lstExceptions, Boolean boolCreateApexPageMessage, String strUserFriendlyMessage, 
+    public static List<ErrorLogWrapperClass_CF> processExceptions(List<ErrorLogWrapperClass_CF> lstExceptions, Boolean boolCreateApexPageMessage, String strUserFriendlyMessage,
             ApexPages.Severity objSeverity) {
         List<ErrorLog_CF__c> lstErrorLogs = new List<ErrorLog_CF__c>();
-            
+
         //We set the ApexPage Messages, if requested.
-        if(boolCreateApexPageMessage != null && boolCreateApexPageMessage) {
-            if(String.IsBlank(strUserFriendlyMessage)) {
+        if (boolCreateApexPageMessage != null && boolCreateApexPageMessage) {
+            if (String.IsBlank(strUserFriendlyMessage)) {
                 strUserFriendlyMessage = Label.ErrorLog_Class_CF_ExceptionContactAdministrator_CF;
             }
-            if(objSeverity == null) {
+            if (objSeverity == null) {
                 objSeverity = ApexPages.Severity.ERROR;
             }
             ApexPages.addMessage(new ApexPages.Message(objSeverity, strUserFriendlyMessage));
         }
-        
+
         //Now we process the exceptions.
         ErrorLog_CF__c objNewException;
-        for(ErrorLogWrapperClass_CF objExceptionWrapper : lstExceptions) {
-            if(objExceptionWrapper.objException != null) {
+        for (ErrorLogWrapperClass_CF objExceptionWrapper : lstExceptions) {
+            if (objExceptionWrapper.objException != null) {
                 objNewException = new ErrorLog_CF__c();
                 objNewException = extractExceptionCaller(objExceptionWrapper.objException, objNewException);
-                
+
                 //Setting custom Class name if requested.
-                if(String.IsNotBlank(objExceptionWrapper.strClassName)) {
+                if (String.IsNotBlank(objExceptionWrapper.strClassName)) {
                     objNewException.ClassName_CF__c = objExceptionWrapper.strClassName;
                 }
-                
+
                 //Setting additional information.
                 objNewException.Message_CF__c = objExceptionWrapper.objException.getMessage();
                 objNewException.StackTrace_CF__c = objExceptionWrapper.objException.getStackTraceString();
-                if(objExceptionWrapper.objClass != null) {
+                if (objExceptionWrapper.objClass != null) {
                     objNewException.SerializedClass_CF__c = JSON.serialize(objExceptionWrapper.objClass);
                 }
-                if(objExceptionWrapper.objAdditionalObject != null) {
+                if (objExceptionWrapper.objAdditionalObject != null) {
                     objNewException.AdditionalSerializedObject_CF__c = JSON.serialize(objExceptionWrapper.objAdditionalObject);
                 }
                 objExceptionWrapper.strErrorMessage = objExceptionWrapper.objException.getMessage();
                 lstErrorLogs.add(objNewException);
             }
         }
-            
+
         //Now, we send the record to the future method, to store the data.
         try {
-            String strFinalUrl = STRING_HELPER_URL + STRING_HELPER_PARAMETER_NAME + STRING_HELPER_PARAMETER_NAME_SUFFIX + 
+            String strFinalUrl = STRING_HELPER_URL + STRING_HELPER_PARAMETER_NAME + STRING_HELPER_PARAMETER_NAME_SUFFIX +
                     EncodingUtil.urlEncode(JSON.serialize(lstErrorLogs), STRING_HELPER_URL_ENCODING);
-            if(strFinalUrl.length() > INTEGER_URL_LIMIT) {
+            if (strFinalUrl.length() > INTEGER_URL_LIMIT) {
                 futureInsertErrorLogRecords(JSON.serialize(lstErrorLogs));
-            } else if(!Test.isRunningTest()){
+            } else if (!Test.isRunningTest()) {
                 new PageReference(strFinalUrl).getContent();
             }
-        } catch(Exception objInternalException) {
+        } catch (Exception objInternalException) {
             insertErrorLogRecords(lstErrorLogs);
         }
         return lstExceptions;
     }
-    
+
     /**
      * Returns the patter to find the Class Name and Method of the excepsion causer.
      *
@@ -203,13 +203,13 @@ public without sharing class ErrorLogClass_CF {
      * @return Error Log object.
      */
     public static ErrorLog_CF__c extractExceptionCaller(Exception objException, ErrorLog_CF__c objNewException) {
-        if(objNewException == null) {
+        if (objNewException == null) {
             objNewException = new ErrorLog_CF__c();
         }
-        if(objException != null) {
+        if (objException != null) {
             Matcher objMatcher = Pattern.compile(STRING_EXCEPTION_MATCHER).matcher(objException.getStackTraceString().substringBefore(STRING_BREAK_LINE));
-            if(objMatcher.find()) {
-                if(String.isBlank(objMatcher.group(3))) {
+            if (objMatcher.find()) {
+                if (String.isBlank(objMatcher.group(3))) {
                     objNewException.ClassName_CF__c = objMatcher.group(1);
                     objNewException.MethodName_CF__c = prettifyMethodName(objMatcher.group(2));
                 } else {
@@ -220,7 +220,7 @@ public without sharing class ErrorLogClass_CF {
         }
         return objNewException;
     }
-    
+
     /**
      * Extracts and prettifies the method names from the exception caller.
      *
@@ -228,12 +228,12 @@ public without sharing class ErrorLogClass_CF {
      * @return Prettified name.
      */
     public static String prettifyMethodName(String strName) {
-        if(String.IsNotBlank(strName)) {
+        if (String.IsNotBlank(strName)) {
             strName = strName.replace(STRING_CONSTRUCTOR_TOKEN, STRING_CONSTRUCTOR_TOKEN_REPLACEMENT).replace(STRING_GETTER_SETTER_TOKEN, STRING_GETTER_SETTER_TOKEN_REPLACEMENT);
         }
         return strName;
     }
-    
+
     /**
      * This method inserts the Error log records, based on the serialized data.
      *
@@ -243,30 +243,30 @@ public without sharing class ErrorLogClass_CF {
     public static void futureInsertErrorLogRecords(String strSerializedErrorLogRecords) {
         try {
             insertErrorLogRecords((List<ErrorLog_CF__c>) JSON.deserialize(strSerializedErrorLogRecords, List<ErrorLog_CF__c>.class));
-        } catch(Exception objInternalException) {
+        } catch (Exception objInternalException) {
             System.debug(objInternalException.getMessage());
             System.debug(objInternalException.getStackTraceString());
         }
     }
-    
+
     /**
      * This method inserts Error log records.
      *
      * @param lstErrorLogRecords    List of Error Log records.
      */
     public static void insertErrorLogRecords(List<ErrorLog_CF__c> lstErrorLogRecords) {
-        if(lstErrorLogRecords != null && lstErrorLogRecords.size() > 0) {
+        if (lstErrorLogRecords != null && lstErrorLogRecords.size() > 0) {
             Integer intCounter = 0;
             String strTrimmedMessage = 'Data Trimmed by Developer: ';
             Attachment objAttachment;
             List<Attachment> lstAttachments = new List<Attachment>();
-            
+
             //We first prepare all the Error Logs and Attachments (if any).
-            for(ErrorLog_CF__c objError : lstErrorLogRecords) {
+            for (ErrorLog_CF__c objError : lstErrorLogRecords) {
                 intCounter++;
                 objError.ExternalId_CF__c = Userinfo.getUserId() + DateTime.now() + ':' + DateTime.now().millisecond() + ':' + intCounter;
-                if(String.IsNotBlank(objError.SerializedClass_CF__c) && objError.SerializedClass_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
-                    if(BOOL_SKIP_ATTACHMENT_GENERATION) {
+                if (String.IsNotBlank(objError.SerializedClass_CF__c) && objError.SerializedClass_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
+                    if (BOOL_SKIP_ATTACHMENT_GENERATION) {
                         objError.SerializedClass_CF__c = strTrimmedMessage + objError.SerializedClass_CF__c;
                         objError.SerializedClass_CF__c = objError.SerializedClass_CF__c.substring(0, INTEGER_LONG_TEXT_AREA_FIELD_LIMIT - 1);
                     } else {
@@ -278,8 +278,8 @@ public without sharing class ErrorLogClass_CF {
                         objError.SerializedClass_CF__c = 'Please see ' + objAttachment.Name + ' attached file.';
                     }
                 }
-                if(String.IsNotBlank(objError.AdditionalSerializedObject_CF__c) && objError.AdditionalSerializedObject_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
-                    if(BOOL_SKIP_ATTACHMENT_GENERATION) {
+                if (String.IsNotBlank(objError.AdditionalSerializedObject_CF__c) && objError.AdditionalSerializedObject_CF__c.length() > INTEGER_LONG_TEXT_AREA_FIELD_LIMIT) {
+                    if (BOOL_SKIP_ATTACHMENT_GENERATION) {
                         objError.AdditionalSerializedObject_CF__c = strTrimmedMessage + objError.AdditionalSerializedObject_CF__c;
                         objError.AdditionalSerializedObject_CF__c = objError.AdditionalSerializedObject_CF__c.substring(0, INTEGER_LONG_TEXT_AREA_FIELD_LIMIT - 1);
                     } else {
@@ -292,23 +292,23 @@ public without sharing class ErrorLogClass_CF {
                     }
                 }
             }
-            
+
             //Now we prepare the common list.
             insert lstErrorLogRecords;
-            
+
             //Now we create the attachments.
-            if(!BOOL_SKIP_ATTACHMENT_GENERATION) {
-                for(Attachment objNewAttachment : lstAttachments) {
-                    for(ErrorLog_CF__c objError : lstErrorLogRecords) {
-                        if(objNewAttachment.Description == objError.ExternalId_CF__c) {
+            if (!BOOL_SKIP_ATTACHMENT_GENERATION) {
+                for (Attachment objNewAttachment : lstAttachments) {
+                    for (ErrorLog_CF__c objError : lstErrorLogRecords) {
+                        if (objNewAttachment.Description == objError.ExternalId_CF__c) {
                             objNewAttachment.ParentId = objError.Id;
                             objNewAttachment.Description = null;
                         }
                     }
                 }
-                
+
                 //Finally, we insert the attachments.
-                if(lstAttachments.size() > 0) {
+                if (lstAttachments.size() > 0) {
                     insert lstAttachments;
                 }
             }

@@ -1,13 +1,13 @@
 @isTest
 private class KnowledgeControllerTest {
 
-   public static void setupTest() {
-        Integer num = [ SELECT count() FROM PKBSiteSetup__c WHERE PKBSiteName__c = 'TestPKBSiteSetup' ];
+    public static void setupTest() {
+        Integer num = [SELECT count() FROM PKBSiteSetup__c WHERE PKBSiteName__c = 'TestPKBSiteSetup'];
         PKBSiteSetup__c siteSetup;
         if (num == 0) {
             siteSetup = new PKBSiteSetup__c();
         } else {
-            siteSetup = [ SELECT id FROM PKBSiteSetup__c ];
+            siteSetup = [SELECT id FROM PKBSiteSetup__c];
         }
         siteSetup.Name = 'test setup';
         siteSetup.PKBSiteName__c = 'TestPKBSiteSetup';
@@ -18,13 +18,13 @@ private class KnowledgeControllerTest {
 
         upsert siteSetup;
 
-        Integer num2 = [ SELECT count() FROM PKBTranslation__c  WHERE language__c = 'fr' AND PKB_Site_Setup__r.PKBSiteName__c = 'TestPKBSiteSetup' ];
+        Integer num2 = [SELECT count() FROM PKBTranslation__c WHERE language__c = 'fr' AND PKB_Site_Setup__r.PKBSiteName__c = 'TestPKBSiteSetup'];
         PKBTranslation__c translation;
 
         if (num2 == 0) {
             translation = new PKBTranslation__c();
         } else {
-            translation = [ SELECT id FROM PKBTranslation__c ];
+            translation = [SELECT id FROM PKBTranslation__c];
         }
 
         translation.language__c = 'fr';
@@ -62,12 +62,12 @@ private class KnowledgeControllerTest {
         ApexPages.currentPage().getParameters().put(KnowledgeController.LANGUAGE_PARAMETER_NAME, 'fr');
         System.assertEquals('fr', controller.currentLanguage);
         ApexPages.currentPage().getParameters().put(KnowledgeController.ARTICLE_ID_PARAMETER_NAME, 'kA0x00000000e4M');
-        System.assertEquals('kA0x00000000e4M', controller.currentArticleId);        
+        System.assertEquals('kA0x00000000e4M', controller.currentArticleId);
     }
 
     static testMethod void testSiteSetupGetters() {
         setupTest();
-        PKBSiteSetup__c siteSetup = [ select id, PKBSiteName__c from PKBSiteSetup__c WHERE PKBSiteName__c = 'TestPKBSiteSetup' ];
+        PKBSiteSetup__c siteSetup = [select id, PKBSiteName__c from PKBSiteSetup__c WHERE PKBSiteName__c = 'TestPKBSiteSetup'];
         Integer i = 0;
 
         siteSetup.RootCategoryName__c = String.valueOf(i++);
@@ -122,15 +122,15 @@ private class KnowledgeControllerTest {
         KnowledgeController.siteSetup = null;
 
         // Now check translation
-        System.assertEquals(controller.currentLanguage,  'fr');
+        System.assertEquals(controller.currentLanguage, 'fr');
         System.assertEquals(controller.getCategoryDescriptions()[0], 'translation1');
         System.assertEquals(controller.getCategoryDescriptions()[1], 'translation2');
         System.assertEquals(controller.getCategoryDescriptions()[2], 'translation3');
         System.assertEquals(controller.getCategoryDescriptions()[3], 'translation4');
         System.assertEquals(controller.getCategoryDescriptions()[4], 'translation5');
         System.assertEquals(controller.getCategoryDescriptions()[5], 'translation6');
-        System.assertEquals(controller.getHomeAdText(),  'translation7');
-        System.assertEquals(controller.getHomeAdTitle(),  'translation8');
+        System.assertEquals(controller.getHomeAdText(), 'translation7');
+        System.assertEquals(controller.getHomeAdTitle(), 'translation8');
 
         // Test that not available languages is refused and default to the first one.
         // French site
@@ -138,7 +138,7 @@ private class KnowledgeControllerTest {
         TestKnowledgeController controllerEs = new TestKnowledgeController();
         // force knowledgeController to requery the static siteSetup
         KnowledgeController.siteSetup = null;
-        System.assertEquals(controllerEs.currentLanguage,  'en_US');
+        System.assertEquals(controllerEs.currentLanguage, 'en_US');
     }
 
 
@@ -240,7 +240,7 @@ private class KnowledgeControllerTest {
     }
 
 
-
-    public class TestKnowledgeController extends KnowledgeController {}
+    public class TestKnowledgeController extends KnowledgeController {
+    }
 
 }

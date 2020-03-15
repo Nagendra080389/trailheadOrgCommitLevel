@@ -23,7 +23,7 @@ private class TestRestrictContactByName {
     }
 
 
-    static testMethod void testClass1(){
+    static testMethod void testClass1() {
         List<Integer> integers = new List<Integer>();
 
         integers.add(1);
@@ -36,8 +36,8 @@ private class TestRestrictContactByName {
         integers.add(8);
 
 
-        for(Integer i = integers.size() - 1; i >= 0; i--) {
-            if(integers[i] == 2) {
+        for (Integer i = integers.size() - 1; i >= 0; i--) {
+            if (integers[i] == 2) {
                 integers.remove(i);
             }
         }

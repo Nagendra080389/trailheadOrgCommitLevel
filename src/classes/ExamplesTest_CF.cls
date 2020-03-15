@@ -8,6 +8,6 @@ public class ExamplesTest_CF {
 
     //Private variables.
     private static Lead testLead;
-    
+
 
 }

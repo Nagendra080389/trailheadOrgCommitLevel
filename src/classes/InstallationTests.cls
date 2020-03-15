@@ -11,5 +11,5 @@ private class InstallationTests {
     }
     static testmethod void testWarehouseSync() {
         WarehouseCalloutService.runWarehouseEquipmentSync();
-    }    
+    }
 }

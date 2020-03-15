@@ -5,5 +5,5 @@
 
 public class UserTest {
 
-    public static List<User> users = [SELECT Id, Country FROM User WHERE Id =:UserInfo.getUserId()];
+    public static List<User> users = [SELECT Id, Country FROM User WHERE Id = :UserInfo.getUserId()];
 }

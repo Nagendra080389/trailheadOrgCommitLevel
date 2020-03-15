@@ -7,10 +7,10 @@
 
 public class KnowledgeArticleWrapper_ACE {
 
-    @AuraEnabled public String strId{get;set;}
-    @AuraEnabled public String strDisplayName{get;set;}
-    @AuraEnabled public List<String> lstComments{get;set;}
-    @AuraEnabled public List<String> lstErrorFromServer{get;set;}
+    @AuraEnabled public String strId { get; set; }
+    @AuraEnabled public String strDisplayName { get; set; }
+    @AuraEnabled public List<String> lstComments { get; set; }
+    @AuraEnabled public List<String> lstErrorFromServer { get; set; }
 
     /**
      * Constructor of the class.
@@ -19,7 +19,7 @@ public class KnowledgeArticleWrapper_ACE {
      * @param lstComments - List of comments for CaseComment object.
      * @param lstErrorFromServer - List of errors to be displayed on UI.
      */
-    public KnowledgeArticleWrapper_ACE(String strId, String strDisplayName, List<String> lstComments, List<String> lstErrorFromServer){
+    public KnowledgeArticleWrapper_ACE(String strId, String strDisplayName, List<String> lstComments, List<String> lstErrorFromServer) {
         this.strId = strId;
         this.strDisplayName = strDisplayName;
         this.lstComments = lstComments;

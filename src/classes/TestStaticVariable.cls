@@ -6,8 +6,7 @@
 
 public with sharing class TestStaticVariable {
 
-	public static Boolean BOOLEAN_BYPASSTRIGGER;
-
+    public static Boolean BOOLEAN_BYPASSTRIGGER;
 
 
 }

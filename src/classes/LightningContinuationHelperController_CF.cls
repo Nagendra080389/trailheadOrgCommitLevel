@@ -4,7 +4,7 @@
  * @author Raymundo Rodriguez Sansores
  */
 global with sharing class LightningContinuationHelperController_CF {
-    
+
     /**
      * Constructor of the class.
      */

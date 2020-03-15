@@ -10,7 +10,7 @@ private class LeadProcessorTest {
         Lead lead = null;
         List<Lead> leads = new List<Lead>();
         for (Integer i = 0; i < 200; i++) {
-            lead = new Lead(LastName = 'LastName'+i, Company = 'Company'+i);
+            lead = new Lead(LastName = 'LastName' + i, Company = 'Company' + i);
             leads.add(lead);
         }
 

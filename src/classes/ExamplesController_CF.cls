@@ -6,11 +6,11 @@
 public with sharing class ExamplesController_CF extends StaticVariablesClass_CF {
 
     //Public variables.
-    public String strInputText {get; set;}
-    public String strLeadIdForAttachments {get; set;}
-    public String strIntegrationServiceRecordId {get; set;}
-    public Case objCase {get; set;}
-    public Lead objLead {get; set;}
+    public String strInputText { get; set; }
+    public String strLeadIdForAttachments { get; set; }
+    public String strIntegrationServiceRecordId { get; set; }
+    public Case objCase { get; set; }
+    public Lead objLead { get; set; }
     public Attachment objAttachment {
         get {
             if (objAttachment == null) {
@@ -20,8 +20,8 @@ public with sharing class ExamplesController_CF extends StaticVariablesClass_CF 
         }
         set;
     }
-    public List<Wrapper> lstRecords {get; set;}
-    public List<Wrapper> lstRecordsOrder {get; set;}
+    public List<Wrapper> lstRecords { get; set; }
+    public List<Wrapper> lstRecordsOrder { get; set; }
 
     //Private variables.
     private Wrapper objRecord;
@@ -117,73 +117,77 @@ public with sharing class ExamplesController_CF extends StaticVariablesClass_CF 
      */
     @RemoteAction
     public static List<Wrapper> remoteAction(String strQuery) {
-        List<Wrapper> lstList = new List<Wrapper>();
-        Wrapper objWrapper = new Wrapper();
+    List<Wrapper> lstList = new List<Wrapper>();
+    Wrapper objWrapper = new Wrapper();
 
-        //Adding record 1.
-        objWrapper = new Wrapper();
-        objWrapper.strName = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_NAME;
-        objWrapper.strPosition = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_POSITION;
-        objWrapper.strOffice = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_OFFICE;
-        objWrapper.strSalary = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_SALARY;
-        lstList.add(objWrapper);
+    //Adding record 1.
+    objWrapper = new Wrapper();
+    objWrapper.strName = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_NAME;
+    objWrapper.strPosition = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_POSITION;
+    objWrapper.strOffice = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_OFFICE;
+    objWrapper.strSalary = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_12_SALARY;
+    lstList.add(objWrapper);
 
-        //Adding record 2.
-        objWrapper = new Wrapper();
-        objWrapper.strName = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_NAME;
-        objWrapper.strPosition = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_POSITION;
-        objWrapper.strOffice = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_OFFICE;
-        objWrapper.strSalary = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_SALARY;
-        lstList.add(objWrapper);
+//Adding record 2.
+objWrapper = new Wrapper();
+objWrapper.strName = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_NAME;
+objWrapper.strPosition = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_POSITION;
+objWrapper.strOffice = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_OFFICE;
+objWrapper.strSalary = StaticVariablesClass_CF.CUSTOM_FRAMEWORK_EXAMPLE_13_SALARY;
+lstList.add(objWrapper);
 
-        //Returning result.
-        return lstList;
-    }
+//Returning result.
+return lstList;
+}
 
-    /**
-     * Action method to create Lead example records.
-     */
-    public void customFrameworkExamplesAction() {
-        createLead();
-    }
-    
-    /**
-     * Creates a demo Lead for input file examples.
-     */
-    public void createLead() {
-        Id objId;
-        for(Lead objLead : [SELECT Id FROM Lead Where Name = :CUSTOM_FRAMEWORK_MEMBER_ID LIMIT 1]) {
-            objId = objLead.Id;
-        }
-        if(objId != null) {
-            strLeadIdForAttachments = objId;
-        } else {
-            Lead objLead = new Lead (LastName = CUSTOM_FRAMEWORK_MEMBER_ID, City = CUSTOM_FRAMEWORK_BILING_CITY, Company = CUSTOM_FRAMEWORK_MEMBER_ID);
-            insert objLead;
-            strLeadIdForAttachments = objLead.Id;
-        }
-    }
-    
-    /**
-     * Method that triggers the Integration Functionality with a GIT service.
-     */
-    public void createIntegrationDetail() {
-        IntegrationWrapperClass_CF objIntegrationExample = IntegrationClass_CF.synchronousCallout('Test');
-        for(IntegrationDetail_CF__c objIntegration : [SELECT Id, CreatedDate FROM IntegrationDetail_CF__c ORDER BY CreatedDate DESC LIMIT 1]) {
-            strIntegrationServiceRecordId = objIntegration.Id;
-        }
-    }
+/**
+ * Action method to create Lead example records.
+ */
+public void customFrameworkExamplesAction() {
+createLead();
+}
 
-    /**
-     * Wrapper: Wrapper class for example records.
-     */
-    public class Wrapper {
+/**
+ * Creates a demo Lead for input file examples.
+ */
+public void createLead() {
+Id objId;
+for(Lead objLead : [SELECT Id FROM Lead Where Name = :CUSTOM_FRAMEWORK_MEMBER_ID LIMIT 1]) {
+objId = objLead.Id;
+}
+if(objId != null) {
+strLeadIdForAttachments = objId;
+} else {
+Lead objLead = new Lead (LastName = CUSTOM_FRAMEWORK_MEMBER_ID, City = CUSTOM_FRAMEWORK_BILING_CITY, Company = CUSTOM_FRAMEWORK_MEMBER_ID);
+insert objLead;
+strLeadIdForAttachments = objLead.Id;
+}
+}
 
-        //Public variables.
-        public String strAlphaCode {get; set;}
-        public String strName {get; set;}
-        public String strPosition {get; set;}
-        public String strOffice {get; set;}
-        public String strSalary {get; set;}
-    }
+/**
+ * Method that triggers the Integration Functionality with a GIT service.
+ */
+public void createIntegrationDetail() {
+IntegrationWrapperClass_CF objIntegrationExample = IntegrationClass_CF.synchronousCallout('Test');
+for(IntegrationDetail_CF__c objIntegration : [SELECT Id, CreatedDate FROM IntegrationDetail_CF__c ORDER BY CreatedDate DESC LIMIT 1]) {
+strIntegrationServiceRecordId = objIntegration.Id;
+}
+}
+
+/**
+ * Wrapper: Wrapper class for example records.
+ */
+public class Wrapper {
+
+//Public variables.
+public String strAlphaCode {get; set;
+}
+public String strName {get; set;}
+public String strPosition {get; set;
+}
+public String strOffice {get; set;
+}
+public String strSalary {get; set;
+}
+}
 }

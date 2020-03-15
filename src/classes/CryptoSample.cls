@@ -4,7 +4,7 @@
  * @author Nagendra Kumar Singh
  */
 public class CryptoSample {
-    public void Demo(){
+    public void Demo() {
         Blob bKey;
         String encryptedData;
         String decryptedData;

@@ -4,12 +4,12 @@
 
 public class RandomContactFactory {
 
-    public static List<Contact> generateRandomContacts(Integer firstParameter, String secondParameter){
+    public static List<Contact> generateRandomContacts(Integer firstParameter, String secondParameter) {
         List<Contact> contacts = new List<Contact>();
         Contact contact = null;
         for (Integer i = 0; i < firstParameter; i++) {
             contact = new Contact();
-            contact.FirstName = 'Test '+i;
+            contact.FirstName = 'Test ' + i;
             contact.LastName = secondParameter;
             contacts.add(contact);
         }

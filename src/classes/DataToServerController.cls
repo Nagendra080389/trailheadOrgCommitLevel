@@ -4,13 +4,13 @@
 
 public class DataToServerController {
 
-  @AuraEnabled
-  public static void createStudent(Student__c student){
-    try{
-      insert student;
-    }catch(Exception e){
-      System.debug(e);
+    @AuraEnabled
+    public static void createStudent(Student__c student) {
+        try {
+            insert student;
+        } catch (Exception e) {
+            System.debug(e);
+        }
     }
-  }
 
 }
