@@ -163,6 +163,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>EngineeringReqNumber2__c</fullName>
+        <externalId>false</externalId>
+        <label>Engineering Req Number2</label>
+        <length>12</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Equipment__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
