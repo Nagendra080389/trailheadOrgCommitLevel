@@ -1,28 +1,28 @@
 @IsTest
-public class AccountManagerTest {
+private class AccountManagerTest{
 
-    // His test
-    @isTest static void testAccountManager() {
+    // His test 123 tyu23e23534dsdkh
+    @isTest static void testAccountManager(){
         Id recordId = getTestAccountId();
-        // Set up a test request test 1
+        // Set up a test request test 124
         RestRequest request = new RestRequest();
         request.requestUri =
-                'https://ap5.salesforce.com/services/apexrest/Accounts/' + recordId + '/contacts';
+                'https://ap5.salesforce.com/services/apexrest/Accounts/'+ recordId +'/contacts';
         request.httpMethod = 'GET';
         RestContext.request = request;
 
         // Call the method to test
-        Account acc = AccountManager.getAccount();
+        Account  acc = AccountManager.getAccount();
 
         // Verify results
         System.assert(acc != null);
     }
 
-    private static Id getTestAccountId() {
+    private static Id getTestAccountId(){
         Account acc = new Account(Name = 'TestAcc2');
         Insert acc;
-
-        AccountManager.testThisMethod();
+	    
+	    AccountManager.testThisMethod();
 
         Contact con = new Contact(LastName = 'TestCont2', AccountId = acc.Id);
         Insert con;
