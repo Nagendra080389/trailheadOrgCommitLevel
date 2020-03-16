@@ -1,5 +1,5 @@
 // This is a commit commit from UCS
-//Test asd 7
+//Test asd 74
 @RestResource(urlMapping='/Accounts/*/contacts')
 global with sharing class AccountManager {
 
