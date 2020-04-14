@@ -1,0 +1,14 @@
+<!--
+ - Created by nagesingh on 2/29/2020.
+ -->
+
+<!-- Account Page Aura -->
+    <template>
+        The value from Aura is:- {cardName}
+        <lightning-datatable
+                key-field="id"
+                data={data}
+                columns={columns}>
+        </lightning-datatable>
+        <div if:true={isLoaded}> <lightning-spinner alternative-text="Loading..."></lightning-spinner></div>
+    </template>
