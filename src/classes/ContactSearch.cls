@@ -1,4 +1,4 @@
-public class ContactSearch{
+public without sharing class ContactSearch{
 
 	// This method is used for contact Search
   public static List<Contact> searchForContacts(String input1, String input2){
