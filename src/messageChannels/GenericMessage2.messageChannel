@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This Lightning Message Channel sends information from VF to LWC and back.</description>
+    <isExposed>true</isExposed>
+    <lightningMessageFields>
+        <description>The message to communicate to others</description>
+        <fieldName>messageToSend2</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>Source Component Name</description>
+        <fieldName>sourceComponent2</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>Target Component Name</description>
+        <fieldName>targetComponent2</fieldName>
+    </lightningMessageFields>
+    <masterLabel>GenericMessage2</masterLabel>
+</LightningMessageChannel>
