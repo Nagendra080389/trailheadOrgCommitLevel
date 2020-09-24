@@ -17,4 +17,9 @@ global with sharing class AccountManager {
 	public static void testThisMethod(){
 		System.debug('');
 	}
+
+	// This is Deployment 2
+	public static void testThisMethod2(){
+		System.debug('');
+	}
 }
