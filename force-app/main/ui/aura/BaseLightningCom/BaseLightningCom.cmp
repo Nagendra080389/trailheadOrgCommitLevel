@@ -1,0 +1,7 @@
+<!--
+ - Created by nagesingh on 12/5/2019.
+ -->
+
+<aura:component description="BaseLightningCom" extensible="true">
+
+</aura:component>
